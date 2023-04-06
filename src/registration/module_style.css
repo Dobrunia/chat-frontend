@@ -1,0 +1,79 @@
+.module_wrapper {
+    width: 100vw;
+    height: calc(100vh - 70px);
+    padding-top: 16px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    z-index: 2;
+}
+
+.module_window {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    width: 400px;
+    height: 500px;
+    position: relative;
+    background-color: #FFF;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.module_container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    width: 300px;
+    height: 100%;
+    text-transform: uppercase;
+}
+
+.module_container h1 {
+    margin: 0;
+    padding: 0;
+    text-transform: none;
+}
+
+.module_container .text-imput {
+    width: 300px;
+    height: 20px;
+    margin-bottom: 30px;
+    border: 0;
+    background-color: #E1E6E7;
+}
+
+.module_container .text-imput:focus-visible {
+    outline: #7C7F80 auto 0.5px;
+}
+
+.module_container .checkbox-imput {
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.module_container span {
+    margin-left: 2px;
+    font-size: 12px;
+    text-transform: none;
+}
+
+.module_container .button {
+    width: 300px;
+    height: 30px;
+    cursor: pointer;
+}
