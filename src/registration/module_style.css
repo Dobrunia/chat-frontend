@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #000;
+    color: #ffc107;
     z-index: 2;
 }
 
@@ -20,7 +20,7 @@
     width: 400px;
     height: 500px;
     position: relative;
-    background-color: #FFF;
+    background-color: #007968;
     border-radius: 15px;
     overflow: hidden;
 }
@@ -58,7 +58,7 @@
 }
 
 .module_container .text-imput:focus-visible {
-    outline: #7C7F80 auto 0.5px;
+    outline: #1d3844 auto 0.5px;
 }
 
 .module_container .checkbox-imput {
@@ -76,4 +76,6 @@
     width: 300px;
     height: 30px;
     cursor: pointer;
+    color: #ffc107;
+    background-color: #1d3844;
 }

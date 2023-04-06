@@ -20,36 +20,38 @@
           <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Поиск пользователей..."
             aria-label="Search" />
         </form>
-        <div class="text-end">
+        <div class="text-end none">
           <button type="button" class="btn btn-outline-light me-2" id="get_in">
             Войти
           </button>
           <button type="button" class="btn btn-warning" id="registration">Регистрация</button>
         </div>
-        <div class="my_avatar user_avatar_small none">
-          <div class="status"></div>
+        <div class="account" id="account">
+          <div class="my_name" id="my_name">Добрыня</div>
+          <div class="my_avatar user_avatar_small">
+            <div class="status"></div>
+          </div>
         </div>
       </div>
     </div>
   </header>
   <section class="module_wrapper none" id="get_in_window">
     <div class="module_window">
-        <div class="module_container">
-            <h1>Вход</h1>
-            <form action="./auth.php" method="post">
-                <label>Логин</label>
-                <input class="text-imput" name="login" type="text" autocomplete="username" maxlength="10"
-                    required></input>
-                <label>Пароль</label>
-                <input class="text-imput" name="password" type="password" autocomplete="current-password" maxlength="15"
-                    required></input>
-                <input class="checkbox-imput" type="checkbox" name="not_my_pc"><span>чужой компьютер</span>
-                <input class="button" type="submit" name="submit" value="Войти">
-            </form>
-        </div>
-        <button class="exit" id="get_in_exit">X</button>
+      <div class="module_container">
+        <h1>Вход</h1>
+        <form action="./auth.php" method="post">
+          <label>Логин</label>
+          <input class="text-imput" name="login" type="text" autocomplete="username" maxlength="10" required></input>
+          <label>Пароль</label>
+          <input class="text-imput" name="password" type="password" autocomplete="current-password" maxlength="15"
+            required></input>
+          <input class="checkbox-imput" type="checkbox" name="not_my_pc"><span>чужой компьютер</span>
+          <input class="button" type="submit" name="submit" value="Войти">
+        </form>
+      </div>
+      <button class="exit" id="get_in_exit">X</button>
     </div>
-</section>
+  </section>
   <section class="module_wrapper none" id="registration_window">
     <div class="module_window">
       <div class="module_container">
