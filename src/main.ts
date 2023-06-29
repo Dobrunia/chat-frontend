@@ -6,9 +6,20 @@ export const $ = (element: string) => document.querySelector(element);
 
 function renderMessage(data: string) {
   const messagesWrapper = $("#messages") as HTMLFormElement;
+  let date = new Date();
+  let formatter1 = new Intl.DateTimeFormat("ru", {
+    month: "long",
+    day: "numeric",
+  });
+  let formatter2 = new Intl.DateTimeFormat("ru", {
+    hour: "numeric",
+    minute: "numeric",
+  });
   messagesWrapper.innerHTML += `
     <div class="message my">
-      <div class="message_metric">12:00 PM<br />Aug 13</div>
+      <div class="message_metric">${formatter2.format(
+        date
+      )}<br />${formatter1.format(date)}</div>
       <div class="message_text">
         ${data}
       </div>
@@ -25,14 +36,16 @@ function connect() {
   });
   // socket.on("hehe", (data) => console.log(data));
   socket.on("disconnect", () => console.error("server disconnected"));
-  socket.on("message", (data) => renderMessage(data));//обрабатываю, что пришло
+  socket.on("message", (data) =>
+    data.trim() !== "" ? renderMessage(data.trim()) : false
+  ); //обрабатываю, что пришло
 }
 
 async function handleSumbit(e: Event) {
   e.preventDefault();
   const formData = new FormData(e.target as HTMLFormElement);
   const textArea = $("#message_text") as HTMLFormElement;
-  textArea.value = '';
+  textArea.value = "";
   const data = transformFormData(formData);
   await axios.post("http://localhost:5000/messages", data);
 }

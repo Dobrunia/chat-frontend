@@ -64,7 +64,7 @@ body {
 }
 
 .none {
-  display: none;
+  display: none !important;
 }
 
 .blur {
@@ -86,10 +86,59 @@ body {
   color: rgb(255, 0, 0);
 }
 
+.avatar_wrapper {
+  position: relative;
+}
+
 .my_avatar {
   position: relative;
   border-radius: 50px;
   background-color: #ffc107;
+  cursor: pointer;
+}
+
+.avatar_hover {
+  width: 170px;
+  height: max-content;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 20%;
+  right: 0;
+  transform: translate(0, 50%);
+  background-color: #008d5f;
+  text-align: center;
+  padding: 5px;
+  border-radius: 0.5rem;
+  cursor: default;
+}
+
+.up-arrow {
+  position: absolute;
+  top: -12px;
+  right: 12px;
+  border: 10px solid transparent;
+  display: inline-flex;
+  transform: rotate(90deg);
+  border-right: 10px solid #008d5f;
+  border-left: none;
+}
+
+.avatar_hover > * {
+  width: max-content;
+}
+
+.avatar_hover > *:hover {
+  cursor: pointer;
+  color: #ffc107;
+  transition: 0.2s;
+}
+
+.account_exit:hover svg {
+  scale: 2;
+  transition: 0.3s;
 }
 
 .wrapper {
@@ -110,6 +159,7 @@ body {
   height: 525px;
   background-color: #006366;
   transition: 0.2s;
+  border-radius: 0.5rem;
 }
 
 .hide {

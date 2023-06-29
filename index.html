@@ -1,366 +1,481 @@
 <!DOCTYPE html>
 <html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Websoket chat 2.0</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./src/registration/module_style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Websoket chat 2.0</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous" />
-  <link rel="stylesheet" href="./style.css" />
-  <link rel="stylesheet" href="./src/registration/module_style.css" />
-</head>
-
-<body>
-  <header class="p-3 text-bg-dark">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-end">
-        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-          <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Поиск пользователей..."
-            aria-label="Search" />
-        </form>
-        <div class="text-end none">
-          <button type="button" class="btn btn-outline-light me-2" id="get_in">
-            Войти
-          </button>
-          <button type="button" class="btn btn-warning" id="registration">Регистрация</button>
-        </div>
-        <div class="account" id="account">
-          <div class="my_name" id="my_name">Добрыня</div>
-          <div class="my_avatar user_avatar_small">
-            <div class="status"></div>
+  <body>
+    <header class="p-3 text-bg-dark">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-end">
+          <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+            <input
+              type="search"
+              class="form-control form-control-dark text-bg-dark"
+              placeholder="Поиск пользователей..."
+              aria-label="Search"
+            />
+          </form>
+          <div class="text-end none">
+            <button
+              type="button"
+              class="btn btn-outline-light me-2"
+              id="get_in"
+            >
+              Войти
+            </button>
+            <button type="button" class="btn btn-warning" id="registration">
+              Регистрация
+            </button>
+          </div>
+          <div class="account" id="account">
+            <div class="my_name" id="my_name">Добрыня</div>
+            <div class="avatar_wrapper">
+              <div id="my_avatar" class="my_avatar user_avatar_small">
+                <div class="status"></div>
+              </div>
+              <div id="avatar_hover" class="avatar_hover none">
+                <div class="up-arrow"></div>
+                <div class="theme">Тема:</div>
+                <div class="settings">
+                  Настройки
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 512 512"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M294 66H218C211.373 66 206 71.3726 206 78V106.319C206 117.01 193.074 122.364 185.515 114.804L165.49 94.7797C160.804 90.0934 153.206 90.0934 148.52 94.7797L94.7797 148.52C90.0934 153.206 90.0934 160.804 94.7797 165.49L114.804 185.515C122.364 193.074 117.01 206 106.319 206H78C71.3726 206 66 211.373 66 218V294C66 300.627 71.3726 306 78 306H106.319C117.01 306 122.364 318.926 114.804 326.485L94.7797 346.51C90.0934 351.196 90.0934 358.794 94.7797 363.48L148.52 417.22C153.206 421.907 160.804 421.907 165.49 417.22L185.515 397.196C193.074 389.636 206 394.99 206 405.681V434C206 440.627 211.373 446 218 446H294C300.627 446 306 440.627 306 434V405.681C306 394.99 318.926 389.636 326.485 397.196L346.51 417.22C351.196 421.907 358.794 421.907 363.48 417.22L417.22 363.48C421.907 358.794 421.907 351.196 417.22 346.51L397.196 326.485C389.636 318.926 394.99 306 405.681 306H434C440.627 306 446 300.627 446 294V218C446 211.373 440.627 206 434 206H405.681C394.99 206 389.636 193.074 397.196 185.515L417.22 165.49C421.907 160.804 421.907 153.206 417.22 148.52L363.48 94.7797C358.794 90.0934 351.196 90.0934 346.51 94.7797L326.485 114.804C318.926 122.364 306 117.01 306 106.319V78C306 71.3726 300.627 66 294 66Z"
+                      stroke="black"
+                      stroke-width="24"
+                    />
+                    <circle
+                      cx="256.5"
+                      cy="255.5"
+                      r="102.5"
+                      stroke="black"
+                      stroke-width="24"
+                    />
+                  </svg>
+                </div>
+                <div class="account_exit">
+                  Выйти из аккаунта
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 64 64"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M22.6066 21.3934C22.2161 21.0029 21.5829 21.0029 21.1924 21.3934C20.8019 21.7839 20.8019 22.4171 21.1924 22.8076L22.6066 21.3934ZM40.9914 42.6066C41.3819 42.9971 42.0151 42.9971 42.4056 42.6066C42.7961 42.2161 42.7961 41.5829 42.4056 41.1924L40.9914 42.6066ZM21.1924 41.1924C20.8019 41.5829 20.8019 42.2161 21.1924 42.6066C21.5829 42.9971 22.2161 42.9971 22.6066 42.6066L21.1924 41.1924ZM42.4056 22.8076C42.7961 22.4171 42.7961 21.7839 42.4056 21.3934C42.0151 21.0029 41.3819 21.0029 40.9914 21.3934L42.4056 22.8076ZM21.1924 22.8076L40.9914 42.6066L42.4056 41.1924L22.6066 21.3934L21.1924 22.8076ZM22.6066 42.6066L42.4056 22.8076L40.9914 21.3934L21.1924 41.1924L22.6066 42.6066Z"
+                      fill="red"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </header>
-  <section class="module_wrapper none" id="get_in_window">
-    <div class="module_window">
-      <div class="module_container">
-        <h1>Вход</h1>
-        <form action="./auth.php" method="post">
-          <label>Логин</label>
-          <input class="text-imput" name="login" type="text" autocomplete="username" maxlength="10" required></input>
-          <label>Пароль</label>
-          <input class="text-imput" name="password" type="password" autocomplete="current-password" maxlength="15"
-            required></input>
-          <input class="checkbox-imput" type="checkbox" name="not_my_pc"><span>чужой компьютер</span>
-          <input class="button" type="submit" name="submit" value="Войти">
-        </form>
-      </div>
-      <button class="exit" id="get_in_exit">X</button>
-    </div>
-  </section>
-  <section class="module_wrapper none" id="registration_window">
-    <div class="module_window">
-      <div class="module_container">
-        <h1>Регистрация</h1>
-        <form role="form" action="#" method="#">
-          <label>Логин</label>
-          <input class="text-imput" name="login" type="text" autocomplete="username" maxlength="10" required></input>
-          <label>Пароль</label>
-          <input class="text-imput" name="password" type="password" autocomplete="new-password" maxlength="15"
-            required></input>
-          <label>Повторите пароль</label>
-          <input class="text-imput" name="password2" type="password" autocomplete="new-password" maxlength="15"
-            required></input>
-          <input class="checkbox-imput" type="checkbox" name="accept" required><span>я согласен на обработку
-            персональных данных</span>
-          <input class="button" type="submit" name="submit" value="Зарегистрироваться">
-        </form>
-      </div>
-      <button class="exit" id="registration_exit">X</button>
-    </div>
-  </section>
-  <section class="wrapper" id="wrapper">
-    <section class="users_wrapper hide" id="menu">
-      <button class="menuButton" id="menuButton">
-        ->
-      </button>
-      <input type="search" class="form-control form-control-dark text-bg-dark aaa" placeholder="Поиск чатов..."
-        style="width: 250px" />
-      <div class="users">
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
+    </header>
+    <section class="module_wrapper none" id="get_in_window">
+      <div class="module_window">
+        <div class="module_container">
+          <h1>Вход</h1>
+          <form action="./auth.php" method="post">
+            <label>Логин</label>
+            <input
+              class="text-imput"
+              name="login"
+              type="text"
+              autocomplete="username"
+              maxlength="10"
+              required
+            />
+            <label>Пароль</label>
+            <input
+              class="text-imput"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              maxlength="15"
+              required
+            />
+            <input
+              class="checkbox-imput"
+              type="checkbox"
+              name="not_my_pc"
+            /><span>чужой компьютер</span>
+            <input class="button" type="submit" name="submit" value="Войти" />
+          </form>
         </div>
-        <div class="line"></div>
-
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>Саня</strong></div>
-            <div class="user_last_message">Привет Добрыня</div>
-          </div>
-          <div class="user_metric">
-            <div>Just now</div>
-            <span>2</span>
-          </div>
-        </div>
-        <div class="line"></div>
+        <button class="exit" id="get_in_exit">X</button>
       </div>
     </section>
-    <section class="messages_wrapper">
-      <div class="messages" id="messages">
-        <div class="message from">
-          <div class="user_avatar user_avatar_small"></div>
-          <div class="message_text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste,
-            laudantium praesentium obcaecati facere et hic quia corrupti enim!
-            Veritatis praesentium dolorum quo nostrum dicta sit tenetur
-            possimus doloribus cupiditate consequuntur. Lorem ipsum dolor sit
-            amet consectetur adipisicing elit. Iste, laudantium praesentium
-            obcaecati facere et hic quia corrupti enim! Veritatis praesentium
-            dolorum quo nostrum dicta sit tenetur possimus doloribus
-            cupiditate consequuntur. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Iste, laudantium praesentium obcaecati facere et
-            hic quia corrupti enim! Veritatis praesentium dolorum quo nostrum
-            dicta sit tenetur possimus doloribus cupiditate consequuntur.
-          </div>
-          <div class="message_metric">12:00 PM<br />Aug 13</div>
+    <section class="module_wrapper none" id="registration_window">
+      <div class="module_window">
+        <div class="module_container">
+          <h1>Регистрация</h1>
+          <form role="form" action="#" method="#">
+            <label>Логин</label>
+            <input
+              class="text-imput"
+              name="login"
+              type="text"
+              autocomplete="username"
+              maxlength="10"
+              required
+            />
+            <label>Пароль</label>
+            <input
+              class="text-imput"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              maxlength="15"
+              required
+            />
+            <label>Повторите пароль</label>
+            <input
+              class="text-imput"
+              name="password2"
+              type="password"
+              autocomplete="new-password"
+              maxlength="15"
+              required
+            />
+            <input
+              class="checkbox-imput"
+              type="checkbox"
+              name="accept"
+              required
+            /><span>я согласен на обработку персональных данных</span>
+            <input
+              class="button"
+              type="submit"
+              name="submit"
+              value="Зарегистрироваться"
+            />
+          </form>
         </div>
-        <div class="message my">
-          <div class="message_metric">12:00 PM<br />Aug 13</div>
-          <div class="message_text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste,
-            laudantium praesentium obcaecati facere et hic quia corrupti enim!
-            Veritatis praesentium dolorum quo nostrum dicta sit tenetur
-            possimus doloribus cupiditate consequuntur.
-          </div>
-          <div class="user_avatar user_avatar_small"></div>
-        </div>
+        <button class="exit" id="registration_exit">X</button>
       </div>
-      <form class="message_send" id="chat_form">
-        <input class="message_text_value" id="message_text" type="text" name="message" placeholder="ваше сообщение"
-          required="true" />
-        <input class="message_submit btn btn-warning" type="submit" name="submit" value="Отправить" />
-      </form>
     </section>
-  </section>
-  <script type="module" src="/src/main.ts"></script>
-  <script type="module" src="./src/registration/registration.ts"></script>
-</body>
+    <section class="wrapper" id="wrapper">
+      <section class="users_wrapper hide" id="menu">
+        <button class="menuButton" id="menuButton">-></button>
+        <input
+          type="search"
+          class="form-control form-control-dark text-bg-dark aaa"
+          placeholder="Поиск чатов..."
+          style="width: 250px"
+        />
+        <div class="users">
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
 
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="user">
+            <div class="user_avatar user_avatar_big">
+              <div class="status"></div>
+            </div>
+            <div class="user_info">
+              <div class="user_name"><strong>Саня</strong></div>
+              <div class="user_last_message">Привет Добрыня</div>
+            </div>
+            <div class="user_metric">
+              <div>Just now</div>
+              <span>2</span>
+            </div>
+          </div>
+          <div class="line"></div>
+        </div>
+      </section>
+      <section class="messages_wrapper">
+        <div class="messages" id="messages">
+          <div class="message from">
+            <div class="user_avatar user_avatar_small"></div>
+            <div class="message_text">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste,
+              laudantium praesentium obcaecati facere et hic quia corrupti enim!
+              Veritatis praesentium dolorum quo nostrum dicta sit tenetur
+              possimus doloribus cupiditate consequuntur. Lorem ipsum dolor sit
+              amet consectetur adipisicing elit. Iste, laudantium praesentium
+              obcaecati facere et hic quia corrupti enim! Veritatis praesentium
+              dolorum quo nostrum dicta sit tenetur possimus doloribus
+              cupiditate consequuntur. Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Iste, laudantium praesentium obcaecati facere et
+              hic quia corrupti enim! Veritatis praesentium dolorum quo nostrum
+              dicta sit tenetur possimus doloribus cupiditate consequuntur.
+            </div>
+            <div class="message_metric">12:00 PM<br />Aug 13</div>
+          </div>
+          <div class="message my">
+            <div class="message_metric">12:00 PM<br />Aug 13</div>
+            <div class="message_text">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste,
+              laudantium praesentium obcaecati facere et hic quia corrupti enim!
+              Veritatis praesentium dolorum quo nostrum dicta sit tenetur
+              possimus doloribus cupiditate consequuntur.
+            </div>
+            <div class="user_avatar user_avatar_small"></div>
+          </div>
+        </div>
+        <form class="message_send" id="chat_form">
+          <input
+            class="message_text_value"
+            id="message_text"
+            type="text"
+            name="message"
+            placeholder="ваше сообщение"
+            required="true"
+          />
+          <input
+            class="message_submit btn btn-warning"
+            type="submit"
+            name="submit"
+            value="Отправить"
+          />
+        </form>
+      </section>
+    </section>
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="./src/registration/registration.ts"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@0.4.0/dist/lottie-player.js"></script>
+  </body>
 </html>
