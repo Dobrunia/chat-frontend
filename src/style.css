@@ -27,6 +27,152 @@ body {
   border-radius: 5px;
 }
 
+
+.themes {
+  text-align: center;
+  text-decoration: underline;
+  color: var(--attention);
+}
+
+.menuButton {
+  background-color: var(--split);
+  color: var(--white);
+}
+
+.line {
+  border-bottom: 1px dashed var(--split);
+}
+
+.module_container .text-imput {
+  background-color: var(--white);
+}
+
+.users_wrapper {
+  background-color: var(--message);
+}
+
+.exit:hover {
+  color: var(--exit);
+}
+
+.status {
+  background-color: var(--exit);
+}
+
+.user:hover {
+  background-color: var(--message);
+}
+
+.user_avatar {
+  background-color: var(--attention);
+}
+
+.module_wrapper {
+  color: var(--attention);
+}
+
+.module_window {
+  background-color: var(--message);
+}
+
+.module_container .text-imput:focus-visible {
+  outline: var(--backG) auto 0.5px;
+}
+
+.module_container .button {
+  color: var(--attention);
+  background-color: var(--backG);
+}
+
+::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: var(--white) !important;
+}
+
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: var(--white) !important;
+  opacity: 1;
+}
+
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: var(--white) !important;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: var(--white) !important;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: var(--white) !important;
+}
+
+::placeholder {
+  /* Most modern browsers support this now. */
+  color: var(--white) !important;
+}
+
+body {
+  color: var(--white);
+}
+
+* {
+  scrollbar-color: var(--attention) var(--attention);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--attention);
+  border: 3px solid var(--attention);
+}
+
+.exit {
+  color: var(--attention);
+}
+
+.my_avatar {
+  background-color: var(--attention);
+}
+
+.avatar_hover {
+  background-color: var(--message);
+}
+
+.up-arrow {
+  position: absolute;
+  top: -12px;
+  right: 12px;
+  border: 10px solid transparent;
+  display: inline-flex;
+  transform: rotate(90deg);
+  border-right: 10px solid var(--message);
+  border-left: none;
+}
+
+.avatar_hover>*:hover {
+  color: var(--attention);
+}
+
+.wrapper {
+  background-color: var(--backG);
+}
+
+.user_name {
+  color: var(--attention);
+}
+
+.user_metric span {
+  color: var(--attention);
+}
+
+.message_text {
+  color: var(--white);
+  background-color: var(--message);
+}
+
 .none {
   display: none !important;
 }
@@ -259,6 +405,17 @@ body {
 
 .message_submit {
   width: 100px;
+}
+
+.theme {
+  width: 100%;
+}
+
+.themes, .option {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background-color: inherit !important;
 }
 
 @media screen and (max-width: 991px) {

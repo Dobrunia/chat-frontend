@@ -55,7 +55,7 @@ messageForm.addEventListener("submit", handleSumbit);
 
 window.onload = connect;
 
-import listProject from "./users/chats.json";
+import listProject from "./jsons/chats.json";
 const chat_search = document.getElementById("chat_search") as HTMLInputElement;
 const users = $("#users") as HTMLFormElement;
 function renderChats() {
@@ -123,17 +123,39 @@ document.addEventListener("click", (event) => {
   const targetElement = event.target; // Элемент, на который был совершен клик
 
   // Проверяем, является ли элемент меню или его потомком
-  const isClickInsideMenu1 = my_avatar?.contains(targetElement);
-  if (!isClickInsideMenu1) {
+  if (
+    !my_avatar?.contains(targetElement) &&
+    !avatar_hover?.contains(targetElement)
+  ) {
     //убираем меню под аватаром (настройки)
     // Клик был совершен вне меню, поэтому закрываем его
     avatar_hover?.classList.add("none");
   }
 
-  const isClickInsideMenu2 = menu?.contains(targetElement);
-  if (!isClickInsideMenu2) {
+  const isClickInsideMenu = menu?.contains(targetElement);
+  if (!isClickInsideMenu) {
     //убираем левое меню (с чатами)
     menu.classList.add("hide");
     menuButton.textContent = "->";
   }
 });
+
+import themesList from "./jsons/themes_list.json";
+const themes = $("#themes") as HTMLFormElement;
+function renderThemes() {
+  themes.innerHTML = "";
+  themesList.forEach((theme: any) => {
+    themes.innerHTML += `<option class="option" value="${theme.name}">${theme.name}</option>`;
+  });
+}
+renderThemes();
+
+themes.addEventListener("change", function () {
+  ChangeTheme(this.options[this.selectedIndex].text);
+});
+const link = document.getElementById("theme-link");
+function ChangeTheme(themeName: string) {
+  const themeUrl = `./src/themes/${themeName}.css`;
+  // let currTheme = link?.getAttribute("href");
+  link?.setAttribute("href", themeUrl);
+}

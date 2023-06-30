@@ -13,7 +13,12 @@
     />
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./src/registration/module_style.css" />
-    <link rel="stylesheet" type="text/css" href="./src/themes/default_theme.css" id="theme-link">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./src/themes/default_theme.css"
+      id="theme-link"
+    />
   </head>
 
   <body>
@@ -43,12 +48,20 @@
           <div class="account" id="account">
             <div class="my_name" id="my_name">Добрыня</div>
             <div class="avatar_wrapper">
-              <div id="my_avatar" class="my_avatar user_avatar_small">
+              <div class="my_avatar user_avatar_small" id="my_avatar">
                 <div class="status"></div>
               </div>
-              <div id="avatar_hover" class="avatar_hover none">
+              <div class="avatar_hover none" id="avatar_hover">
                 <div class="up-arrow"></div>
-                <div class="theme">Тема:</div>
+                <div class="theme">
+                  <label for="themes">Тема:</label>
+                  <select
+                    class="themes"
+                    id="themes"
+                    name="theme_name"
+                    form="theme_form"
+                  ></select>
+                </div>
                 <div class="settings">
                   Настройки
                   <svg
