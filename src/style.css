@@ -1,37 +1,4 @@
-::-webkit-input-placeholder {
-  /* WebKit, Blink, Edge */
-  color: #FFF !important;
-}
-
-:-moz-placeholder {
-  /* Mozilla Firefox 4 to 18 */
-  color: #FFF !important;
-  opacity: 1;
-}
-
-::-moz-placeholder {
-  /* Mozilla Firefox 19+ */
-  color: #FFF !important;
-  opacity: 1;
-}
-
-:-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: #FFF !important;
-}
-
-::-ms-input-placeholder {
-  /* Microsoft Edge */
-  color: #FFF !important;
-}
-
-::placeholder {
-  /* Most modern browsers support this now. */
-  color: #FFF !important;
-}
-
 body {
-  color: #FFF;
   font-size: 16px;
 }
 
@@ -44,7 +11,6 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #ffc107 #ffc107;
 }
 
 /* для Chrome/Edge/Safari */
@@ -58,9 +24,7 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #ffc107;
   border-radius: 5px;
-  border: 3px solid #ffc107;
 }
 
 .none {
@@ -78,12 +42,7 @@ body {
   height: 30px;
   border: none;
   outline: none;
-  color: #ffc107;
   background-color: inherit;
-}
-
-.exit:hover {
-  color: rgb(255, 0, 0);
 }
 
 .avatar_wrapper {
@@ -93,7 +52,6 @@ body {
 .my_avatar {
   position: relative;
   border-radius: 50px;
-  background-color: #ffc107;
   cursor: pointer;
 }
 
@@ -108,31 +66,18 @@ body {
   top: 20%;
   right: 0;
   transform: translate(0, 50%);
-  background-color: #008d5f;
   text-align: center;
   padding: 5px;
   border-radius: 0.5rem;
   cursor: default;
 }
 
-.up-arrow {
-  position: absolute;
-  top: -12px;
-  right: 12px;
-  border: 10px solid transparent;
-  display: inline-flex;
-  transform: rotate(90deg);
-  border-right: 10px solid #008d5f;
-  border-left: none;
-}
-
-.avatar_hover > * {
+.avatar_hover>* {
   width: max-content;
 }
 
-.avatar_hover > *:hover {
+.avatar_hover>*:hover {
   cursor: pointer;
-  color: #ffc107;
   transition: 0.2s;
 }
 
@@ -145,21 +90,21 @@ body {
   width: 100vw;
   height: calc(100vh - 70px);
   padding-top: 16px;
-  background-color: #1d3844;
   overflow: hidden;
 }
 
 .users_wrapper {
   position: absolute;
+  top: 70px;
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
   width: 300px;
   height: 525px;
-  background-color: #006366;
   transition: 0.2s;
   border-radius: 0.5rem;
+  z-index: 10;
 }
 
 .hide {
@@ -170,8 +115,6 @@ body {
   position: absolute;
   top: 50%;
   right: -30px;
-  background-color: #333;
-  color: #fff;
   cursor: pointer;
   z-index: 2;
 }
@@ -199,7 +142,6 @@ body {
 
 .user:hover {
   transition: 0.5s;
-  background-color: #008d5f;
 }
 
 .line {
@@ -207,13 +149,11 @@ body {
   height: 1px;
   margin-top: 8px;
   margin-bottom: 8px;
-  border-bottom: 1px dashed #000000;
 }
 
 .user_avatar {
   position: relative;
   border-radius: 50px;
-  background-color: #ffc107;
   cursor: pointer;
 }
 
@@ -244,25 +184,22 @@ body {
   height: 16px;
   right: 0px;
   bottom: 0px;
-  background-color: red;
   border-radius: 50px;
 }
 
-.user_info {}
+.user_info {
+  width: 50%;
+  text-align: left;
+}
 
 .user_name {
   font-size: 18px;
-  color: #ffc107;
 }
 
 .user_last_message {}
 
 .user_metric {
   text-align: right;
-}
-
-.user_metric span {
-  color: #ffc107;
 }
 
 .messages_wrapper {
@@ -297,14 +234,13 @@ body {
 
 .message_text {
   max-width: calc(100% - 120px);
-  color: #FFF;
   padding: 8px;
-  background-color: #007968;
   border-radius: 0.5rem;
 }
 
 .message_metric {
   width: 70px;
+  text-align: center;
 }
 
 .message_send {
@@ -328,5 +264,8 @@ body {
 @media screen and (max-width: 991px) {
   .wrapper {
     height: calc(100vh - 124px);
+  }
+  .users_wrapper {
+    top: 120px;
   }
 }

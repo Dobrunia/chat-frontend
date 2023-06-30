@@ -55,10 +55,56 @@ messageForm.addEventListener("submit", handleSumbit);
 
 window.onload = connect;
 
-const menuButton = $("#menuButton") as HTMLFormElement;
-function toggleMenu() {
-  const menu = $("#menu") as HTMLFormElement;
+import listProject from "./users/chats.json";
+const chat_search = document.getElementById("chat_search") as HTMLInputElement;
+const users = $("#users") as HTMLFormElement;
+function renderChats() {
+  users.innerHTML = "";
+  listProject.forEach((element: any) => {
+    if (chat_search.value) {
+      const regex = new RegExp(chat_search.value, "gi");
+      const matches = element.name.match(regex);
+      if (matches) {
+        //поиск по имени собеседника
+        users.innerHTML += `<div class="user">
+  <div class="user_avatar user_avatar_big">
+    <div class="status"></div>
+  </div>
+  <div class="user_info">
+    <div class="user_name"><strong>${element.name}</strong></div>
+    <div class="user_last_message">${element.last_message}</div>
+  </div>
+  <div class="user_metric">
+    <div>${element.time}</div>
+    <span>${element.notifications}</span>
+  </div>
+  </div>
+  <div class="line"></div>`;
+      }
+    } else {
+      users.innerHTML += `<div class="user">
+  <div class="user_avatar user_avatar_big">
+    <div class="status"></div>
+  </div>
+  <div class="user_info">
+    <div class="user_name"><strong>${element.name}</strong></div>
+    <div class="user_last_message">${element.last_message}</div>
+  </div>
+  <div class="user_metric">
+    <div>${element.time}</div>
+    <span>${element.notifications}</span>
+  </div>
+  </div>
+  <div class="line"></div>`;
+    }
+  });
+}
+renderChats();
+chat_search.addEventListener("input", renderChats);
 
+const menuButton = $("#menuButton") as HTMLFormElement;
+const menu = $("#menu") as HTMLFormElement;
+function toggleMenu() {
   if (!menu || !menuButton) return;
   menu.classList.toggle("hide");
   menuButton.textContent === "<-"
@@ -66,3 +112,28 @@ function toggleMenu() {
     : (menuButton.textContent = "<-");
 }
 menuButton.addEventListener("click", toggleMenu);
+
+const my_avatar = document.getElementById("my_avatar");
+const avatar_hover = document.getElementById("avatar_hover");
+function toggleSmallMenu() {
+  avatar_hover?.classList.toggle("none");
+}
+my_avatar?.addEventListener("click", toggleSmallMenu);
+document.addEventListener("click", (event) => {
+  const targetElement = event.target; // Элемент, на который был совершен клик
+
+  // Проверяем, является ли элемент меню или его потомком
+  const isClickInsideMenu1 = my_avatar?.contains(targetElement);
+  if (!isClickInsideMenu1) {
+    //убираем меню под аватаром (настройки)
+    // Клик был совершен вне меню, поэтому закрываем его
+    avatar_hover?.classList.add("none");
+  }
+
+  const isClickInsideMenu2 = menu?.contains(targetElement);
+  if (!isClickInsideMenu2) {
+    //убираем левое меню (с чатами)
+    menu.classList.add("hide");
+    menuButton.textContent = "->";
+  }
+});
