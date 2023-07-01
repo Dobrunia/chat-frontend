@@ -40,7 +40,7 @@ body {
 }
 
 .line {
-  border-bottom: 1px dashed var(--split);
+  border-bottom: 1px dashed var(--attention);
 }
 
 .module_container .text-imput {
@@ -48,11 +48,13 @@ body {
 }
 
 .users_wrapper {
-  background-color: var(--message);
+  background-color: var(--split);
+  border: 1px solid var(--attention);
+  border-radius: 0.5rem;
 }
 
 .exit:hover {
-  color: var(--exit);
+  color: var(--attention);
 }
 
 .status {
@@ -60,7 +62,10 @@ body {
 }
 
 .user:hover {
-  background-color: var(--message);
+  opacity: 0.6;
+  border: 1px solid var(--white);
+  border-radius: 0.5rem;
+  /* background-color: var(--split); */
 }
 
 .user_avatar {
@@ -130,7 +135,7 @@ body {
 }
 
 .exit {
-  color: var(--attention);
+  color: var(--exit);
 }
 
 .my_avatar {
@@ -183,11 +188,14 @@ body {
 
 .exit {
   position: absolute;
-  right: 0px;
-  width: 30px;
-  height: 30px;
+  right: 10px;
+  top: 0px;
+  width: max-content;
+  max-height: max-content;
   border: none;
+  padding: 0;
   outline: none;
+  scale: 2;
   background-color: inherit;
 }
 
@@ -216,6 +224,7 @@ body {
   padding: 5px;
   border-radius: 0.5rem;
   cursor: default;
+  z-index: 10;
 }
 
 .avatar_hover>* {
@@ -235,13 +244,13 @@ body {
 .wrapper {
   width: 100vw;
   height: calc(100vh - 70px);
-  padding-top: 16px;
+  /* padding-top: 16px; */
   overflow: hidden;
 }
 
 .users_wrapper {
   position: absolute;
-  top: 70px;
+  top: 119px;
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
@@ -266,7 +275,8 @@ body {
 }
 
 .aaa {
-  margin-bottom: 16px;
+  margin-top: 8px;
+  margin-bottom: 8px;
 }
 
 .users {
@@ -284,6 +294,7 @@ body {
   height: 64px;
   padding: 8px;
   cursor: pointer;
+  transition: 0.3;
 }
 
 .user:hover {
@@ -354,7 +365,7 @@ body {
   justify-content: flex-end;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 94%;
   overflow: hidden;
 }
 
@@ -418,11 +429,46 @@ body {
   background-color: inherit !important;
 }
 
+.dialogue_with {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border: 1px solid var(--attention);
+  background-color: var(--split);
+}
+
+.dialogue_with_wrapper {
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.last_entrance {
+  font-size: 14px;
+  /* color: var(--grey); */
+  opacity: 0.6;
+}
+
+.settings_window {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-around;
+  background-color: var(--backG);
+  text-align: center;
+}
+
 @media screen and (max-width: 991px) {
   .wrapper {
     height: calc(100vh - 124px);
   }
   .users_wrapper {
-    top: 120px;
+    top: 170px;
   }
 }

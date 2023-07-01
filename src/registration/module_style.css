@@ -1,7 +1,7 @@
 .module_wrapper {
     width: 100vw;
     height: calc(100vh - 70px);
-    padding-top: 16px;
+    /* padding-top: 16px; */
     position: absolute;
     display: flex;
     align-items: center;

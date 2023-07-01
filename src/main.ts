@@ -66,36 +66,36 @@ function renderChats() {
       const matches = element.name.match(regex);
       if (matches) {
         //поиск по имени собеседника
-        users.innerHTML += `<div class="user">
-  <div class="user_avatar user_avatar_big">
-    <div class="status"></div>
-  </div>
-  <div class="user_info">
-    <div class="user_name"><strong>${element.name}</strong></div>
-    <div class="user_last_message">${element.last_message}</div>
-  </div>
-  <div class="user_metric">
-    <div>${element.time}</div>
-    <span>${element.notifications}</span>
-  </div>
-  </div>
-  <div class="line"></div>`;
+        users.innerHTML += `<div class="line"></div>
+        <div class="user">
+          <div class="user_avatar user_avatar_big">
+            <div class="status"></div>
+          </div>
+          <div class="user_info">
+            <div class="user_name"><strong>${element.name}</strong></div>
+            <div class="user_last_message">${element.last_message}</div>
+          </div>
+          <div class="user_metric">
+            <div>${element.time}</div>
+            <span>${element.notifications}</span>
+          </div>
+        </div>`;
       }
     } else {
-      users.innerHTML += `<div class="user">
-  <div class="user_avatar user_avatar_big">
-    <div class="status"></div>
-  </div>
-  <div class="user_info">
-    <div class="user_name"><strong>${element.name}</strong></div>
-    <div class="user_last_message">${element.last_message}</div>
-  </div>
-  <div class="user_metric">
-    <div>${element.time}</div>
-    <span>${element.notifications}</span>
-  </div>
-  </div>
-  <div class="line"></div>`;
+      users.innerHTML += `<div class="line"></div>
+        <div class="user">
+          <div class="user_avatar user_avatar_big">
+            <div class="status"></div>
+          </div>
+          <div class="user_info">
+            <div class="user_name"><strong>${element.name}</strong></div>
+            <div class="user_last_message">${element.last_message}</div>
+          </div>
+          <div class="user_metric">
+            <div>${element.time}</div>
+            <span>${element.notifications}</span>
+          </div>
+        </div>`;
     }
   });
 }
@@ -159,3 +159,21 @@ function ChangeTheme(themeName: string) {
   // let currTheme = link?.getAttribute("href");
   link?.setAttribute("href", themeUrl);
 }
+
+const reg_btns = $("#reg_btns") as HTMLFormElement;
+const account_exit = $("#account_exit") as HTMLFormElement;
+const account = $("#account") as HTMLFormElement;
+account_exit.addEventListener("click", () => {
+  reg_btns.classList.remove("none");
+  account.classList.add("none");
+});
+
+const settings_exit = $("#settings_exit") as HTMLFormElement;
+const settings_window = $("#settings_window") as HTMLFormElement;
+const settings = $("#settings") as HTMLFormElement;
+settings.addEventListener("click", () => {
+  settings_window.classList.remove("none");
+})
+settings_exit.addEventListener("click", () => {
+  settings_window.classList.add("none");
+});

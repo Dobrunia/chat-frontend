@@ -33,7 +33,7 @@
               aria-label="Search"
             />
           </form>
-          <div class="text-end none">
+          <div class="text-end none" id="reg_btns">
             <button
               type="button"
               class="btn btn-outline-light me-2"
@@ -62,7 +62,7 @@
                     form="theme_form"
                   ></select>
                 </div>
-                <div class="settings">
+                <div class="settings" id="settings">
                   Настройки
                   <svg
                     width="16"
@@ -85,7 +85,7 @@
                     />
                   </svg>
                 </div>
-                <div class="account_exit">
+                <div class="account_exit" id="account_exit">
                   Выйти из аккаунта
                   <svg
                     width="16"
@@ -189,7 +189,31 @@
         <button class="exit" id="registration_exit">X</button>
       </div>
     </section>
+    <section class="module_wrapper" id="settings_window">
+      <div class="settings_window">
+        <form enctype="multipart/form-data" method="post">
+          <p>Сменить аватар</p>
+          <p><input type="file" name="photo" accept="image/*,image/jpeg">
+          <input type="submit" value="Сменить аватар"></p>
+         </form>
+         <form enctype="multipart/form-data" method="post">
+          <p>Сменить никнейм</p>
+          <p><input type="text" name="nickname">
+          <input type="submit" value="Сменить никнейм"></p>
+         </form>
+      </div>
+      <button class="exit" id="settings_exit">x</button>
+    </section>
     <section class="wrapper" id="wrapper">
+      <div class="dialogue_with">
+        <div class="dialogue_with_wrapper">
+          <div class="dialogue_with_name" id="dialogue_with_name">Саня</div>
+          <div class="last_entrance">был в сети час назад</div>
+          <div class="my_avatar user_avatar_small" id="my_avatar">
+            <div class="status"></div>
+          </div>
+        </div>
+      </div>
       <section class="users_wrapper hide" id="menu">
         <button class="menuButton" id="menuButton">-></button>
         <input
