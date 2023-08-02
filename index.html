@@ -110,7 +110,7 @@
       <div class="module_window">
         <div class="module_container">
           <h1>Вход</h1>
-          <form action="./auth.php" method="post">
+          <form action="" method="post">
             <label>Логин</label>
             <input
               class="text-imput"
@@ -134,7 +134,7 @@
               type="checkbox"
               name="not_my_pc"
             /><span>чужой компьютер</span>
-            <input class="button" type="submit" name="submit" value="Войти" />
+            <input class="button" id="test" type="submit" name="submit" value="Войти" />
           </form>
         </div>
         <button class="exit" id="get_in_exit">X</button>
@@ -266,6 +266,7 @@
           />
           <input
             class="message_submit btn btn-warning"
+            id="send"
             type="submit"
             name="submit"
             value="Отправить"

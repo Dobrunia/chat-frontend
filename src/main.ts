@@ -1,24 +1,24 @@
-import "./style.css";
-import { io } from "socket.io-client";
-import { transformFormData } from "./utils";
-import axios from "axios";
+import './style.css';
+// import { io } from "socket.io-client";
+// import { transformFormData } from "./utils";
+// import axios from "axios";
 export const $ = (element: string) => document.querySelector(element);
 
 function renderMessage(data: string) {
-  const messagesWrapper = $("#messages") as HTMLFormElement;
+  const messagesWrapper = $('#messages') as HTMLFormElement;
   let date = new Date();
-  let formatter1 = new Intl.DateTimeFormat("ru", {
-    month: "long",
-    day: "numeric",
+  let formatter1 = new Intl.DateTimeFormat('ru', {
+    month: 'long',
+    day: 'numeric',
   });
-  let formatter2 = new Intl.DateTimeFormat("ru", {
-    hour: "numeric",
-    minute: "numeric",
+  let formatter2 = new Intl.DateTimeFormat('ru', {
+    hour: 'numeric',
+    minute: 'numeric',
   });
   messagesWrapper.innerHTML += `
     <div class="message my">
       <div class="message_metric">${formatter2.format(
-        date
+        date,
       )}<br />${formatter1.format(date)}</div>
       <div class="message_text">
         ${data}
@@ -27,42 +27,42 @@ function renderMessage(data: string) {
     </div>`;
 }
 
-function connect() {
-  const socket = io("http://localhost:5000");
-  //socket.on("connect", () => console.log(socket.id));
-  socket.on("connect_error", () => {
-    console.error("connection error, reconnecting...");
-    setTimeout(() => socket.connect(), 5000);
-  });
-  // socket.on("hehe", (data) => console.log(data));
-  socket.on("disconnect", () => console.error("server disconnected"));
-  socket.on("message", (data) =>
-    data.trim() !== "" ? renderMessage(data.trim()) : false
-  ); //обрабатываю, что пришло
-}
+// function connect() {
+//   const socket = io("http://localhost:5000");
+//   //socket.on("connect", () => console.log(socket.id));
+//   socket.on("connect_error", () => {
+//     console.error("connection error, reconnecting...");
+//     setTimeout(() => socket.connect(), 5000);
+//   });
+//   // socket.on("hehe", (data) => console.log(data));
+//   socket.on("disconnect", () => console.error("server disconnected"));
+//   socket.on("message", (data) =>
+//     data.trim() !== "" ? renderMessage(data.trim()) : false
+//   ); //обрабатываю, что пришло
+// }
 
-async function handleSumbit(e: Event) {
-  e.preventDefault();
-  const formData = new FormData(e.target as HTMLFormElement);
-  const textArea = $("#message_text") as HTMLFormElement;
-  textArea.value = "";
-  const data = transformFormData(formData);
-  await axios.post("http://localhost:5000/messages", data);
-}
+// async function handleSumbit(e: Event) {
+//   e.preventDefault();
+//   const formData = new FormData(e.target as HTMLFormElement);
+//   const textArea = $("#message_text") as HTMLFormElement;
+//   textArea.value = "";
+//   const data = transformFormData(formData);
+//   await axios.post("http://localhost:5000/messages", data);
+// }
 
-const messageForm = $("#chat_form") as HTMLFormElement;
-messageForm.addEventListener("submit", handleSumbit);
+// const messageForm = $("#chat_form") as HTMLFormElement;
+// messageForm.addEventListener("submit", handleSumbit);
 
-window.onload = connect;
+// window.onload = connect;
 
-import listProject from "./jsons/chats.json";
-const chat_search = document.getElementById("chat_search") as HTMLInputElement;
-const users = $("#users") as HTMLFormElement;
+import listProject from './jsons/chats.json';
+const chat_search = document.getElementById('chat_search') as HTMLInputElement;
+const users = $('#users') as HTMLFormElement;
 function renderChats() {
-  users.innerHTML = "";
+  users.innerHTML = '';
   listProject.forEach((element: any) => {
     if (chat_search.value) {
-      const regex = new RegExp(chat_search.value, "gi");
+      const regex = new RegExp(chat_search.value, 'gi');
       const matches = element.name.match(regex);
       if (matches) {
         //поиск по имени собеседника
@@ -100,26 +100,26 @@ function renderChats() {
   });
 }
 renderChats();
-chat_search.addEventListener("input", renderChats);
+chat_search.addEventListener('input', renderChats);
 
-const menuButton = $("#menuButton") as HTMLFormElement;
-const menu = $("#menu") as HTMLFormElement;
+const menuButton = $('#menuButton') as HTMLFormElement;
+const menu = $('#menu') as HTMLFormElement;
 function toggleMenu() {
   if (!menu || !menuButton) return;
-  menu.classList.toggle("hide");
-  menuButton.textContent === "<-"
-    ? (menuButton.textContent = "->")
-    : (menuButton.textContent = "<-");
+  menu.classList.toggle('hide');
+  menuButton.textContent === '<-'
+    ? (menuButton.textContent = '->')
+    : (menuButton.textContent = '<-');
 }
-menuButton.addEventListener("click", toggleMenu);
+menuButton.addEventListener('click', toggleMenu);
 
-const my_avatar = document.getElementById("my_avatar");
-const avatar_hover = document.getElementById("avatar_hover");
+const my_avatar = document.getElementById('my_avatar');
+const avatar_hover = document.getElementById('avatar_hover');
 function toggleSmallMenu() {
-  avatar_hover?.classList.toggle("none");
+  avatar_hover?.classList.toggle('none');
 }
-my_avatar?.addEventListener("click", toggleSmallMenu);
-document.addEventListener("click", (event) => {
+my_avatar?.addEventListener('click', toggleSmallMenu);
+document.addEventListener('click', (event) => {
   const targetElement = event.target; // Элемент, на который был совершен клик
 
   // Проверяем, является ли элемент меню или его потомком
@@ -129,51 +129,108 @@ document.addEventListener("click", (event) => {
   ) {
     //убираем меню под аватаром (настройки)
     // Клик был совершен вне меню, поэтому закрываем его
-    avatar_hover?.classList.add("none");
+    avatar_hover?.classList.add('none');
   }
 
   const isClickInsideMenu = menu?.contains(targetElement);
   if (!isClickInsideMenu) {
     //убираем левое меню (с чатами)
-    menu.classList.add("hide");
-    menuButton.textContent = "->";
+    menu.classList.add('hide');
+    menuButton.textContent = '->';
   }
 });
 
-import themesList from "./jsons/themes_list.json";
-const themes = $("#themes") as HTMLFormElement;
+import themesList from './jsons/themes_list.json';
+const themes = $('#themes') as HTMLFormElement;
 function renderThemes() {
-  themes.innerHTML = "";
+  themes.innerHTML = '';
   themesList.forEach((theme: any) => {
     themes.innerHTML += `<option class="option" value="${theme.name}">${theme.name}</option>`;
   });
 }
 renderThemes();
 
-themes.addEventListener("change", function () {
+themes.addEventListener('change', function () {
   ChangeTheme(this.options[this.selectedIndex].text);
 });
-const link = document.getElementById("theme-link");
+const link = document.getElementById('theme-link');
 function ChangeTheme(themeName: string) {
   const themeUrl = `./src/themes/${themeName}.css`;
   // let currTheme = link?.getAttribute("href");
-  link?.setAttribute("href", themeUrl);
+  link?.setAttribute('href', themeUrl);
 }
 
-const reg_btns = $("#reg_btns") as HTMLFormElement;
-const account_exit = $("#account_exit") as HTMLFormElement;
-const account = $("#account") as HTMLFormElement;
-account_exit.addEventListener("click", () => {
-  reg_btns.classList.remove("none");
-  account.classList.add("none");
+const reg_btns = $('#reg_btns') as HTMLFormElement;
+const account_exit = $('#account_exit') as HTMLFormElement;
+const account = $('#account') as HTMLFormElement;
+account_exit.addEventListener('click', () => {
+  reg_btns.classList.remove('none');
+  account.classList.add('none');
 });
 
-const settings_exit = $("#settings_exit") as HTMLFormElement;
-const settings_window = $("#settings_window") as HTMLFormElement;
-const settings = $("#settings") as HTMLFormElement;
-settings.addEventListener("click", () => {
-  settings_window.classList.remove("none");
-})
-settings_exit.addEventListener("click", () => {
-  settings_window.classList.add("none");
+const settings_exit = $('#settings_exit') as HTMLFormElement;
+const settings_window = $('#settings_window') as HTMLFormElement;
+const settings = $('#settings') as HTMLFormElement;
+settings.addEventListener('click', () => {
+  settings_window.classList.remove('none');
+});
+settings_exit.addEventListener('click', () => {
+  settings_window.classList.add('none');
+});
+
+// ############################################## //
+import socket from './socket';
+import { v1 } from 'uuid';
+
+let selectedUser: any;
+
+function login() {
+  socket.auth = { username: v1() };
+  socket.connect();
+}
+
+const btn = document.getElementById('test');
+btn?.addEventListener('click', () => {
+  login();
+});
+
+socket.on(
+  'user connected',
+  (socket) => (selectedUser = (socket as any).username),
+);
+const send = document.getElementById('send');
+
+function messageSend(content: string) {
+  console.log(selectedUser)
+  if (selectedUser) {
+    socket.emit('private message', {
+      content,
+      to: selectedUser,
+    });
+    // selectedUser.messages.push({
+    //   content,
+    //   fromSelf: true,
+    // });
+  }
+}
+
+socket.on("private message", ({ content, from }) => {
+  // for (let i = 0; i < this.users.length; i++) {
+  //   const user = this.users[i];
+  //   if (user.userID === from) {
+  //     user.messages.push({
+  //       content,
+  //       fromSelf: false,
+  //     });
+  //     if (user !== this.selectedUser) {
+  //       user.hasNewMessages = true;
+  //     }
+  //     break;
+  //   }
+  // }
+  console.log("from " + content + "  " + from)
+});
+
+send?.addEventListener('click', () => {
+  messageSend('54321');
 });
