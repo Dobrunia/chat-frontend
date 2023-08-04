@@ -33,7 +33,7 @@
               aria-label="Search"
             />
           </form>
-          <div class="text-end none" id="reg_btns">
+          <div class="text-end" id="reg_btns">
             <button
               type="button"
               class="btn btn-outline-light me-2"
@@ -45,8 +45,8 @@
               Регистрация
             </button>
           </div>
-          <div class="account" id="account">
-            <div class="my_name" id="my_name">Добрыня</div>
+          <div class="account none" id="account">
+            <div class="my_name" id="my_name"></div>
             <div class="avatar_wrapper">
               <div class="my_avatar user_avatar_small" id="my_avatar">
                 <div class="status"></div>
@@ -106,6 +106,11 @@
         </div>
       </div>
     </header>
+    <section class="module_wrapper" id="temporary_registrition">
+      <button class="username">Саша</button>
+      <button class="username">Гоша</button>
+      <button class="username">Миша</button>
+    </section>
     <section class="module_wrapper none" id="get_in_window">
       <div class="module_window">
         <div class="module_container">
@@ -134,7 +139,12 @@
               type="checkbox"
               name="not_my_pc"
             /><span>чужой компьютер</span>
-            <input class="button" id="test" type="submit" name="submit" value="Войти" />
+            <input
+              class="button"
+              type="submit"
+              name="submit"
+              value="Войти"
+            />
           </form>
         </div>
         <button class="exit" id="get_in_exit">X</button>
@@ -189,18 +199,22 @@
         <button class="exit" id="registration_exit">X</button>
       </div>
     </section>
-    <section class="module_wrapper" id="settings_window">
+    <section class="module_wrapper none" id="settings_window">
       <div class="settings_window">
         <form enctype="multipart/form-data" method="post">
           <p>Сменить аватар</p>
-          <p><input type="file" name="photo" accept="image/*,image/jpeg">
-          <input type="submit" value="Сменить аватар"></p>
-         </form>
-         <form enctype="multipart/form-data" method="post">
+          <p>
+            <input type="file" name="photo" accept="image/*,image/jpeg" />
+            <input type="submit" value="Сменить аватар" />
+          </p>
+        </form>
+        <form enctype="multipart/form-data" method="post">
           <p>Сменить никнейм</p>
-          <p><input type="text" name="nickname">
-          <input type="submit" value="Сменить никнейм"></p>
-         </form>
+          <p>
+            <input type="text" name="nickname" />
+            <input type="submit" value="Сменить никнейм" />
+          </p>
+        </form>
       </div>
       <button class="exit" id="settings_exit">x</button>
     </section>
@@ -274,7 +288,10 @@
         </form>
       </section>
     </section>
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="./src/main.ts"></script>
+    <script type="module" src="./src/core_animation.ts"></script>
+    <script type="module" src="./src/render.ts"></script>
+    <script type="module" src="./src/temporary.ts"></script>
     <script type="module" src="./src/registration/registration.ts"></script>
   </body>
 </html>

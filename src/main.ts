@@ -1,7 +1,4 @@
 import './style.css';
-// import { io } from "socket.io-client";
-// import { transformFormData } from "./utils";
-// import axios from "axios";
 export const $ = (element: string) => document.querySelector(element);
 
 function renderMessage(data: string) {
@@ -55,143 +52,35 @@ function renderMessage(data: string) {
 
 // window.onload = connect;
 
-import listProject from './jsons/chats.json';
-const chat_search = document.getElementById('chat_search') as HTMLInputElement;
-const users = $('#users') as HTMLFormElement;
-function renderChats() {
-  users.innerHTML = '';
-  listProject.forEach((element: any) => {
-    if (chat_search.value) {
-      const regex = new RegExp(chat_search.value, 'gi');
-      const matches = element.name.match(regex);
-      if (matches) {
-        //поиск по имени собеседника
-        users.innerHTML += `<div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>${element.name}</strong></div>
-            <div class="user_last_message">${element.last_message}</div>
-          </div>
-          <div class="user_metric">
-            <div>${element.time}</div>
-            <span>${element.notifications}</span>
-          </div>
-        </div>`;
-      }
-    } else {
-      users.innerHTML += `<div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>${element.name}</strong></div>
-            <div class="user_last_message">${element.last_message}</div>
-          </div>
-          <div class="user_metric">
-            <div>${element.time}</div>
-            <span>${element.notifications}</span>
-          </div>
-        </div>`;
-    }
-  });
-}
-renderChats();
-chat_search.addEventListener('input', renderChats);
-
-const menuButton = $('#menuButton') as HTMLFormElement;
-const menu = $('#menu') as HTMLFormElement;
-function toggleMenu() {
-  if (!menu || !menuButton) return;
-  menu.classList.toggle('hide');
-  menuButton.textContent === '<-'
-    ? (menuButton.textContent = '->')
-    : (menuButton.textContent = '<-');
-}
-menuButton.addEventListener('click', toggleMenu);
-
-const my_avatar = document.getElementById('my_avatar');
-const avatar_hover = document.getElementById('avatar_hover');
-function toggleSmallMenu() {
-  avatar_hover?.classList.toggle('none');
-}
-my_avatar?.addEventListener('click', toggleSmallMenu);
-document.addEventListener('click', (event) => {
-  const targetElement = event.target; // Элемент, на который был совершен клик
-
-  // Проверяем, является ли элемент меню или его потомком
-  if (
-    !my_avatar?.contains(targetElement) &&
-    !avatar_hover?.contains(targetElement)
-  ) {
-    //убираем меню под аватаром (настройки)
-    // Клик был совершен вне меню, поэтому закрываем его
-    avatar_hover?.classList.add('none');
-  }
-
-  const isClickInsideMenu = menu?.contains(targetElement);
-  if (!isClickInsideMenu) {
-    //убираем левое меню (с чатами)
-    menu.classList.add('hide');
-    menuButton.textContent = '->';
-  }
-});
-
-import themesList from './jsons/themes_list.json';
-const themes = $('#themes') as HTMLFormElement;
-function renderThemes() {
-  themes.innerHTML = '';
-  themesList.forEach((theme: any) => {
-    themes.innerHTML += `<option class="option" value="${theme.name}">${theme.name}</option>`;
-  });
-}
-renderThemes();
-
-themes.addEventListener('change', function () {
-  ChangeTheme(this.options[this.selectedIndex].text);
-});
-const link = document.getElementById('theme-link');
-function ChangeTheme(themeName: string) {
-  const themeUrl = `./src/themes/${themeName}.css`;
-  // let currTheme = link?.getAttribute("href");
-  link?.setAttribute('href', themeUrl);
-}
-
-const reg_btns = $('#reg_btns') as HTMLFormElement;
-const account_exit = $('#account_exit') as HTMLFormElement;
-const account = $('#account') as HTMLFormElement;
-account_exit.addEventListener('click', () => {
-  reg_btns.classList.remove('none');
-  account.classList.add('none');
-});
-
-const settings_exit = $('#settings_exit') as HTMLFormElement;
-const settings_window = $('#settings_window') as HTMLFormElement;
-const settings = $('#settings') as HTMLFormElement;
-settings.addEventListener('click', () => {
-  settings_window.classList.remove('none');
-});
-settings_exit.addEventListener('click', () => {
-  settings_window.classList.add('none');
-});
-
 // ############################################## //
 import socket from './socket';
 import { v1 } from 'uuid';
 
 let selectedUser: any;
 
+const temporary_registrition = $('#temporary_registrition');
+const username = document.querySelectorAll('.username');
+const account = $('#account');
+const my_name = $('#my_name');
+const reg_btns = $('#reg_btns');
+
 function login() {
-  socket.auth = { username: v1() };
-  socket.connect();
+  if (my_name) {
+    socket.auth = { username: my_name.textContent };
+    socket.connect();
+  } else {
+    alert('Пользователь не найден');
+  }
 }
 
-const btn = document.getElementById('test');
-btn?.addEventListener('click', () => {
-  login();
+username.forEach((e) => {
+  e.addEventListener('click', (e) => {
+    if (my_name) my_name.innerHTML = e.currentTarget.textContent;
+    temporary_registrition?.classList.add('none');
+    reg_btns?.classList.add('none');
+    account?.classList.remove('none');
+    login();
+  });
 });
 
 socket.on(
@@ -201,7 +90,7 @@ socket.on(
 const send = document.getElementById('send');
 
 function messageSend(content: string) {
-  console.log(selectedUser)
+  console.log("сообщение для " + selectedUser);
   if (selectedUser) {
     socket.emit('private message', {
       content,
@@ -214,7 +103,7 @@ function messageSend(content: string) {
   }
 }
 
-socket.on("private message", ({ content, from }) => {
+socket.on('private message', ({ content, from }) => {
   // for (let i = 0; i < this.users.length; i++) {
   //   const user = this.users[i];
   //   if (user.userID === from) {
@@ -228,7 +117,7 @@ socket.on("private message", ({ content, from }) => {
   //     break;
   //   }
   // }
-  console.log("from " + content + "  " + from)
+  console.log('сообщение от ' + from);
 });
 
 send?.addEventListener('click', () => {
