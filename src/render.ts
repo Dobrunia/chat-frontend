@@ -47,3 +47,29 @@ function renderChats() {
 renderChats();
 chat_search.addEventListener('input', renderChats);
 //рендер списка активных чатов
+
+//рендер пользователей для временной регистрации
+import usersList from './jsons/users.json';
+const temporary_registrition = $('#temporary_registrition');
+function renderAccounts() {
+  usersList.forEach((e) => {
+    temporary_registrition &&
+      (temporary_registrition.innerHTML += `<button class="username">${e.username}</button>`);
+  });
+}
+renderAccounts();
+const username = document.querySelectorAll('.username');
+const account = $('#account');
+const reg_btns = $('#reg_btns');
+const my_name = $('#my_name');
+import { login } from './main';
+username.forEach((e) => {
+  e.addEventListener('click', (e) => {
+    if (my_name) my_name.innerHTML = e.currentTarget.textContent;
+    temporary_registrition?.classList.add('none');
+    reg_btns?.classList.add('none');
+    account?.classList.remove('none');
+    login(e.currentTarget.textContent);
+  });
+});
+//рендер пользователей для временной регистрации

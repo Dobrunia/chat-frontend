@@ -1,6 +1,8 @@
 import './style.css';
-export const $ = (element: string) => document.querySelector(element);
+import socket from './socket';
+import { v1 } from 'uuid';
 
+export const $ = (element: string) => document.querySelector(element);
 function renderMessage(data: string) {
   const messagesWrapper = $('#messages') as HTMLFormElement;
   let date = new Date();
@@ -24,102 +26,65 @@ function renderMessage(data: string) {
     </div>`;
 }
 
-// function connect() {
-//   const socket = io("http://localhost:5000");
-//   //socket.on("connect", () => console.log(socket.id));
-//   socket.on("connect_error", () => {
-//     console.error("connection error, reconnecting...");
-//     setTimeout(() => socket.connect(), 5000);
-//   });
-//   // socket.on("hehe", (data) => console.log(data));
-//   socket.on("disconnect", () => console.error("server disconnected"));
-//   socket.on("message", (data) =>
-//     data.trim() !== "" ? renderMessage(data.trim()) : false
-//   ); //обрабатываю, что пришло
-// }
+const temporary_users = $('#temporary_users');
 
-// async function handleSumbit(e: Event) {
-//   e.preventDefault();
-//   const formData = new FormData(e.target as HTMLFormElement);
-//   const textArea = $("#message_text") as HTMLFormElement;
-//   textArea.value = "";
-//   const data = transformFormData(formData);
-//   await axios.post("http://localhost:5000/messages", data);
-// }
-
-// const messageForm = $("#chat_form") as HTMLFormElement;
-// messageForm.addEventListener("submit", handleSumbit);
-
-// window.onload = connect;
-
-// ############################################## //
-import socket from './socket';
-import { v1 } from 'uuid';
-
-let selectedUser: any;
-
-const temporary_registrition = $('#temporary_registrition');
-const username = document.querySelectorAll('.username');
-const account = $('#account');
-const my_name = $('#my_name');
-const reg_btns = $('#reg_btns');
-
-function login() {
-  if (my_name) {
-    socket.auth = { username: my_name.textContent };
-    socket.connect();
-  } else {
-    alert('Пользователь не найден');
-  }
+export function login(username: string) {
+  socket.auth = { username: username };
+  socket.connect();
+  console.log('Пользователь ' + username + ' подключился');
 }
 
-username.forEach((e) => {
-  e.addEventListener('click', (e) => {
-    if (my_name) my_name.innerHTML = e.currentTarget.textContent;
-    temporary_registrition?.classList.add('none');
-    reg_btns?.classList.add('none');
-    account?.classList.remove('none');
-    login();
+let selectedUser: any;
+let ggg: any[];
+socket.on('user connected', (socket) => {
+  console.log('в чат зашел ' + (socket as any).username);
+  ggg.push({
+    userID: (socket as any).userID,
+    username: (socket as any).username,
   });
+  updateUsers(ggg);
 });
 
-socket.on(
-  'user connected',
-  (socket) => (selectedUser = (socket as any).username),
-);
-const send = document.getElementById('send');
+function updateUsers(users: any) {
+  if (temporary_users) temporary_users.innerHTML = '';
+  users.forEach((e) => {
+    if (temporary_users) {
+      temporary_users.innerHTML += '<button>' + e.username + '</button>';
+    }
+  });
+}
+
+socket.on('users', (users) => {
+  users.forEach((user) => {
+    user.self = user.userID === socket.id;
+  });
+  // put the current user first, and then sort by username
+  users = users.sort((a, b) => {
+    if (a.self) return -1;
+    if (b.self) return 1;
+    if (a.username < b.username) return -1;
+    return a.username > b.username ? 1 : 0;
+  });
+  console.log('users');
+  ggg = users;
+  updateUsers(ggg);
+});
 
 function messageSend(content: string) {
-  console.log("сообщение для " + selectedUser);
+  console.log('сообщение для ' + selectedUser);
   if (selectedUser) {
     socket.emit('private message', {
       content,
       to: selectedUser,
     });
-    // selectedUser.messages.push({
-    //   content,
-    //   fromSelf: true,
-    // });
   }
 }
 
 socket.on('private message', ({ content, from }) => {
-  // for (let i = 0; i < this.users.length; i++) {
-  //   const user = this.users[i];
-  //   if (user.userID === from) {
-  //     user.messages.push({
-  //       content,
-  //       fromSelf: false,
-  //     });
-  //     if (user !== this.selectedUser) {
-  //       user.hasNewMessages = true;
-  //     }
-  //     break;
-  //   }
-  // }
-  console.log('сообщение от ' + from);
+  console.log('сообщение от ' + from + ' написал: ' + content);
 });
 
+const send = document.getElementById('send');
 send?.addEventListener('click', () => {
   messageSend('54321');
 });

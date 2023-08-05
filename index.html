@@ -25,6 +25,7 @@
     <header class="p-3 text-bg-dark">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-end">
+          <div id="temporary_users"></div>
           <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
             <input
               type="search"
@@ -106,11 +107,7 @@
         </div>
       </div>
     </header>
-    <section class="module_wrapper" id="temporary_registrition">
-      <button class="username">Саша</button>
-      <button class="username">Гоша</button>
-      <button class="username">Миша</button>
-    </section>
+    <section class="module_wrapper" id="temporary_registrition"></section>
     <section class="module_wrapper none" id="get_in_window">
       <div class="module_window">
         <div class="module_container">
@@ -139,12 +136,7 @@
               type="checkbox"
               name="not_my_pc"
             /><span>чужой компьютер</span>
-            <input
-              class="button"
-              type="submit"
-              name="submit"
-              value="Войти"
-            />
+            <input class="button" type="submit" name="submit" value="Войти" />
           </form>
         </div>
         <button class="exit" id="get_in_exit">X</button>
@@ -291,7 +283,6 @@
     <script type="module" src="./src/main.ts"></script>
     <script type="module" src="./src/core_animation.ts"></script>
     <script type="module" src="./src/render.ts"></script>
-    <script type="module" src="./src/temporary.ts"></script>
     <script type="module" src="./src/registration/registration.ts"></script>
   </body>
 </html>
