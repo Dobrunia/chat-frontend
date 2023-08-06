@@ -3,46 +3,41 @@ import socket from './socket';
 import { v1 } from 'uuid';
 
 export const $ = (element: string) => document.querySelector(element);
-function renderMessage(data: string) {
-  const messagesWrapper = $('#messages') as HTMLFormElement;
-  let date = new Date();
-  let formatter1 = new Intl.DateTimeFormat('ru', {
-    month: 'long',
-    day: 'numeric',
-  });
-  let formatter2 = new Intl.DateTimeFormat('ru', {
-    hour: 'numeric',
-    minute: 'numeric',
-  });
-  messagesWrapper.innerHTML += `
-    <div class="message my">
-      <div class="message_metric">${formatter2.format(
-        date,
-      )}<br />${formatter1.format(date)}</div>
-      <div class="message_text">
-        ${data}
-      </div>
-      <div class="user_avatar user_avatar_small"></div>
-    </div>`;
-}
 
 const temporary_users = $('#temporary_users');
-
+export type usersArray = {
+  userID: string;
+  username: string;
+  avatar: string;
+};
+import { getIn } from './render';
+(function getUsers() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', 'http://localhost:5000/users', false);
+  xhr.onloadend = function () {
+    if (xhr.status == 200) {
+      const users = JSON.parse(xhr.responseText);
+      //renderAccounts(users); //TODO::почему срабатывает 2жды?
+      const temporary_registrition = $('#temporary_registrition');
+      temporary_registrition.innerHTML = '';
+      users.forEach((e) => {
+        temporary_registrition &&
+          (temporary_registrition.innerHTML += `<button class="username">${e.username}</button>`);
+      });
+      getIn();
+    }
+  };
+  xhr.send();
+})();
 export function login(username: string) {
-  socket.auth = { username: username };
+  socket.auth = { username };
   socket.connect();
   console.log('Пользователь ' + username + ' подключился');
 }
 
 let selectedUser: any;
-let ggg: any[];
 socket.on('user connected', (socket) => {
   console.log('в чат зашел ' + (socket as any).username);
-  ggg.push({
-    userID: (socket as any).userID,
-    username: (socket as any).username,
-  });
-  updateUsers(ggg);
 });
 
 function updateUsers(users: any) {
@@ -65,9 +60,7 @@ socket.on('users', (users) => {
     if (a.username < b.username) return -1;
     return a.username > b.username ? 1 : 0;
   });
-  console.log('users');
-  ggg = users;
-  updateUsers(ggg);
+  updateUsers(users);
 });
 
 function messageSend(content: string) {
