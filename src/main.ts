@@ -5,22 +5,25 @@ import { v1 } from 'uuid';
 export const $ = (element: string) => document.querySelector(element);
 
 const temporary_users = $('#temporary_users');
-export type usersArray = {
-  userID: string;
-  username: string;
-  avatar: string;
-};
-import { getIn } from './render';
+export type UsersArray = [
+  {
+    userID: string;
+    username: string;
+    avatar: string;
+  },
+];
+let usersArray: UsersArray;
+import { getIn, renderMessage } from './render';
 (function getUsers() {
   const xhr = new XMLHttpRequest();
   xhr.open('GET', 'http://localhost:5000/users', false);
   xhr.onloadend = function () {
     if (xhr.status == 200) {
-      const users = JSON.parse(xhr.responseText);
+      usersArray = JSON.parse(xhr.responseText);
       //renderAccounts(users); //TODO::почему срабатывает 2жды?
       const temporary_registrition = $('#temporary_registrition');
       temporary_registrition.innerHTML = '';
-      users.forEach((e) => {
+      usersArray.forEach((e) => {
         temporary_registrition &&
           (temporary_registrition.innerHTML += `<button class="username">${e.username}</button>`);
       });
@@ -36,48 +39,70 @@ export function login(username: string) {
 }
 
 let selectedUser: any;
+function selectMessageTo() {
+  document.querySelectorAll('.chats_with').forEach((elem) => {
+    elem.addEventListener('click', (e) => {
+      selectedUser = (e.currentTarget as HTMLElement).textContent;
+    });
+  });
+}
 socket.on('user connected', (socket) => {
-  console.log('в чат зашел ' + (socket as any).username);
+  console.log(
+    'в чат зашёл ' + socket.username + ' ID: ' + (socket as any).userID,
+  );
 });
 
 function updateUsers(users: any) {
   if (temporary_users) temporary_users.innerHTML = '';
   users.forEach((e) => {
     if (temporary_users) {
-      temporary_users.innerHTML += '<button>' + e.username + '</button>';
+      temporary_users.innerHTML +=
+        '<button class="chats_with">' + e.username + '</button>';
     }
   });
+  selectMessageTo();
 }
 
 socket.on('users', (users) => {
+  usersArray = users;
   users.forEach((user) => {
     user.self = user.userID === socket.id;
+    //console.log(user.self);
   });
   // put the current user first, and then sort by username
-  users = users.sort((a, b) => {
+  usersArray = users.sort((a, b) => {
     if (a.self) return -1;
     if (b.self) return 1;
     if (a.username < b.username) return -1;
     return a.username > b.username ? 1 : 0;
   });
-  updateUsers(users);
+  updateUsers(usersArray);
 });
 
-function messageSend(content: string) {
-  console.log('сообщение для ' + selectedUser);
-  if (selectedUser) {
+function sendMessage(content: string) {
+  //console.log('сообщение для ' + selectedUser);
+  let selectedUserID = null;
+  usersArray.forEach((elem) => {
+    if (selectedUser === elem.username) {
+      selectedUserID = elem.userID;
+      //console.log(elem.username + ' ' + elem.userID);
+    }
+  });
+  if (selectedUserID) {
     socket.emit('private message', {
       content,
-      to: selectedUser,
+      to: selectedUserID,
     });
   }
 }
 
-socket.on('private message', ({ content, from }) => {
-  console.log('сообщение от ' + from + ' написал: ' + content);
+socket.on('private message', (message) => {
+  //renderMessage(content);
+  console.log('сообщение от ' + message.from + ' написал: ' + message.content);
 });
 
 const send = document.getElementById('send');
 send?.addEventListener('click', () => {
-  messageSend('54321');
+  sendMessage('54321');
+  //console.log("сообщение отправил на сервер")
 });

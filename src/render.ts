@@ -64,7 +64,6 @@ const my_name = $('#my_name');
 import { login } from './main';
 export function getIn() {
   const username = document.querySelectorAll('.username');
-  console.log(username);
   username.forEach((e) => {
     e.addEventListener('click', (e) => {
       if (my_name) my_name.innerHTML = e.currentTarget.textContent;
@@ -80,7 +79,7 @@ export function getIn() {
 //рендер пользователей для временной регистрации
 
 //рендер сообщений
-function renderMessage(data: string) {
+export function renderMessage(data: string) {
   const messagesWrapper = $('#messages') as HTMLFormElement;
   let date = new Date();
   let formatter1 = new Intl.DateTimeFormat('ru', {
