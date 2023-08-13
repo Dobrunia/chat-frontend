@@ -48,36 +48,6 @@ renderChats();
 chat_search.addEventListener('input', renderChats);
 //рендер списка активных чатов
 
-//рендер пользователей для временной регистрации
-const temporary_registrition = $('#temporary_registrition');
-// import { usersArray } from './main';
-// export function renderAccounts(usersList: Array<usersArray>) {
-//   console.log("renderAccounts")
-//   usersList.forEach((e) => {
-//     temporary_registrition &&
-//       (temporary_registrition.innerHTML += `<button class="username">${e.username}</button>`);
-//   });
-// }
-const account = $('#account');
-const reg_btns = $('#reg_btns');
-const my_name = $('#my_name');
-import { login } from './main';
-export function getIn() {
-  const username = document.querySelectorAll('.username');
-  username.forEach((e) => {
-    e.addEventListener('click', (e) => {
-      if (my_name) my_name.innerHTML = e.currentTarget.textContent;
-      temporary_registrition?.classList.add('none');
-      reg_btns?.classList.add('none');
-      account?.classList.remove('none');
-      login(e.currentTarget.textContent);
-    });
-  });
-  console.log('getIn');
-}
-
-//рендер пользователей для временной регистрации
-
 //рендер сообщений
 export function renderMessage(data: string) {
   const messagesWrapper = $('#messages') as HTMLFormElement;
@@ -102,3 +72,43 @@ export function renderMessage(data: string) {
     </div>`;
 }
 //рендер сообщений
+
+//рендер поиска пользователей
+import { ajaxGet } from './ajax';
+const users_search = $('#users_search') as HTMLInputElement;
+const search_request = $('#search_request');
+export type Users_response_result = [
+  {
+    id: number;
+    username: string;
+    password: string;
+    email: string;
+    avatar: string;
+  },
+];
+function render(users_response_result: Users_response_result) {
+  if (search_request && users_response_result != undefined) {
+    search_request.innerHTML = '';
+    users_response_result.forEach((user) => {
+      search_request.innerHTML += `<div class="element">
+      <div class="user_avatar user_avatar_small" id="my_avatar">
+        <img class="user_avatar_img" src="${user.avatar}" alt="" />
+        <div class="status"></div>
+      </div>
+      <span class="element_span">${user.username}</span>
+    </div>`;
+    });
+  }
+}
+import debounce from 'lodash/debounce';
+users_search?.addEventListener(
+  'input',
+  debounce(() => {
+    let search_value = users_search.value.trim();
+    if (search_value && search_value != ' ') {
+      ajaxGet(`/find-users?search_value=${search_value}`, render);
+    }
+  }, 500),
+); // установите задержку в миллисекундах, например 500
+
+//рендер поиска пользователей `http://localhost:5000/api/find-users/:${search_value}`

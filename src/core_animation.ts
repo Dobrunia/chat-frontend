@@ -15,6 +15,8 @@ menuButton.addEventListener('click', toggleMenu);
 
 const my_avatar = document.getElementById('my_avatar');
 const avatar_hover = document.getElementById('avatar_hover');
+const search_request = $('#search_request');
+let search_request_counter = 0;
 function toggleSmallMenu() {
   avatar_hover?.classList.toggle('none');
 }
@@ -30,12 +32,21 @@ document.addEventListener('click', (event) => {
     // Клик был совершен вне меню, поэтому закрываем его
     avatar_hover?.classList.add('none');
   }
-  const isClickInsideMenu = menu?.contains(targetElement);
-  if (!isClickInsideMenu) {
+  if (!menu?.contains(targetElement)) {
     //убираем левое меню (с чатами)
     menu.classList.add('hide');
     menuButton.textContent = '->';
   }
+
+  //скрыть поиск пользователей при 2м клике
+  if (!search_request?.contains(targetElement)) {
+    search_request_counter += 1;
+  }
+  if (search_request_counter === 3 && search_request) {
+    search_request.innerHTML = '';
+    search_request_counter = 0;
+  }
+  //скрыть поиск пользователей при 2м клике
 });
 
 //выйти из аккаунта

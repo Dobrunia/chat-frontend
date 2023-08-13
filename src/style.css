@@ -27,6 +27,35 @@ body {
   border-radius: 5px;
 }
 
+.search_request {
+  position: absolute;
+  width: 207px;
+  max-height: 500px;
+  overflow-y: scroll;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: var(--split);
+}
+
+.element {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 60px;
+  margin-top: 10px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.element_span {
+  margin-left: 10px;
+}
+
+.element:hover {
+  border-radius: 5px;
+  background-color: #404850;
+}
 
 .themes {
   text-align: center;
@@ -69,7 +98,7 @@ body {
 }
 
 .user_avatar {
-  background-color: var(--attention);
+  /* background-color: var(--attention); */
 }
 
 .module_wrapper {
@@ -138,10 +167,6 @@ body {
   color: var(--exit);
 }
 
-.my_avatar {
-  background-color: var(--attention);
-}
-
 .avatar_hover {
   background-color: var(--message);
 }
@@ -201,12 +226,6 @@ body {
 
 .avatar_wrapper {
   position: relative;
-}
-
-.my_avatar {
-  position: relative;
-  border-radius: 50px;
-  cursor: pointer;
 }
 
 .avatar_hover {
@@ -310,18 +329,24 @@ body {
 
 .user_avatar {
   position: relative;
-  border-radius: 50px;
   cursor: pointer;
 }
 
 .user_avatar_small {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
 }
 
 .user_avatar_big {
   width: 60px;
   height: 60px;
+}
+
+.user_avatar_img {
+  width: inherit;
+  height: inherit;
+  border-radius: 50px;
+  overflow: hidden;
 }
 
 .account {
@@ -337,8 +362,8 @@ body {
 
 .status {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 10px;
+  height: 10px;
   right: 0px;
   bottom: 0px;
   border-radius: 50px;
@@ -422,7 +447,8 @@ body {
   width: 100%;
 }
 
-.themes, .option {
+.themes,
+.option {
   outline: none;
   border: none;
   cursor: pointer;
@@ -468,6 +494,7 @@ body {
   .wrapper {
     height: calc(100vh - 124px);
   }
+
   .users_wrapper {
     top: 170px;
   }
