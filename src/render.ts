@@ -77,6 +77,7 @@ export function renderMessage(data: string) {
 import { ajaxGet } from './ajax';
 const users_search = $('#users_search') as HTMLInputElement;
 const search_request = $('#search_request');
+const dialogue_with_wrapper = $('#dialogue_with_wrapper');
 export type Users_response_result = [
   {
     id: number;
@@ -91,7 +92,7 @@ function render(users_response_result: Users_response_result) {
     search_request.innerHTML = '';
     users_response_result.forEach((user) => {
       search_request.innerHTML += `<div class="element">
-      <div class="user_avatar user_avatar_small" id="my_avatar">
+      <div class="user_avatar user_avatar_small">
         <img class="user_avatar_img" src="${user.avatar}" alt="" />
         <div class="status"></div>
       </div>
@@ -99,6 +100,7 @@ function render(users_response_result: Users_response_result) {
     </div>`;
     });
   }
+
 }
 import debounce from 'lodash/debounce';
 users_search?.addEventListener(
@@ -107,6 +109,8 @@ users_search?.addEventListener(
     let search_value = users_search.value.trim();
     if (search_value && search_value != ' ') {
       ajaxGet(`/find-users?search_value=${search_value}`, render);
+    } else {
+      search_request.innerHTML = '';
     }
   }, 500),
 ); // установите задержку в миллисекундах, например 500

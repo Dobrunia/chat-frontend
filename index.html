@@ -25,7 +25,6 @@
     <header class="p-3 text-bg-dark">
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-end">
-          <div id="temporary_users"></div>
           <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
             <input
               type="search"
@@ -36,7 +35,7 @@
             />
             <div class="search_request" id="search_request">
               <!-- <div class="element">
-                <div class="user_avatar user_avatar_small" id="my_avatar">
+                <div class="user_avatar user_avatar_small">
                   <img class="user_avatar_img" src="" alt="" />
                   <div class="status"></div>
                 </div>
@@ -59,7 +58,8 @@
           <div class="account none" id="account">
             <div class="my_name" id="my_name"></div>
             <div class="avatar_wrapper">
-              <div class="user_avatar user_avatar_small" id="user_avatar">
+              <div class="user_avatar user_avatar_small" id="my_avatar">
+                <img class="user_avatar_img" src="" alt="" />
                 <div class="status"></div>
               </div>
               <div class="avatar_hover none" id="avatar_hover">
@@ -122,13 +122,12 @@
         <div class="module_container">
           <h1>Вход</h1>
           <form action="" method="post">
-            <label>Логин</label>
+            <label>Почта</label>
             <input
               class="text-imput"
-              name="login"
+              name="email"
               type="text"
-              autocomplete="username"
-              maxlength="25"
+              autocomplete="email"
               required
             />
             <label>Пароль</label>
@@ -155,14 +154,26 @@
       <div class="module_window">
         <div class="module_container">
           <h1>Регистрация</h1>
-          <form role="form" action="#" method="#">
-            <label>Логин</label>
+          <form
+            role="form"
+            id="registrationForm"
+            action="./api/registration"
+            method="post"
+          >
+            <label>Имя пользователя</label>
             <input
               class="text-imput"
-              name="login"
+              name="username"
               type="text"
               autocomplete="username"
-              maxlength="10"
+              maxlength="25"
+              required
+            />
+            <label>Почта</label>
+            <input
+              class="text-imput"
+              name="email"
+              type="email"
               required
             />
             <label>Пароль</label>
@@ -171,7 +182,7 @@
               name="password"
               type="password"
               autocomplete="new-password"
-              maxlength="15"
+              maxlength="21"
               required
             />
             <label>Повторите пароль</label>
@@ -180,7 +191,7 @@
               name="password2"
               type="password"
               autocomplete="new-password"
-              maxlength="15"
+              maxlength="21"
               required
             />
             <input
@@ -221,12 +232,13 @@
     </section>
     <section class="wrapper" id="wrapper">
       <div class="dialogue_with">
-        <div class="dialogue_with_wrapper">
-          <div class="dialogue_with_name" id="dialogue_with_name">Саня</div>
+        <div class="dialogue_with_wrapper" id="dialogue_with_wrapper">
+          <!-- <div class="dialogue_with_name">Саня</div>
           <div class="last_entrance">был в сети час назад</div>
-          <div class="user_avatar user_avatar_small" id="user_avatar">
+          <div class="user_avatar user_avatar_small">
+            <img class="user_avatar_img" src="" alt="" />
             <div class="status"></div>
-          </div>
+          </div> -->
         </div>
       </div>
       <section class="users_wrapper hide" id="menu">
@@ -242,7 +254,7 @@
       </section>
       <section class="messages_wrapper">
         <div class="messages" id="messages">
-          <div class="message from">
+          <!-- <div class="message from">
             <div class="user_avatar user_avatar_small"></div>
             <div class="message_text">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste,
@@ -268,7 +280,7 @@
               possimus doloribus cupiditate consequuntur.
             </div>
             <div class="user_avatar user_avatar_small"></div>
-          </div>
+          </div> -->
         </div>
         <form class="message_send" id="chat_form">
           <input

@@ -14,3 +14,13 @@ export function ajaxGet(
   };
   xhr.send();
 }
+
+export function ajaxPost(url: string, formData: any) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', `http://localhost:5000/api${url}`, false);
+  xhr.onload = function() {
+    // Обработка ответа
+  };
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('username=' + encodeURIComponent(formData.username) + '&password=' + encodeURIComponent(formData.password) + '&email=' + encodeURIComponent(formData.email));
+}
