@@ -1,5 +1,6 @@
 import './style.css';
-import socket from './socket';
+import './registration-authorization/reg_auth.css'
+// import socket from './socket';
 
 
 // export function login(username: string) {

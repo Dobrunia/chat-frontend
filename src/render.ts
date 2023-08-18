@@ -75,19 +75,12 @@ export function renderMessage(data: string) {
 
 //рендер поиска пользователей
 import { ajaxGet } from './ajax';
+import debounce from 'lodash/debounce';
+import { UsersResponseResult } from './types';
+
 const users_search = $('#users_search') as HTMLInputElement;
 const search_request = $('#search_request');
-const dialogue_with_wrapper = $('#dialogue_with_wrapper');
-export type Users_response_result = [
-  {
-    id: number;
-    username: string;
-    password: string;
-    email: string;
-    avatar: string;
-  },
-];
-function render(users_response_result: Users_response_result) {
+function render(users_response_result: UsersResponseResult) {
   if (search_request && users_response_result != undefined) {
     search_request.innerHTML = '';
     users_response_result.forEach((user) => {
@@ -100,9 +93,7 @@ function render(users_response_result: Users_response_result) {
     </div>`;
     });
   }
-
 }
-import debounce from 'lodash/debounce';
 users_search?.addEventListener(
   'input',
   debounce(() => {

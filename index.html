@@ -11,8 +11,6 @@
       integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="./style.css" />
-    <link rel="stylesheet" href="./src/registration/module_style.css" />
     <link
       rel="stylesheet"
       type="text/css"
@@ -121,12 +119,12 @@
       <div class="module_window">
         <div class="module_container">
           <h1>Вход</h1>
-          <form action="" method="post">
+          <form action="./api/get-in" method="post" id="getInForm">
             <label>Почта</label>
             <input
               class="text-imput"
               name="email"
-              type="text"
+              type="email"
               autocomplete="email"
               required
             />
@@ -157,8 +155,7 @@
           <form
             role="form"
             id="registrationForm"
-            action="./api/registration"
-            method="post"
+            onsubmit="return registrationHandler(e);"
           >
             <label>Имя пользователя</label>
             <input
@@ -174,6 +171,7 @@
               class="text-imput"
               name="email"
               type="email"
+              autocomplete="email"
               required
             />
             <label>Пароль</label>
@@ -304,6 +302,52 @@
     <script type="module" src="./src/main.ts"></script>
     <script type="module" src="./src/core_animation.ts"></script>
     <script type="module" src="./src/render.ts"></script>
-    <script type="module" src="./src/registration/registration.ts"></script>
+    <script type="module" src="./src/registration-authorization/registration.ts"></script>
+    <!-- <script type="text/javascript">
+      function registrationHandler(event) {
+        event.preventDefault();
+        alert('sd');
+        const formData = new FormData(this);
+        const username = formData.get('username')?.toString().trim();
+        const email = formData.get('email')?.toString().trim();
+        const password = formData.get('password')?.toString().trim();
+        const password2 = formData.get('password2')?.toString().trim();
+        if (!username) {
+          return alert('Некорректное имя пользователя');
+        }
+        if (!email) {
+          return alert('Невалидный формат электронной почты');
+        }
+        const emailRegex = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        if (!emailRegex.test(email)) {
+          return alert('Невалидный формат электронной почты');
+        }
+        if (!password) {
+          return alert('Невалидный формат пароля');
+        }
+        if (password !== password2) {
+          return alert('Пароли не совпадают');
+        }
+        const salt = genSaltSync(10);
+        const passwordHash = hashSync(password, salt);
+        const DATA: RegistrationFormDataType = {
+          username: username,
+          email: email,
+          password: passwordHash,
+        };
+
+        function responseHandler(res) {
+          if (res == 'false') {
+            console.log('Пользователь c такой почтой уже существует');
+          } else {
+            console.log('Пользователь успешно зарегистрирован');
+          }
+        }
+        const data = fetch(`http://localhost:5000/api/registration`, {
+          method: 'POST',
+          body: JSON.stringify(DATA),
+        }).then((res) => responseHandler(res));
+      }
+    </script> -->
   </body>
 </html>
