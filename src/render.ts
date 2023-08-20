@@ -104,6 +104,5 @@ users_search?.addEventListener(
       search_request.innerHTML = '';
     }
   }, 500),
-); // установите задержку в миллисекундах, например 500
-
-//рендер поиска пользователей `http://localhost:5000/api/find-users/:${search_value}`
+);
+//рендер поиска пользователей
