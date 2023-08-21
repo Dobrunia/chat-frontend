@@ -1,6 +1,7 @@
+import { successfulLogin } from '../core_animation';
 import { FormValidationType } from '../types';
 import { validation } from './validation';
-import { compareSync } from 'bcrypt-ts';
+import { genSaltSync, hashSync } from 'bcrypt-ts';
 /**
  * функция афторизации пользователей
  */
@@ -20,8 +21,11 @@ authorizationForm?.addEventListener('submit', function (event) {
   if (!(valRes === true)) {
     alert(valRes);
   }
+  let salt = genSaltSync(10);
+  let passwordHash = hashSync(password as string, salt);
   const DATA = {
     email,
+    passwordHash,
   };
   const requestOptions = {
     method: 'POST',
@@ -31,15 +35,8 @@ authorizationForm?.addEventListener('submit', function (event) {
   fetch('http://localhost:5000/api/authorization', requestOptions)
     .then((response) => response.json())
     .then((data) => {
-      if (data) {
-        if (compareSync(password as string, data)) {
-          console.log('successful login');
-        } else {
-          console.log('incorrect password');
-        }
-      } else {
-        console.log('incorrect email');
-      }
+      localStorage.setItem('accessToken', data.accessToken);
+      successfulLogin(); //рендер входа
     })
     .catch((error) => console.log('Ошибка:', error));
   return false;

@@ -74,9 +74,9 @@ export function renderMessage(data: string) {
 //рендер сообщений
 
 //рендер поиска пользователей
-import { ajaxGet } from './ajax';
 import debounce from 'lodash/debounce';
 import { UsersResponseResult } from './types';
+import { getCookie } from './utils/cookies';
 
 const users_search = $('#users_search') as HTMLInputElement;
 const search_request = $('#search_request');
@@ -94,6 +94,19 @@ function render(users_response_result: UsersResponseResult) {
     });
   }
 }
+function ajaxGet(
+  url: string,
+  callback: (e: UsersResponseResult) => void,
+) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `http://localhost:5000/api${url}`, false);
+  xhr.onloadend = function () {
+    if (xhr.status == 200) {
+      callback(JSON.parse(xhr.responseText));
+    }
+  };
+  xhr.send();
+}
 users_search?.addEventListener(
   'input',
   debounce(() => {
@@ -106,3 +119,14 @@ users_search?.addEventListener(
   }, 500),
 );
 //рендер поиска пользователей
+
+//рендер информации залогининного пользователя
+export function setInfo() {
+  const myCookie = getCookie('refreshToken');
+  if (myCookie) {
+    console.log(myCookie);
+  } else {
+    console.log('Cookie not found');
+  }
+}
+//рендер информации залогининного пользователя

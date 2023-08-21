@@ -261,8 +261,8 @@ body {
 }
 
 .wrapper {
-  width: 100vw;
-  height: calc(100vh - 70px);
+  width: 100%;
+  height: calc(100vh - 72px);
   /* padding-top: 16px; */
   overflow: hidden;
 }

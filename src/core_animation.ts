@@ -13,14 +13,18 @@ function toggleMenu() {
 menuButton.addEventListener('click', toggleMenu);
 //открыть/закрыть окно с чатами
 
-const my_avatar = document.getElementById('my_avatar');
-const avatar_hover = document.getElementById('avatar_hover');
-const search_request = $('#search_request');
-let search_request_counter = 0;
+// открытие меню профиля
+const my_avatar = $('#my_avatar');
+const avatar_hover = $('#avatar_hover');
 function toggleSmallMenu() {
-  avatar_hover?.classList.toggle('none');
+  avatar_hover?.classList.remove('none');
 }
 my_avatar?.addEventListener('click', toggleSmallMenu);
+// открытие меню профиля
+
+//
+const search_request = $('#search_request');
+let search_request_counter = 0;
 document.addEventListener('click', (event) => {
   const targetElement = event.target; // Элемент, на который был совершен клик
   // Проверяем, является ли элемент меню или его потомком
@@ -48,6 +52,7 @@ document.addEventListener('click', (event) => {
   }
   //скрыть поиск пользователей при 2м клике
 });
+//
 
 //выйти из аккаунта
 const reg_btns = $('#reg_btns') as HTMLFormElement;
@@ -93,6 +98,7 @@ function ChangeTheme(themeName: string) {
 
 //анимация окн регистрации и авторизации
 import { ModuleMenuType } from './types';
+import { setInfo } from './render';
 const get_in_btn = document.getElementById('get_in');
 const get_in_window = document.getElementById('get_in_window');
 const get_in_exit = document.getElementById('get_in_exit');
@@ -100,7 +106,6 @@ const registration_btn = document.getElementById('registration');
 const registration_window = document.getElementById('registration_window');
 const registration_exit = document.getElementById('registration_exit');
 const wrapper = document.getElementById('wrapper');
-
 function toggleModuleWindow(e: ModuleMenuType) {
   if (e === 'get_in') {
     get_in_window?.classList.contains('none')
@@ -136,4 +141,13 @@ registration_btn?.addEventListener('click', () =>
   toggleModuleWindow('registration'),
 );
 registration_exit?.addEventListener('click', () => toggleModuleWindow('exit'));
+/**
+ * функция анимация входа
+ */
+export function successfulLogin() {
+  toggleModuleWindow('exit');
+  reg_btns.classList.add('none');
+  account.classList.remove('none');
+  setInfo()
+}
 //анимация окн регистрации и авторизации
