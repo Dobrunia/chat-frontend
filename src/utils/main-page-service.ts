@@ -85,17 +85,16 @@ function ajaxGet(url: string) {
  * раз в 500мл проверка, что ввел пользователь и запрос на сервер
  */
 export function searchInputHandler() {
-  debounce(() => {
-    const users_search = document.querySelector(
-      '#users_search',
-    ) as HTMLInputElement;
-    let search_value = users_search.value.trim();
-    if (search_value && search_value != ' ') {
+  const debouncedFunction = debounce(() => {
+    const users_search = document.querySelector('#users_search') as HTMLInputElement;
+    const search_value = users_search.value.trim();
+    if (search_value && search_value !== ' ') {
       ajaxGet(`/find-users?search_value=${search_value}`);
     } else {
       $('#search_request').innerHTML = '';
     }
   }, 500);
+  debouncedFunction();
 }
 
 /**
