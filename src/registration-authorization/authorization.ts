@@ -1,5 +1,5 @@
-import { successfulLogin } from '../core_animation';
 import { FormValidationType } from '../types';
+import { userIn } from '../utils/user-service';
 import { validation } from './validation';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 /**
@@ -35,8 +35,12 @@ authorizationForm?.addEventListener('submit', function (event) {
   fetch('http://localhost:5000/api/authorization', requestOptions)
     .then((response) => response.json())
     .then((data) => {
+      localStorage.setItem('email', data.email);
+      localStorage.setItem('username', data.username);
+      localStorage.setItem('avatar', data.avatar);
       localStorage.setItem('accessToken', data.accessToken);
-      successfulLogin(); //рендер входа
+      localStorage.setItem('refreshToken', data.refreshToken);
+      userIn();//рендер входа
     })
     .catch((error) => console.log('Ошибка:', error));
   return false;

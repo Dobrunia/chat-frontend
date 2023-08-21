@@ -1,7 +1,12 @@
 import './style.css';
-import './registration-authorization/reg_auth.css'
-// import socket from './socket';
+import './registration-authorization/reg_auth.css';
+import { isUserLoggedIn, userIn } from './utils/user-service';
 
+if (isUserLoggedIn()) {
+  userIn();
+}
+
+// import socket from './socket';
 
 // export function login(username: string) {
 //   socket.auth = { username };
