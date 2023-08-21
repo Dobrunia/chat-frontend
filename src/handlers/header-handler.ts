@@ -2,7 +2,6 @@ import {
   chooseTheme,
   closeSettingsWindow,
   globalClick,
-  logOutView,
   openSettingsWindow,
   toggleModuleWindow,
   toggleSmallMenu,
@@ -10,7 +9,7 @@ import {
 import { $ } from '../main';
 import { authorization } from '../registration-authorization/authorization';
 import { registration } from '../registration-authorization/registration';
-import { searchInputHandler } from '../utils/main-page-service';
+import { searchInputHandler, userOut } from '../utils/main-page-service';
 
 /**
  * функция афторизации пользователей
@@ -29,7 +28,7 @@ $('#my_avatar').addEventListener('click', toggleSmallMenu);
 /**
  * отображение не авторизованного пользователя
  */
-$('#account_exit').addEventListener('click', logOutView);
+$('#account_exit').addEventListener('click', userOut);
 
 /**
  * открыть меню с настройками
