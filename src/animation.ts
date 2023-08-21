@@ -22,9 +22,8 @@ export function toggleSmallMenu() {
 /**
  * функция закрытия при клике вне области
  */
-export function globalClick(event: any) {
+export function globalClick(event: MouseEvent) {
   let search_request_counter = 0;
-  //TODO:: типизировать event
   const targetElement = event.target; // Элемент, на который был совершен клик
   // Проверяем, является ли элемент меню или его потомком
   if (
@@ -133,7 +132,6 @@ function changeTheme(themeName: string) {
 /**
  * получает выбранную пользователем тему
  */
-export function chooseTheme(this: any) {
-  //TODO:: типизировать this
+export function chooseTheme(this: HTMLSelectElement) {
   changeTheme(this.options[this.selectedIndex].text);
 }

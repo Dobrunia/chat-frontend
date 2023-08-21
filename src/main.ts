@@ -1,12 +1,14 @@
 import './style.css';
 import './registration-authorization/reg_auth.css';
-import { isUserLoggedIn, userIn } from './utils/main-page-service';
+import { isUserLoggedIn, userIn, userOut } from './utils/main-page-service';
 
 export const $ = (element: string) =>
   document.querySelector(element) as HTMLFormElement;
 
 if (isUserLoggedIn()) {
   userIn();
+} else {
+  userOut();
 }
 
 // import socket from './socket';

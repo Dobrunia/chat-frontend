@@ -1,5 +1,5 @@
 import { $ } from '../main';
-import { logInView } from '../animation';
+import { logInView, logOutView } from '../animation';
 import { UsersResponseResult } from '../types';
 import debounce from 'lodash/debounce';
 
@@ -34,6 +34,14 @@ function renderAccount() {
 }
 
 /**
+ * удаляет отображение данных об аккаунте при выходе пользователя
+ */
+function removeAccount() {
+  $('#my_name').innerHTML = '';
+  $('#my_avatar').innerHTML = '';
+}
+
+/**
  * показывает в меню доступные темы
  */
 function renderThemes() {
@@ -45,6 +53,13 @@ function renderThemes() {
       ).innerHTML += `<option class="option" value="${theme.name}">${theme.name}</option>`;
     });
   });
+}
+
+/**
+ * убирает доступные темы
+ */
+function removeThemes() {
+  $('#themes').innerHTML = '';
 }
 
 /**
@@ -86,7 +101,9 @@ function ajaxGet(url: string) {
  */
 export function searchInputHandler() {
   const debouncedFunction = debounce(() => {
-    const users_search = document.querySelector('#users_search') as HTMLInputElement;
+    const users_search = document.querySelector(
+      '#users_search',
+    ) as HTMLInputElement;
     const search_value = users_search.value.trim();
     if (search_value && search_value !== ' ') {
       ajaxGet(`/find-users?search_value=${search_value}`);
@@ -149,6 +166,13 @@ export function renderChats() {
 }
 
 /**
+ * удаляет отображение чатов
+ */
+function removeChats() {
+  $('#users').innerHTML = '';
+}
+
+/**
  * рендер сообщений
  * @param content текст сообщения
  */
@@ -188,9 +212,27 @@ function setInfo() {
 }
 
 /**
+ * очистить данные пользователя
+ */
+function removeUserData() {
+  localStorage.clear();
+  removeAccount();
+  removeThemes();
+  removeChats();
+}
+
+/**
  * запускать при входе пользователя анимация + данные
  */
 export function userIn() {
   logInView();
   setInfo();
+}
+
+/**
+ * запускать при выходе пользователя анимация + данные
+ */
+export function userOut() {
+  logOutView();
+  removeUserData();
 }
