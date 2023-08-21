@@ -1,14 +1,12 @@
 import { FormValidationType } from '../types';
-import { userIn } from '../utils/user-service';
+import { userIn } from '../utils/main-page-service';
 import { validation } from './validation';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 /**
  * функция афторизации пользователей
  */
-const authorizationForm = document.querySelector(
-  '#authorizationForm',
-) as HTMLInputElement;
-authorizationForm?.addEventListener('submit', function (event) {
+export function authorization(event: any) {
+  //TODO:: type
   event.preventDefault();
   const formData = new FormData(this);
   let email = formData.get('email')?.toString().trim();
@@ -40,8 +38,8 @@ authorizationForm?.addEventListener('submit', function (event) {
       localStorage.setItem('avatar', data.avatar);
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
-      userIn();//рендер входа
+      userIn(); //рендер входа
     })
     .catch((error) => console.log('Ошибка:', error));
   return false;
-});
+}

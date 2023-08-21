@@ -4,10 +4,7 @@ import { validation } from './validation';
 /**
  * функция регистрации пользователей
  */
-const registrationForm = document.querySelector(
-  '#registrationForm',
-) as HTMLInputElement;
-registrationForm?.addEventListener('submit', function (event) {
+export function registration(event: any) {//TODO:: type
   event.preventDefault();
   const formData = new FormData(this);
   let username = formData.get('username')?.toString().trim();
@@ -47,4 +44,4 @@ registrationForm?.addEventListener('submit', function (event) {
     })
     .catch((error) => console.log('Ошибка:', error));
   return false;
-});
+}

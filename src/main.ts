@@ -1,6 +1,9 @@
 import './style.css';
 import './registration-authorization/reg_auth.css';
-import { isUserLoggedIn, userIn } from './utils/user-service';
+import { isUserLoggedIn, userIn } from './utils/main-page-service';
+
+export const $ = (element: string) =>
+  document.querySelector(element) as HTMLFormElement;
 
 if (isUserLoggedIn()) {
   userIn();
