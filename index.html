@@ -208,7 +208,7 @@
         <button class="exit" id="registration_exit">X</button>
       </div>
     </section>
-    <section class="module_wrapper none" id="settings_window">
+    <section class="settings_wrapper none" id="settings_window">
       <div class="settings_window">
         <form enctype="multipart/form-data" method="post">
           <p>Сменить аватар</p>
@@ -217,10 +217,10 @@
             <input type="submit" value="Сменить аватар" />
           </p>
         </form>
-        <form enctype="multipart/form-data" method="post">
-          <p>Сменить никнейм</p>
+        <form enctype="multipart/form-data" role="form" id="changeName">
+          <p>Сменить имя</p>
           <p>
-            <input type="text" name="nickname" />
+            <input type="text" name="username" id="changeName_input"/>
             <input type="submit" value="Сменить никнейм" />
           </p>
         </form>

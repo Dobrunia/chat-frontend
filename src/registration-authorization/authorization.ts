@@ -1,4 +1,4 @@
-import { FormValidationType } from '../types';
+import { FormValidationType } from '../models/types';
 import { userIn } from '../utils/main-page-service';
 import { validation } from './validation';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
@@ -37,7 +37,6 @@ export function authorization(event: any) {
       localStorage.setItem('username', data.username);
       localStorage.setItem('avatar', data.avatar);
       localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
       userIn(); //рендер входа
     })
     .catch((error) => console.log('Ошибка:', error));

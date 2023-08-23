@@ -278,7 +278,7 @@ body {
   height: 525px;
   transition: 0.2s;
   border-radius: 0.5rem;
-  z-index: 10;
+  z-index: 3;
 }
 
 .hide {
@@ -478,6 +478,16 @@ body {
   font-size: 14px;
   /* color: var(--grey); */
   opacity: 0.6;
+}
+
+.settings_wrapper {
+  width: 100vw;
+  height: calc(100vh - 72px);
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
 }
 
 .settings_window {

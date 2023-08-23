@@ -1,6 +1,6 @@
 import { $ } from '../main';
 import { logInView, logOutView } from '../animation';
-import { UsersResponseResult } from '../types';
+import { UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
 
 /**
@@ -8,12 +8,13 @@ import debounce from 'lodash/debounce';
  * @returns true - если авторизован, false - если нет
  */
 export function isUserLoggedIn(): boolean {
-  let accessToken = localStorage.getItem('accessToken');
-  if (accessToken) {
-    return true;
-  } else {
-    return false;
-  }
+  return localStorage.getItem('accessToken') != undefined;
+  // let accessToken = localStorage.getItem('accessToken');
+  // if (accessToken) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
 }
 
 /**
@@ -205,7 +206,6 @@ function renderMessage(content: string) {
 function setInfo() {
   let email = localStorage.getItem('email');
   let accessToken = localStorage.getItem('accessToken');
-  let refreshToken = localStorage.getItem('refreshToken');
   renderAccount();
   renderThemes();
   renderChats();
@@ -235,4 +235,38 @@ export function userIn() {
 export function userOut() {
   logOutView();
   removeUserData();
+}
+
+/**
+ * смена имени пользователя
+ */
+export function changeUsername(event: any) {
+  event.preventDefault();
+  const formData = new FormData(this);
+  const username = formData.get('username')?.toString().trim();
+  const email = localStorage.getItem('email');
+  if (!email) {
+    return 'Прежде всего войдите в аккаунт';
+  }
+  if (!username) {
+    //TODO:: привезать к общей ф-ии валидации
+    return 'Некорректное имя пользователя';
+  }
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: username, email: email }),
+  };
+  fetch('http://localhost:5000/api/changeUsername', requestOptions)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data) {
+        localStorage.setItem('username', data);
+        renderAccount();
+        ($('#changeName_input') as HTMLFormElement).value = '';
+        console.log('Вы успешно сменили имя');
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
+  return false;
 }

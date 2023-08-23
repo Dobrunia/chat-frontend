@@ -9,12 +9,17 @@ import {
 import { $ } from '../main';
 import { authorization } from '../registration-authorization/authorization';
 import { registration } from '../registration-authorization/registration';
-import { searchInputHandler, userOut } from '../utils/main-page-service';
+import {
+  changeUsername,
+  searchInputHandler,
+  userOut,
+} from '../utils/main-page-service';
 
 /**
  * функция афторизации пользователей
  */
 $('#authorizationForm').addEventListener('submit', authorization);
+
 /**
  * функция регистриции пользователей
  */
@@ -69,3 +74,8 @@ document.addEventListener('click', globalClick);
   'input',
   searchInputHandler,
 );
+
+/**
+ * смена имени в настройках
+ */
+$('#changeName').addEventListener('click', changeUsername);

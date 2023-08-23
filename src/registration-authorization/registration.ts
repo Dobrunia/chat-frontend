@@ -1,10 +1,11 @@
 import { genSaltSync, hashSync } from 'bcrypt-ts';
-import { RegistrationFormDataType, FormValidationType } from '../types';
+import { RegistrationFormDataType, FormValidationType } from '../models/types';
 import { validation } from './validation';
 /**
  * функция регистрации пользователей
  */
-export function registration(event: any) {//TODO:: type
+export function registration(event: any) {
+  //TODO:: type
   event.preventDefault();
   const formData = new FormData(this);
   let username = formData.get('username')?.toString().trim();

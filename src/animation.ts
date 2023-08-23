@@ -1,5 +1,5 @@
 import { $ } from './main';
-import { ModuleMenuType } from './types';
+import { ModuleMenuType } from './models/types';
 
 /**
  * открыть/закрыть окно с чатами
