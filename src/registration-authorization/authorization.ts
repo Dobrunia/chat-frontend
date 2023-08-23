@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { FormValidationType } from '../models/types';
 import { userIn } from '../utils/main-page-service';
 import { validation } from './validation';
@@ -30,9 +31,10 @@ export function authorization(event: any) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(DATA),
   };
-  fetch('http://localhost:5000/api/authorization', requestOptions)
-    .then((response) => response.json())
-    .then((data) => {
+  axios
+    .post('http://localhost:5000/api/authorization', requestOptions)
+    .then((response) => {
+      const data = response.data;
       localStorage.setItem('email', data.email);
       localStorage.setItem('username', data.username);
       localStorage.setItem('avatar', data.avatar);

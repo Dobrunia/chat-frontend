@@ -2,6 +2,7 @@ import { $ } from '../main';
 import { logInView, logOutView } from '../animation';
 import { UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
+import axios from 'axios';
 
 /**
  * проверка авторизовал ли пользователь
@@ -86,15 +87,15 @@ function renderUsers(users_response_result: UsersResponseResult) {
  * запрос на сервер для получения совпадающих пользователей
  * @param url end-point на сервере, для получения пользователей по поиску
  */
-function ajaxGet(url: string) {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', `http://localhost:5000/api${url}`, false);
-  xhr.onloadend = function () {
-    if (xhr.status == 200) {
-      renderUsers(JSON.parse(xhr.responseText));
-    }
-  };
-  xhr.send();
+function axiosGet(url: string) {
+  axios
+    .get(`http://localhost:5000/api${url}`)
+    .then((response) => {
+      renderUsers(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 /**
@@ -107,7 +108,7 @@ export function searchInputHandler() {
     ) as HTMLInputElement;
     const search_value = users_search.value.trim();
     if (search_value && search_value !== ' ') {
-      ajaxGet(`/find-users?search_value=${search_value}`);
+      axiosGet(`/find-users?search_value=${search_value}`);
     } else {
       $('#search_request').innerHTML = '';
     }
@@ -257,9 +258,10 @@ export function changeUsername(event: any) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: username, email: email }),
   };
-  fetch('http://localhost:5000/api/changeUsername', requestOptions)
-    .then((response) => response.json())
-    .then((data) => {
+  axios
+    .post('http://localhost:5000/api/changeUsername', {}, requestOptions)
+    .then((response) => {
+      const data = response.data;
       if (data) {
         localStorage.setItem('username', data);
         renderAccount();
