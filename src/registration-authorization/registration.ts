@@ -1,7 +1,6 @@
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { RegistrationFormDataType, FormValidationType } from '../models/types';
 import { validation } from './validation';
-import axios from 'axios';
 /**
  * функция регистрации пользователей
  */
@@ -35,10 +34,10 @@ export function registration(event: any) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(DATA),
   };
-  axios
-    .post('http://localhost:5000/api/registration', requestOptions)
-    .then((response) => {
-      if (response.data === false) {
+  fetch('http://localhost:5000/api/registration', requestOptions)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data === false) {
         console.log('Пользователь c такой почтой уже существует');
       } else {
         console.log('Пользователь успешно зарегистрирован');

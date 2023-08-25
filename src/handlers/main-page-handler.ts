@@ -1,6 +1,6 @@
 import { $ } from '../main';
 import { toggleMenu } from '../animation';
-import { renderChats } from '../utils/main-page-service';
+import { renderChats } from '../services/main-page-service';
 
 /**
  * открыть/закрыть окно с чатами

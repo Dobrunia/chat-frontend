@@ -13,7 +13,7 @@ import {
   changeUsername,
   searchInputHandler,
   userOut,
-} from '../utils/main-page-service';
+} from '../services/main-page-service';
 
 /**
  * функция афторизации пользователей

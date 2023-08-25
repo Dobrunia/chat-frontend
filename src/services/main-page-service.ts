@@ -3,6 +3,7 @@ import { logInView, logOutView } from '../animation';
 import { UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
 import axios from 'axios';
+import { $api } from '../http/api';
 
 /**
  * проверка авторизовал ли пользователь
@@ -84,21 +85,6 @@ function renderUsers(users_response_result: UsersResponseResult) {
 }
 
 /**
- * запрос на сервер для получения совпадающих пользователей
- * @param url end-point на сервере, для получения пользователей по поиску
- */
-function axiosGet(url: string) {
-  axios
-    .get(`http://localhost:5000/api${url}`)
-    .then((response) => {
-      renderUsers(response.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}
-
-/**
  * раз в 500мл проверка, что ввел пользователь и запрос на сервер
  */
 export function searchInputHandler() {
@@ -108,7 +94,16 @@ export function searchInputHandler() {
     ) as HTMLInputElement;
     const search_value = users_search.value.trim();
     if (search_value && search_value !== ' ') {
-      axiosGet(`/find-users?search_value=${search_value}`);
+      $api
+        .get(
+          `/find-users?search_value=${search_value}`,
+        )
+        .then((response) => {
+          renderUsers(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } else {
       $('#search_request').innerHTML = '';
     }
@@ -253,13 +248,8 @@ export function changeUsername(event: any) {
     //TODO:: привезать к общей ф-ии валидации
     return 'Некорректное имя пользователя';
   }
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username: username, email: email }),
-  };
-  axios
-    .post('http://localhost:5000/api/changeUsername', {}, requestOptions)
+  $api
+    .post('/changeUsername', { username: username, email: email })
     .then((response) => {
       const data = response.data;
       if (data) {
