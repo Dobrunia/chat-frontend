@@ -2,8 +2,8 @@ import { $ } from '../main';
 import { logInView, logOutView } from '../animation';
 import { UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
-import axios from 'axios';
 import { $api } from '../http/api';
+import socketService from '../socket/socket-services';
 
 /**
  * проверка авторизовал ли пользователь
@@ -95,9 +95,7 @@ export function searchInputHandler() {
     const search_value = users_search.value.trim();
     if (search_value && search_value !== ' ') {
       $api
-        .get(
-          `/find-users?search_value=${search_value}`,
-        )
+        .get(`/find-users?search_value=${search_value}`)
         .then((response) => {
           renderUsers(response.data);
         })
@@ -197,11 +195,14 @@ function renderMessage(content: string) {
 }
 
 /**
- * вызывает установщики информации во всех местах
+ * вызывает установщики информации во всех местах + socket
  */
 function setInfo() {
   let email = localStorage.getItem('email');
-  let accessToken = localStorage.getItem('accessToken');
+  console.log(socketService)
+  if (email) {
+    socketService.login(email);
+  }
   renderAccount();
   renderThemes();
   renderChats();
