@@ -302,6 +302,7 @@ body {
   width: 100%;
   min-height: calc(100% - 52px);
   overflow-y: scroll;
+  padding-left: 12px;
 }
 
 .user {
@@ -376,6 +377,10 @@ body {
 
 .user_name {
   font-size: 18px;
+  font-weight: 100;
+  white-space: nowrap; /* Запрещаем перенос слов на новую строку */
+  overflow: hidden; /* Обрезаем текст, который превышает заданную ширину контейнера */
+  text-overflow: ellipsis;
 }
 
 .user_last_message {}
@@ -470,8 +475,15 @@ body {
   min-width: 250px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 8px;
+}
+
+.dialogue_with_text {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .last_entrance {

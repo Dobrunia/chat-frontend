@@ -2,12 +2,13 @@ import { logInView, logOutView } from '../animation';
 import { UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
 import { $api } from '../http/api';
-import socketService from '../socket/socket-services';
-
+import socketService from '../socket/socket-service';
+import { functionsIn } from 'lodash';
+import fs from 'fs';
 
 export const $ = (element: string) =>
   document.querySelector(element) as HTMLFormElement;
-  
+
 /**
  * проверка авторизовал ли пользователь
  * @returns true - если авторизован, false - если нет
@@ -113,44 +114,38 @@ export function searchInputHandler() {
 }
 
 /**
+ * получение всех пользователей с БД, TODO:: сделать только тех с кем есть переписка
+ */
+function getAllUsers() {
+  return $api
+    .get('/allUsers')
+    .then((response) => response.data)
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
  * рендер ативных чатов пользователя
  */
-export function renderChats() {
-  import('../jsons/chats.json').then((activeChats) => {
-    const chat_search = document.querySelector(
-      '#chat_search',
-    ) as HTMLInputElement;
-    const users = $('#users');
-    users.innerHTML = '';
-    activeChats.default.forEach((element: any) => {
-      if (chat_search.value) {
-        const regex = new RegExp(chat_search.value, 'gi');
-        const matches = element.name.match(regex);
-        if (matches) {
-          //поиск по имени собеседника
-          users.innerHTML += `<div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>${element.name}</strong></div>
-            <div class="user_last_message">${element.last_message}</div>
-          </div>
-          <div class="user_metric">
-            <div>${element.time}</div>
-            <span>${element.notifications}</span>
-          </div>
-        </div>`;
-        }
-      } else {
+export async function renderChats() {
+  const jsonData = await getAllUsers();
+  const chat_search = document.querySelector(
+    '#chat_search',
+  ) as HTMLInputElement;
+  const users = $('#users');
+  users.innerHTML = '';
+  jsonData.forEach((element: any) => {
+    if (chat_search.value) {
+      const regex = new RegExp(chat_search.value, 'gi');
+      const matches = element.username.match(regex);
+      if (matches) {
         users.innerHTML += `<div class="line"></div>
-        <div class="user">
-          <div class="user_avatar user_avatar_big">
+        <div class="user" title="${element.username}" onclick="userHandler(event)" data-username="${element.username}" data-email="${element.email}" data-avatar="${element.avatar}">
+          <div class="user_avatar user_avatar_small">
+            <img class="user_avatar_img" src="${element.avatar}" alt="" />
             <div class="status"></div>
           </div>
           <div class="user_info">
-            <div class="user_name"><strong>${element.name}</strong></div>
+            <div class="user_name"><strong>${element.username}</strong></div>
             <div class="user_last_message">${element.last_message}</div>
           </div>
           <div class="user_metric">
@@ -159,7 +154,23 @@ export function renderChats() {
           </div>
         </div>`;
       }
-    });
+    } else {
+      users.innerHTML += `<div class="line"></div>
+      <div class="user" title="${element.username}" onclick="userHandler(event)" data-username="${element.username}" data-email="${element.email}" data-avatar="${element.avatar}">
+        <div class="user_avatar user_avatar_small">
+          <img class="user_avatar_img" src="${element.avatar}" alt="" />
+          <div class="status"></div>
+        </div>
+        <div class="user_info">
+          <div class="user_name"><strong>${element.username}</strong></div>
+          <div class="user_last_message">${element.last_message}</div>
+        </div>
+        <div class="user_metric">
+          <div>${element.time}</div>
+          <span>${element.notifications}</span>
+        </div>
+      </div>`;
+    }
   });
 }
 
@@ -201,11 +212,11 @@ function renderMessage(content: string) {
  * вызывает установщики информации во всех местах + socket
  */
 function setInfo() {
-  let email = localStorage.getItem('email');
-  console.log(socketService);
-  if (email) {
-    socketService.login(email);
-  }
+  // let email = localStorage.getItem('email');
+  // console.log(socketService);
+  // if (email) {
+  //   socketService.login(email);
+  // }
   renderAccount();
   renderThemes();
   renderChats();
@@ -274,5 +285,5 @@ export function messageHandler(event: any) {
   event.preventDefault();
   const content = $('#message_text').value;
   const chatID = 'lents@mail.ru';
-  socketService.sendMessage(content, chatID)
+  socketService.sendMessage(content, chatID);
 }
