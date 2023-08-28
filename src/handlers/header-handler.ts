@@ -6,7 +6,7 @@ import {
   toggleModuleWindow,
   toggleSmallMenu,
 } from '../animation';
-import { $ } from '../main';
+import { $ } from '../services/main-page-service';
 import { authorization } from '../registration-authorization/authorization';
 import { registration } from '../registration-authorization/registration';
 import {

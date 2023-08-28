@@ -1,4 +1,4 @@
-import { $ } from './main';
+import { $ } from './services/main-page-service';
 import { ModuleMenuType } from './models/types';
 
 /**

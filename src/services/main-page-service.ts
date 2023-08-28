@@ -1,10 +1,13 @@
-import { $ } from '../main';
 import { logInView, logOutView } from '../animation';
 import { UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
 import { $api } from '../http/api';
 import socketService from '../socket/socket-services';
 
+
+export const $ = (element: string) =>
+  document.querySelector(element) as HTMLFormElement;
+  
 /**
  * проверка авторизовал ли пользователь
  * @returns true - если авторизован, false - если нет
@@ -199,7 +202,7 @@ function renderMessage(content: string) {
  */
 function setInfo() {
   let email = localStorage.getItem('email');
-  console.log(socketService)
+  console.log(socketService);
   if (email) {
     socketService.login(email);
   }
@@ -262,4 +265,14 @@ export function changeUsername(event: any) {
     })
     .catch((error) => console.log('Ошибка:', error));
   return false;
+}
+
+/**
+ *
+ */
+export function messageHandler(event: any) {
+  event.preventDefault();
+  const content = $('#message_text').value;
+  const chatID = 'lents@mail.ru';
+  socketService.sendMessage(content, chatID)
 }

@@ -269,7 +269,7 @@ body {
 
 .users_wrapper {
   position: absolute;
-  top: 119px;
+  top: 121px;
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
@@ -503,7 +503,7 @@ body {
 
 @media screen and (max-width: 991px) {
   .wrapper {
-    height: calc(100vh - 124px);
+    height: calc(100vh - 126px);
   }
 
   .users_wrapper {

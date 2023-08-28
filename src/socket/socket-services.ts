@@ -1,14 +1,14 @@
 import socket from './socket';
 
 class SocketService {
-  login(username: string) {
-    socket.auth = { username };
+  login(email: string) {
+    socket.auth = { email };
     socket.connect();
-    console.log('Пользователь ' + username + ' подключился');
+    console.log('Пользователь ' + email + ' подключился');
     socket.on('user connected', (socket) => {
-      console.log(typeof (socket as any).userId);
+      console.log(typeof (socket as any).userID);
       console.log(
-        'в чат зашёл ' + socket.username + ' ID: ' + (socket as any).userId,
+        'в чат зашёл ' + (socket as any).userID,
       );
     });
     socket.on('private message', (message) => {
@@ -19,7 +19,7 @@ class SocketService {
     });
   }
 
-  sendMessage(content: string, chatId: number) {
+  sendMessage(content: string, chatId: string) {//TODO::
     socket.emit('private message', {
       content,
       to: chatId,
