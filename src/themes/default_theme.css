@@ -1,8 +1,10 @@
 :root {
     --white: #FFF;
     --attention: #ffc107;
-    --backG: #1d3844;
-    --message: #005C4B;
+    --backG: #0B0E17;
+    --message: #1a2136;
+    /* --message: #005C4B; */
+    /* #1d3844 */
     /* #007968 #006366*/
     --split: #212529;
     --grey: #939393;

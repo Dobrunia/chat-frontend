@@ -134,28 +134,7 @@ export async function renderChats() {
   const users = $('#users');
   users.innerHTML = '';
   jsonData.forEach((element: any) => {
-    if (chat_search.value) {
-      const regex = new RegExp(chat_search.value, 'gi');
-      const matches = element.username.match(regex);
-      if (matches) {
-        users.innerHTML += `<div class="line"></div>
-        <div class="user" title="${element.username}" onclick="userHandler(event)" data-username="${element.username}" data-email="${element.email}" data-avatar="${element.avatar}">
-          <div class="user_avatar user_avatar_small">
-            <img class="user_avatar_img" src="${element.avatar}" alt="" />
-            <div class="status"></div>
-          </div>
-          <div class="user_info">
-            <div class="user_name"><strong>${element.username}</strong></div>
-            <div class="user_last_message">${element.last_message}</div>
-          </div>
-          <div class="user_metric">
-            <div>${element.time}</div>
-            <span>${element.notifications}</span>
-          </div>
-        </div>`;
-      }
-    } else {
-      users.innerHTML += `<div class="line"></div>
+    const content = `<div class="line"></div>
       <div class="user" title="${element.username}" onclick="userHandler(event)" data-username="${element.username}" data-email="${element.email}" data-avatar="${element.avatar}">
         <div class="user_avatar user_avatar_small">
           <img class="user_avatar_img" src="${element.avatar}" alt="" />
@@ -170,6 +149,14 @@ export async function renderChats() {
           <span>${element.notifications}</span>
         </div>
       </div>`;
+    if (chat_search.value) {
+      const regex = new RegExp(chat_search.value, 'gi');
+      const matches = element.username.match(regex);
+      if (matches) {
+        users.innerHTML += content;
+      }
+    } else {
+      users.innerHTML += content;
     }
   });
 }

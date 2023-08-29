@@ -32,7 +32,7 @@ body {
   width: 207px;
   max-height: 500px;
   overflow-y: scroll;
-  padding: 5px;
+  padding-left: 12px;
   border-radius: 5px;
   background-color: var(--split);
 }
@@ -79,6 +79,7 @@ body {
 .users_wrapper {
   background-color: var(--split);
   border: 1px solid var(--attention);
+  /* border-top: none; */
   border-radius: 0.5rem;
 }
 
@@ -229,18 +230,18 @@ body {
 }
 
 .avatar_hover {
-  width: 170px;
-  height: max-content;
+  width: 200px;
+  height: 150px;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   position: absolute;
-  top: 20%;
+  top: -20px;
   right: 0;
   transform: translate(0, 50%);
   text-align: center;
-  padding: 5px;
+  padding: 15px;
   border-radius: 0.5rem;
   cursor: default;
   z-index: 10;
@@ -287,8 +288,8 @@ body {
 
 .menuButton {
   position: absolute;
-  top: 50%;
-  right: -30px;
+  top: 45%;
+  right: -34px;
   cursor: pointer;
   z-index: 2;
 }
@@ -458,7 +459,7 @@ body {
   outline: none;
   border: none;
   cursor: pointer;
-  background-color: inherit !important;
+  background-color: var(--message);
 }
 
 .dialogue_with {
@@ -519,6 +520,6 @@ body {
   }
 
   .users_wrapper {
-    top: 170px;
+    top: 174px;
   }
 }
