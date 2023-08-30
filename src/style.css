@@ -85,6 +85,9 @@ body {
 
 .exit:hover {
   color: var(--attention);
+  scale: 1.5;
+  transition: 0.1s;
+  transform-origin: center;
 }
 
 .status {
@@ -204,6 +207,10 @@ body {
   background-color: var(--message);
 }
 
+.classic_btn {
+  
+}
+
 .none {
   display: none !important;
 }
@@ -213,16 +220,25 @@ body {
 }
 
 .exit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
-  right: 10px;
-  top: 0px;
-  width: max-content;
-  max-height: max-content;
+  right: 0;
+  top: 0;
+  width: 45px;
+  height: 45px;
+  font-size: 30px;
   border: none;
   padding: 0;
   outline: none;
-  scale: 2;
   background-color: inherit;
+}
+
+.return {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 .avatar_wrapper {
