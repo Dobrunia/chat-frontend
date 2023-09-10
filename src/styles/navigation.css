@@ -1,0 +1,43 @@
+.nav_wrapper {
+    width: 100vw;
+    height: 100vh;
+    background-color: #141414;
+}
+
+.nav_elements {
+    width: 100%;
+    height: 100%;
+}
+
+.nav_content {
+    height: calc(100% - 70px);
+    display: flex;
+    flex-flow: row nowrap;
+    align-content: center;
+    justify-content: center;
+}
+
+.nav_list {
+    width: 164px;
+    background-color: #222222;
+    border-right: 1px solid #424242;
+    border-radius: 15px 0 0 0;
+}
+
+.nav_ul {
+    width: 100%;
+    margin-top: 150px;
+}
+
+.nav_li {
+    width: 100%;
+    height: 35px;
+    padding: 5px;
+    text-align: center;
+}
+
+.nav_sections {
+    width: calc(100% - 400px);
+    background-color: #222222;
+    border-radius: 0 15px 0 0;
+}

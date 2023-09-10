@@ -1,0 +1,222 @@
+    <script>
+      /**
+       * функция генерации chatID
+       */
+      function generateChatID(myEmail, companionData) {
+        const emails = [myEmail, companionData.email];
+        const sortedEmails = emails.sort();
+        return sortedEmails[0] + sortedEmails[1] + '';
+      }
+
+      /**
+       * отображение переписки с собеседником
+       */
+      function correspondence(chatID, companionData) {
+        const dialogue_with_wrapper = document.getElementById(
+          'dialogue_with_wrapper',
+        );
+        dialogue_with_wrapper.innerHTML = '';
+        dialogue_with_wrapper.innerHTML = `
+        <div class="dialogue_with_text">
+          <div class="dialogue_with_name">${companionData.username}</div>
+          <div class="last_entrance">был в сети час назад</div>
+        </div>
+        <div class="user_avatar user_avatar_small">
+          <img class="user_avatar_img" src="${companionData.avatar}" alt="" />
+          <div class="status"></div>
+        </div>`;
+      }
+
+      /**
+       * обработка клика по чату с собеседником
+       */
+      function userHandler(event) {
+        console.log(event.currentTarget);
+        const companionData = {
+          username: event.currentTarget.getAttribute('data-username'),
+          email: event.currentTarget.getAttribute('data-email'),
+          avatar: event.currentTarget.getAttribute('data-avatar'),
+        };
+        const myEmail = localStorage.getItem('email');
+        const chatID = generateChatID(myEmail, companionData);
+        correspondence(chatID, companionData);
+        console.log(chatID);
+      }
+    </script>
+
+    <section class="module_wrapper none" id="get_in_window">
+      <div class="module_window">
+        <div class="module_container">
+          <h1>Вход</h1>
+          <form action="./api/get-in" method="post" id="authorizationForm">
+            <label>Почта</label>
+            <input
+              class="text-imput"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+            <label>Пароль</label>
+            <input
+              class="text-imput"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              maxlength="21"
+              required
+            />
+            <input
+              class="checkbox-imput"
+              type="checkbox"
+              name="not_my_pc"
+            /><span>чужой компьютер</span>
+            <input class="button" type="submit" name="submit" value="Войти" />
+          </form>
+        </div>
+        <button class="exit" id="get_in_exit">x</button>
+      </div>
+    </section>
+    <section class="module_wrapper none" id="registration_window">
+      <div class="module_window">
+        <div class="module_container">
+          <h1>Регистрация</h1>
+          <form role="form" id="registrationForm">
+            <label>Имя пользователя</label>
+            <input
+              class="text-imput"
+              name="username"
+              type="text"
+              autocomplete="username"
+              maxlength="25"
+              required
+            />
+            <label>Почта</label>
+            <input
+              class="text-imput"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+            <label>Пароль</label>
+            <input
+              class="text-imput"
+              name="password"
+              type="password"
+              autocomplete="new-password"
+              maxlength="21"
+              required
+            />
+            <label>Повторите пароль</label>
+            <input
+              class="text-imput"
+              name="password2"
+              type="password"
+              autocomplete="new-password"
+              maxlength="21"
+              required
+            />
+            <input
+              class="checkbox-imput"
+              type="checkbox"
+              name="accept"
+              required
+            /><span>я согласен на обработку персональных данных</span>
+            <input
+              class="button"
+              type="submit"
+              name="submit"
+              value="Зарегистрироваться"
+            />
+          </form>
+        </div>
+        <button class="exit" id="registration_exit">x</button>
+      </div>
+    </section>
+    <section class="settings_wrapper none" id="settings_window">
+      <div class="settings_window">
+        <form enctype="multipart/form-data" method="post">
+          <p>Сменить аватар</p>
+          <p>
+            <input type="file" name="photo" accept="image/*,image/jpeg" />
+            <input class="btn btn-outline-light me-2" type="submit" value="Сменить аватар" />
+          </p>
+        </form>
+        <form enctype="multipart/form-data" role="form" id="changeName">
+          <p>Сменить имя</p>
+          <p>
+            <input type="text" name="username" id="changeName_input" />
+            <input class="btn btn-outline-light me-2" type="submit" value="Сменить никнейм" />
+          </p>
+        </form>
+      </div>
+      <button class="return btn btn-outline-light me-2" id="settings_exit">назад</button>
+    </section>
+    <section class="wrapper" id="wrapper">
+      <div class="dialogue_with">
+        <div class="dialogue_with_wrapper" id="dialogue_with_wrapper"></div>
+      </div>
+      <section class="users_wrapper hide" id="menu">
+        <button class="menuButton" id="menuButton">-></button>
+        <input
+          type="search"
+          class="form-control form-control-dark text-bg-dark aaa"
+          id="chat_search"
+          placeholder="Поиск чатов..."
+          style="width: 250px"
+        />
+        <div class="users" id="users"></div>
+      </section>
+      <section class="messages_wrapper">
+        <div class="messages" id="messages">
+          <!-- <div class="message from">
+            <div class="user_avatar user_avatar_small"></div>
+            <div class="message_text">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste,
+              laudantium praesentium obcaecati facere et hic quia corrupti enim!
+              Veritatis praesentium dolorum quo nostrum dicta sit tenetur
+              possimus doloribus cupiditate consequuntur. Lorem ipsum dolor sit
+              amet consectetur adipisicing elit. Iste, laudantium praesentium
+              obcaecati facere et hic quia corrupti enim! Veritatis praesentium
+              dolorum quo nostrum dicta sit tenetur possimus doloribus
+              cupiditate consequuntur. Lorem ipsum dolor sit amet consectetur
+              adipisicing elit. Iste, laudantium praesentium obcaecati facere et
+              hic quia corrupti enim! Veritatis praesentium dolorum quo nostrum
+              dicta sit tenetur possimus doloribus cupiditate consequuntur.
+            </div>
+            <div class="message_metric">12:00 PM<br />Aug 13</div>
+          </div>
+          <div class="message my">
+            <div class="message_metric">12:00 PM<br />Aug 13</div>
+            <div class="message_text">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste,
+              laudantium praesentium obcaecati facere et hic quia corrupti enim!
+              Veritatis praesentium dolorum quo nostrum dicta sit tenetur
+              possimus doloribus cupiditate consequuntur.
+            </div>
+            <div class="user_avatar user_avatar_small"></div>
+          </div> -->
+        </div>
+        <form class="message_send" id="chat_form">
+          <input
+            class="message_text_value"
+            id="message_text"
+            type="text"
+            name="message"
+            placeholder="ваше сообщение"
+            required="true"
+          />
+          <input
+            class="message_submit btn btn-warning"
+            type="submit"
+            name="submit"
+            value="Отправить"
+          />
+        </form>
+      </section>
+    </section>
+    <script type="module" src="./src/socket/socket.ts"></script>
+    <script type="module" src="./src/socket/socket-service.ts"></script>
+    <script type="module" src="./src/handlers/header-handler.ts"></script>
+    <script type="module" src="./src/handlers/main-page-handler.ts"></script>
