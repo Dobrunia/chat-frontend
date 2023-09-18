@@ -38,7 +38,8 @@ body {
   overflow-y: scroll;
   padding-left: 12px;
   border-radius: 5px;
-  background-color: var(--split);
+  border: 1px solid var(--borderVk);
+  background-color: var(--navLightBg);
 }
 
 .element {
@@ -48,6 +49,7 @@ body {
   width: 100%;
   height: 60px;
   margin-top: 10px;
+  margin-bottom: 10px;
   padding: 5px;
   cursor: pointer;
 }
@@ -175,7 +177,7 @@ body {
 }
 
 .avatar_hover {
-  background-color: var(--message);
+  background-color: var(--navDarkBg);
 }
 
 .up-arrow {
@@ -185,7 +187,7 @@ body {
   border: 10px solid transparent;
   display: inline-flex;
   transform: rotate(90deg);
-  border-right: 10px solid var(--message);
+  border-right: 10px solid var(--navDarkBg);
   border-left: none;
 }
 
@@ -314,11 +316,9 @@ body {
   z-index: 2;
 }
 
-.aaa {
+.mar {
   margin-top: 8px;
   margin-bottom: 8px;
-  background-color: var(--navLightBg) !important;
-  border-color: var(--borderVk);
 }
 
 .users {
@@ -538,6 +538,11 @@ body {
   justify-content: space-around;
   background-color: var(--backG);
   text-align: center;
+}
+
+.input_color {
+  background-color: var(--navLightBg) !important;
+  border-color: var(--borderVk);
 }
 
 @media screen and (max-width: 991px) {

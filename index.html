@@ -39,7 +39,7 @@
         dialogue_with_wrapper.innerHTML = '';
         dialogue_with_wrapper.innerHTML = `
         <div class="dialogue_with_text">
-          <div class="dialogue_with_name">${companionData.username}</div>
+          <div class="dialogue_with_name" id="data_chatID" data-chatID="${chatID}">${companionData.username}</div>
           <div class="last_entrance">был в сети час назад</div>
         </div>
         <div class="user_avatar user_avatar_small">
@@ -77,7 +77,7 @@
               >
                 <input
                   type="search"
-                  class="form-control form-control-dark text-bg-dark"
+                  class="form-control form-control-dark text-bg-dark input_color"
                   id="users_search"
                   placeholder="Поиск пользователей..."
                   aria-label="Search"
@@ -293,7 +293,7 @@
         <div class="nav_content">
           <div class="nav_list">
             <div class="nav_ul">
-              <div class="nav_li"><a href="">dgdgdg</a></div>
+              <div class="nav_li"><a href="/src/pages/profile.html">моя страница</a></div>
               <div class="nav_li"><a href="">dgdgdg</a></div>
               <div class="nav_li"><a href="">dgdgdg</a></div>
               <div class="nav_li"><a href="">dgdgdg</a></div>
@@ -312,7 +312,7 @@
                 <!-- <button class="menuButton" id="menuButton">-></button> -->
                 <input
                   type="search"
-                  class="form-control form-control-dark text-bg-dark aaa"
+                  class="form-control form-control-dark text-bg-dark mar input_color"
                   id="chat_search"
                   placeholder="Поиск чатов..."
                   style="width: 250px"

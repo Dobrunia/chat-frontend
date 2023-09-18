@@ -172,7 +172,7 @@ function removeChats() {
  * рендер сообщений
  * @param content текст сообщения
  */
-function renderMessage(content: string) {
+export function renderMessage(event: CustomEvent) {
   const messagesWrapper = $('#messages') as HTMLFormElement;
   let date = new Date();
   let formatter1 = new Intl.DateTimeFormat('ru', {
@@ -189,7 +189,7 @@ function renderMessage(content: string) {
         date,
       )}<br />${formatter1.format(date)}</div>
       <div class="message_text">
-        ${content}
+        ${event.detail.message.content}
       </div>
       <div class="user_avatar user_avatar_small"></div>
     </div>`;
@@ -199,11 +199,11 @@ function renderMessage(content: string) {
  * вызывает установщики информации во всех местах + socket
  */
 function setInfo() {
-  // let email = localStorage.getItem('email');
-  // console.log(socketService);
-  // if (email) {
-  //   socketService.login(email);
-  // }
+  let email = localStorage.getItem('email');
+  console.log(socketService);
+  if (email) {
+    socketService.login(email);
+  }
   renderAccount();
   renderThemes();
   renderChats();
@@ -266,11 +266,17 @@ export function changeUsername(event: any) {
 }
 
 /**
- *
+ * отправка сообщений по клику
  */
 export function messageHandler(event: any) {
   event.preventDefault();
+  // const chatID = 'lents@mail.ru';
+  const chatID = $('#data_chatID').getAttribute("data-chatID");
   const content = $('#message_text').value;
-  const chatID = 'lents@mail.ru';
-  socketService.sendMessage(content, chatID);
+  if (!chatID || content == '') {
+    alert("Выберите собеседника или не отправляйте пустые сообщения");//TODO:: Нужно сделать окно уведомлений
+  } else {
+    socketService.sendMessage(content, chatID);
+    $('#message_text').value = '';
+  }
 }

@@ -12,10 +12,17 @@ class SocketService {
       );
     });
     socket.on('private message', (message) => {
-      //renderMessage(content);
-      console.log(
-        'сообщение от ' + message.from + ' написал: ' + message.content,
-      );
+      let event = new CustomEvent('newMessage',{
+        detail: {message},
+        bubbles: true,
+        cancelable: true,
+        composed: false,
+      });
+      document.dispatchEvent(event);
+      // renderMessage(message.content);
+      // console.log(
+      //   'сообщение от ' + message.from + ' написал: ' + message.content,
+      // );
     });
   }
 
