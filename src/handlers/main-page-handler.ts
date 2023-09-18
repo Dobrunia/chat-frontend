@@ -1,11 +1,11 @@
 import { $ } from '../services/main-page-service';
-import { toggleMenu } from '../animation';
+// import { toggleMenu } from '../animation';
 import { messageHandler, renderChats } from '../services/main-page-service';
 
 /**
  * открыть/закрыть окно с чатами
  */
-$('#menuButton').addEventListener('click', toggleMenu);
+// $('#menuButton').addEventListener('click', toggleMenu);
 
 /**
  * рендер активных чатов

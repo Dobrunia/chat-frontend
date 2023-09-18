@@ -4,13 +4,13 @@ import { ModuleMenuType } from './models/types';
 /**
  * открыть/закрыть окно с чатами
  */
-export function toggleMenu() {
-  if (!$('#menu') || !$('#menuButton')) return;
-  $('#menu').classList.toggle('hide');
-  $('#menuButton').textContent === '<-'
-    ? ($('#menuButton').textContent = '->')
-    : ($('#menuButton').textContent = '<-');
-}
+// export function toggleMenu() {
+//   if (!$('#menu') || !$('#menuButton')) return;
+//   $('#menu').classList.toggle('hide');
+//   $('#menuButton').textContent === '<-'
+//     ? ($('#menuButton').textContent = '->')
+//     : ($('#menuButton').textContent = '<-');
+// }
 
 /**
  * открытие меню профиля
@@ -30,15 +30,15 @@ export function globalClick(event: MouseEvent) {
     !$('#my_avatar').contains(targetElement) &&
     !$('#avatar_hover').contains(targetElement)
   ) {
-    //убираем меню под аватаром (настройки)
+    // убираем меню под аватаром (настройки)
     // Клик был совершен вне меню, поэтому закрываем его
     $('#avatar_hover').classList.add('none');
   }
-  if (!$('#menu').contains(targetElement)) {
-    //убираем левое меню (с чатами)
-    $('#menu').classList.add('hide');
-    $('#menuButton').textContent = '->';
-  }
+  // if (!$('#menu').contains(targetElement)) {// убираем список чатов
+  //   //убираем левое меню (с чатами)
+  //   $('#menu').classList.add('hide');
+  //   $('#menuButton').textContent = '->';
+  // }
 
   //скрыть поиск пользователей при 2м клике
   if (!$('#search_request').contains(targetElement)) {
