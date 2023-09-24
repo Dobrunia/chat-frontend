@@ -28,3 +28,4 @@ export type AuthResponse = {
   accessToken: string;
   refreshToken: string;
 };
+export type SectionType = 'my_page' | 'messenger';

@@ -1,5 +1,5 @@
 import { $ } from './services/main-page-service';
-import { ModuleMenuType } from './models/types';
+import { ModuleMenuType, SectionType } from './models/types';
 
 /**
  * открыть/закрыть окно с чатами
@@ -117,6 +117,7 @@ export function logOutView() {
  */
 export function logInView() {
   toggleModuleWindow('exit');
+  hideSections('my_page');
   $('#reg_btns').classList.add('none');
   $('#account').classList.remove('none');
 }
@@ -134,4 +135,35 @@ function changeTheme(themeName: string) {
  */
 export function chooseTheme(this: HTMLSelectElement) {
   changeTheme(this.options[this.selectedIndex].text);
+}
+
+/**
+ * функция скрытия всех секций кроме переданной
+ */
+function hideSections(selected_section: SectionType) {
+  const sections = [...document.getElementsByClassName('nav_selected_section')];
+  sections.forEach((section) => {
+    if (selected_section !== section.getAttribute('data-section')) {
+      section.classList.add('none');
+    } else {
+      section.classList.remove('none');
+    }
+  });
+}
+
+/**
+ * смена выбранной секции в навигации
+ */
+export function changeSection(data_section: SectionType) {
+  switch (data_section) {
+    case 'my_page':
+      hideSections('my_page');
+      break;
+    case 'messenger':
+      hideSections('messenger');
+      break;
+    default:
+      console.log('такой секции нет');
+      break;
+  }
 }

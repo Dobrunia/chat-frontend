@@ -271,12 +271,16 @@ export function changeUsername(event: any) {
 export function messageHandler(event: any) {
   event.preventDefault();
   // const chatID = 'lents@mail.ru';
-  const chatID = $('#data_chatID').getAttribute("data-chatID");
-  const content = $('#message_text').value;
-  if (!chatID || content == '') {
-    alert("Выберите собеседника или не отправляйте пустые сообщения");//TODO:: Нужно сделать окно уведомлений
-  } else {
-    socketService.sendMessage(content, chatID);
-    $('#message_text').value = '';
+  try {
+    const chatID = $('#data_chatID').getAttribute('data-chatID');
+    const content = $('#message_text').value.trim();
+    if (!chatID || content == '') {
+      alert('Не отправляйте пустые сообщения'); //TODO:: Нужно сделать окно уведомлений
+    } else {
+      socketService.sendMessage(content, chatID);
+      $('#message_text').value = '';
+    }
+  } catch (e) {
+    alert('Выберите собеседника');
   }
 }

@@ -1,0 +1,108 @@
+.nav_profile {
+    height: 100%;
+}
+
+.nav_profile div {
+    border-radius: var(--borderRadius);
+}
+
+.nav_profile_header {
+    position: relative;
+    height: 150px;
+}
+
+.nav_profile_avatar {
+    position: absolute;
+    width: max-content;
+    left: 100px;
+    bottom: -60px;
+}
+
+.nav_profile_avatar_img {
+    height: 120px;
+    width: 120px;
+    border: 3px solid var(--navLightBg);
+    border-radius: 50%;
+    /* animation: neon-animation 1.5s ease-in-out infinite alternate; */
+}
+
+.nav_status {
+    background-color: var(--exit);
+}
+
+.nav_status {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    right: 2px;
+    bottom: 20px;
+    border-radius: 50%;
+}
+
+.nav_user_info {
+    height: 200px;
+    background-color: var(--navLightBg);
+    border-top-right-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+}
+
+.nav_user_wall_wrapper {
+    width: 100%;
+    height: calc(100% - 350px);
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    /* overflow-y: scroll; */
+}
+
+.nav_user_wall {
+    width: 70%;
+    height: 100%;
+    background-color: var(--navLightBg);
+}
+
+.nav_users_friends {
+    width: 30%;
+    height: 300px;
+    background-color: var(--navLightBg);
+    margin-left: 20px;
+}
+
+.nav_friens {
+    width: 100%;
+    height: 50%;
+    padding: 10px;
+}
+
+.nav_friens span {
+    opacity: 0.6;
+}
+
+.nav_friends_line {
+    border-bottom: 1px dashed var(--attention);
+}
+
+.nav_friends_wrapper {
+    width: 100%;
+    height: 110px;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.nav_friends_wrapper div {
+    margin-right: 10px;
+}
+
+@keyframes neon-animation {
+    from {
+        box-shadow: 0 0 0px #017EAC, 0 0 5px #017EAC, 0 0 10px #017EAC, 0 0 15px #017EAC, 0 0 20px #017EAC, 0 0 25px #017EAC, 0 0 30px #017EAC;
+    }
+
+    to {
+        box-shadow: 0 0 5px #017EAC, 0 0 10px #017EAC, 0 0 15px #017EAC, 0 0 20px #017EAC, 0 0 25px #017EAC, 0 0 30px #017EAC, 0 0 35px #017EAC;
+    }
+}
