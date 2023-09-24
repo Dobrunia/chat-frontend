@@ -7,30 +7,35 @@ class SocketService {
     console.log('Пользователь ' + email + ' подключился');
     socket.on('user connected', (socket) => {
       console.log(typeof (socket as any).userID);
-      console.log(
-        'в чат зашёл ' + (socket as any).userID,
-      );
+      console.log('в чат зашёл ' + (socket as any).userID);
     });
     socket.on('private message', (message) => {
-      let event = new CustomEvent('newMessage',{
-        detail: {message},
+      let event = new CustomEvent('newMessage', {
+        detail: { message },
         bubbles: true,
         cancelable: true,
         composed: false,
       });
       document.dispatchEvent(event);
-      // renderMessage(message.content);
-      // console.log(
-      //   'сообщение от ' + message.from + ' написал: ' + message.content,
-      // );
     });
   }
 
-  sendMessage(content: string, chatId: string) {//TODO::
+  sendMessage(content: string, chatId: string) {
     socket.emit('private message', {
       content,
       to: chatId,
     });
+    let message = {
+      content,
+      from: 'me',
+    };
+    let event = new CustomEvent('newMessage', {
+      detail: { message },
+      bubbles: true,
+      cancelable: true,
+      composed: false,
+    });
+    document.dispatchEvent(event);//TODO:: видимо тут сохраняем в базу
   }
 }
 export default new SocketService();

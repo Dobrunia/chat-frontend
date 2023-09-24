@@ -184,7 +184,7 @@ export function renderMessage(event: CustomEvent) {
     minute: 'numeric',
   });
   messagesWrapper.innerHTML += `
-    <div class="message my">
+    <div class="message ${event.detail.message.from === 'me' ? 'my' : 'from'}">
       <div class="message_metric">${formatter2.format(
         date,
       )}<br />${formatter1.format(date)}</div>
