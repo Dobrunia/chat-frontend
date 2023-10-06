@@ -33,6 +33,7 @@ export function authorization(event: any) {
   fetch('http://localhost:5000/api/authorization', requestOptions)
     .then((response) => response.json())
     .then((data) => {
+      localStorage.setItem('id', data.id);
       localStorage.setItem('email', data.email);
       localStorage.setItem('username', data.username);
       localStorage.setItem('avatar', data.avatar);

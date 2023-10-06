@@ -1,5 +1,6 @@
 import { $ } from './services/main-page-service';
 import { ModuleMenuType, SectionType } from './models/types';
+import { functionsIn } from 'lodash';
 
 /**
  * открыть/закрыть окно с чатами
@@ -104,12 +105,21 @@ export function toggleModuleWindow(e: ModuleMenuType) {
 }
 
 /**
+ * открытие/закрытие вкладки с навигацией
+ */
+function toggleNavigation() {
+  $('#nav_list').classList.toggle('none');
+}
+
+/**
  * отображение не авторизованного пользователя
  */
 export function logOutView() {
+  toggleNavigation();
   toggleModuleWindow('get_in');
   $('#reg_btns').classList.remove('none');
   $('#account').classList.add('none');
+  changeSection('hideAll');
 }
 
 /**
@@ -117,6 +127,7 @@ export function logOutView() {
  */
 export function logInView() {
   toggleModuleWindow('exit');
+  toggleNavigation();
   hideSections('my_page');
   $('#reg_btns').classList.add('none');
   $('#account').classList.remove('none');
@@ -163,7 +174,7 @@ export function changeSection(data_section: SectionType) {
       hideSections('messenger');
       break;
     default:
-      console.log('такой секции нет');
+      hideSections('hideAll');
       break;
   }
 }
