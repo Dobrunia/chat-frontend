@@ -23,7 +23,7 @@ export function toggleSmallMenu() {
 /**
  * функция закрытия при клике вне области
  */
-export function globalClick(event: MouseEvent) {
+export function globalClickAnimation(event: MouseEvent) {
   let search_request_counter = 0;
   const targetElement = event.target; // Элемент, на который был совершен клик
   // Проверяем, является ли элемент меню или его потомком

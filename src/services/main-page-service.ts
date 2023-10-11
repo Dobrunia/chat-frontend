@@ -1,4 +1,4 @@
-import { logInView, logOutView } from '../animation';
+import { globalClickAnimation, logInView, logOutView } from '../animation';
 import { UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
 import { $api } from '../http/api';
@@ -16,6 +16,19 @@ export const $ = (element: string) =>
 export function isUserLoggedIn(): boolean {
   //TODO:: запрос на проверку
   //return localStorage.getItem('accessToken') != undefined;
+}
+
+/**
+ * отработка глобального клика
+ */
+export function globalClickHandler(event: MouseEvent) {
+  const targetElement = event.target as HTMLElement; // Элемент, на который был совершен клик
+
+  if (targetElement.classList.contains('user')) {
+    //TODO:: класс не юзер свой сделать - открытие профиля
+    console.log('sds');
+  }
+  globalClickAnimation(event);
 }
 
 /**
@@ -73,34 +86,34 @@ function renderUsers(users_response_result: UsersResponseResult) {
     $('#search_request').innerHTML = '';
     users_response_result.forEach((user) => {
       const id_el = 'id' + user.id;
-      $('#search_request').innerHTML += `<div class="element" id="${id_el}" data-userID="${user.id}">
+      $(
+        '#search_request',
+      ).innerHTML += `<div class="element" id="${id_el}" data-userID="${user.id}">
       <div class="user_avatar user_avatar_small">
         <img class="user_avatar_img" src="${user.avatar}" alt="" />
         <div class="status"></div>
       </div>
       <span class="element_span">${user.username}</span>
     </div>`;
-    $('#' + id_el).addEventListener('click', (event) => {
-      const id = event.currentTarget.getAttribute('data-userID');
-      const currentUserId = localStorage.getItem('id');
-      let chatId = '';
-      $api
-      .get(`/findChatByUserId/${id}?hostUserId=${currentUserId}`)
-      .then((response) => {
-        if (response.data.length == 0){
-          chatId = `new_${id}_${currentUserId}`;
-        }
-        else{
-          chatId = response.data[0];
-        }
-        //TODO:: Отображать собеседника + обновлять чат
-      })
-      .catch((error) => {
-        console.error(error);
+      $('#' + id_el).addEventListener('click', (event) => {
+        const id = event.currentTarget.getAttribute('data-userID');
+        const currentUserId = localStorage.getItem('id');
+        let chatId = '';
+        $api
+          .get(`/findChatByUserId/${id}?hostUserId=${currentUserId}`)
+          .then((response) => {
+            if (response.data.length == 0) {
+              chatId = `new_${id}_${currentUserId}`;
+            } else {
+              chatId = response.data[0];
+            }
+            //TODO:: Отображать собеседника + обновлять чат
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       });
-    })
     });
-    
   }
 }
 
@@ -151,7 +164,7 @@ export async function renderChats() {
   users.innerHTML = '';
   jsonData.forEach((element: any) => {
     const content = `<div class="line"></div>
-      <div class="user" title="${element.username}" onclick="userHandler(event)" data-username="${element.username}" data-email="${element.email}" data-avatar="${element.avatar}">
+      <div class="user" title="${element.username}" data-username="${element.username}" data-email="${element.email}" data-avatar="${element.avatar}">
         <div class="user_avatar user_avatar_small">
           <img class="user_avatar_img" src="${element.avatar}" alt="" />
           <div class="status"></div>

@@ -31,5 +31,7 @@ document.addEventListener('newMessage', renderMessage);
  */
 const sections = [...document.getElementsByClassName('nav_select_section')];
 sections.forEach((section) => {
-  section.addEventListener('click', () => changeSection(section.getAttribute('data-section')));
+  section.addEventListener('click', () =>
+    changeSection(section.getAttribute('data-section')),
+  );
 });

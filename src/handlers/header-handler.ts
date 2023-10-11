@@ -1,12 +1,11 @@
 import {
   chooseTheme,
   closeSettingsWindow,
-  globalClick,
   openSettingsWindow,
   toggleModuleWindow,
   toggleSmallMenu,
 } from '../animation';
-import { $ } from '../services/main-page-service';
+import { $, globalClickHandler } from '../services/main-page-service';
 import { authorization } from '../registration-authorization/authorization';
 import { registration } from '../registration-authorization/registration';
 import {
@@ -63,9 +62,9 @@ $('#registration_exit').addEventListener('click', () =>
 );
 
 /**
- * функция закрытия при клике вне области
+ * функция закрытия при клике вне области, а также обработчик некоторых глобальных вещей 
  */
-document.addEventListener('click', globalClick);
+document.addEventListener('click', globalClickHandler);
 
 /**
  * раз в 500мл проверка, что ввел пользователь и запрос на сервер
