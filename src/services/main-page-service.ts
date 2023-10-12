@@ -267,7 +267,6 @@ export function globalClickHandler(event: MouseEvent) {
 
   if (targetElement.classList.contains('openProfile')) {
     //добавлять в img класс openProfile и атрибут data-id="${element.id}"
-    //TODO:: открытие профиля по id пользователя
     const userId = targetElement.getAttribute('data-id');
     changeSection('profile_page', userId);
   }
