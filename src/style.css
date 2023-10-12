@@ -40,6 +40,7 @@ body {
   border-radius: 5px;
   border: 1px solid var(--borderVk);
   background-color: var(--navLightBg);
+  z-index: 10;
 }
 
 .element {

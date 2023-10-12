@@ -24,9 +24,19 @@ export function isUserLoggedIn(): boolean {
 }
 
 /**
+ * функция генерации chatID
+ */
+function generateChatID(companionEmail: string) {
+  const myEmail = localStorage.getItem('email');
+  const emails = [myEmail, companionEmail];
+  const sortedEmails = emails.sort();
+  return sortedEmails[0] + sortedEmails[1] + '';
+}
+
+/**
  * отображение переписки с собеседником
  */
-function correspondence(chatID, companionData) {
+function correspondence(chatID: string, companionData) {
   const dialogue_with_wrapper = $('#dialogue_with_wrapper');
   dialogue_with_wrapper.innerHTML = '';
   dialogue_with_wrapper.innerHTML = `
@@ -57,22 +67,24 @@ function userHandler(elem, chatID: string) {
 /**
  * создания chatId если он отсутствует
  */
-function renderChatId(id: string) {
-  const currentUserId = localStorage.getItem('id');
-  let chatId = '';
-  $api
-    .get(`/findChatByUserId/${id}?hostUserId=${currentUserId}`)
-    .then((response) => {
-      if (response.data.length == 0) {
-        chatId = `new_${id}_${currentUserId}`;
-      } else {
-        chatId = response.data[0];
-      }
-      //TODO:: Отображать собеседника + обновлять чат
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+function renderChatId(currentElement) {
+  // const currentUserId = localStorage.getItem('id');
+  // let chatId = '';
+  // $api
+  //   .get(`/findChatByUserId/${id}?hostUserId=${currentUserId}`)
+  //   .then((response) => {
+  //     if (response.data.length == 0) {
+  //       chatId = `new_${id}_${currentUserId}`;
+  //     } else {
+  //       chatId = response.data[0];
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
+  const companionEmail = currentElement.getAttribute('data-email');
+  const companionId = currentElement.getAttribute('data-id');
+  userHandler(currentElement, generateChatID(companionEmail))//TODO:: сохранять chatId в БД
 }
 
 /**
@@ -96,7 +108,7 @@ export function globalClickHandler(event: MouseEvent) {
     const currentElement = targetElement.closest('.openDialog');
     const chatId = currentElement?.getAttribute('data-chatId');
     changeSection('messenger');
-    chatId ? userHandler(currentElement, 'chatId') : renderChatId(currentElement.getAttribute('data-id'), currentElement.getAttribute('data-email'));
+    chatId ? userHandler(currentElement, 'chatId') : renderChatId(currentElement);
   }
   globalClickAnimation(event);
 }
@@ -158,7 +170,7 @@ function renderUsers(users_response_result: UsersResponseResult) {
       const id_el = 'id' + user.id;
       $(
         '#search_request',
-      ).innerHTML += `<div class="element openDialog" id="${id_el}" data-id="${user.id}" data-email="${user.email}">
+      ).innerHTML += `<div class="element openDialog" id="${id_el}" data-id="${user.id}" data-username="${user.username}" data-email="${user.email}" data-avatar="${user.avatar}">
       <div class="user_avatar user_avatar_small">
         <img class="user_avatar_img openProfile" src="${user.avatar}" alt="" data-id="${user.id}"/>
         <div class="status"></div>
