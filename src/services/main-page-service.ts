@@ -1,4 +1,9 @@
-import { globalClickAnimation, logInView, logOutView } from '../animation';
+import {
+  changeSection,
+  globalClickAnimation,
+  logInView,
+  logOutView,
+} from '../animation';
 import { UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
 import { $api } from '../http/api';
@@ -19,14 +24,79 @@ export function isUserLoggedIn(): boolean {
 }
 
 /**
+ * отображение переписки с собеседником
+ */
+function correspondence(chatID, companionData) {
+  const dialogue_with_wrapper = $('#dialogue_with_wrapper');
+  dialogue_with_wrapper.innerHTML = '';
+  dialogue_with_wrapper.innerHTML = `
+        <div class="dialogue_with_text">
+          <div class="dialogue_with_name" id="data_chatID" data-chatId="${chatID}">${companionData.username}</div>
+          <div class="last_entrance">был в сети час назад</div>
+        </div>
+        <div class="user_avatar user_avatar_small">
+          <img class="user_avatar_img openProfile" src="${companionData.avatar}" alt="" data-id="${companionData.id}"/>
+          <div class="status"></div>
+        </div>`;
+}
+
+/**
+ * обработка клика по чату с собеседником
+ */
+function userHandler(elem, chatID: string) {
+  const companionData = {
+    id: elem.getAttribute('data-id'),
+    username: elem.getAttribute('data-username'),
+    email: elem.getAttribute('data-email'),
+    avatar: elem.getAttribute('data-avatar'),
+  };
+  correspondence(chatID, companionData);
+  console.log(chatID);
+}
+
+/**
+ * создания chatId если он отсутствует
+ */
+function renderChatId(id: string) {
+  const currentUserId = localStorage.getItem('id');
+  let chatId = '';
+  $api
+    .get(`/findChatByUserId/${id}?hostUserId=${currentUserId}`)
+    .then((response) => {
+      if (response.data.length == 0) {
+        chatId = `new_${id}_${currentUserId}`;
+      } else {
+        chatId = response.data[0];
+      }
+      //TODO:: Отображать собеседника + обновлять чат
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+/**
  * отработка глобального клика
  */
 export function globalClickHandler(event: MouseEvent) {
   const targetElement = event.target as HTMLElement; // Элемент, на который был совершен клик
 
-  if (targetElement.classList.contains('user')) {
-    //TODO:: класс не юзер свой сделать - открытие профиля
-    console.log('sds');
+  if (targetElement.classList.contains('openProfile')) {
+    //добавлять в img класс openProfile и атрибут data-id="${element.id}"
+    //TODO:: открытие профиля по id пользователя
+    const userId = targetElement.getAttribute('data-id');
+    console.log(userId);
+  }
+
+  if (
+    targetElement.closest('.openDialog') &&
+    !targetElement.classList.contains('openProfile')
+  ) {
+    //добавлять в div класс openDialog и атрибут data-chatId или data-id="${user.id}" data-email="${user.email}"
+    const currentElement = targetElement.closest('.openDialog');
+    const chatId = currentElement?.getAttribute('data-chatId');
+    changeSection('messenger');
+    chatId ? userHandler(currentElement, 'chatId') : renderChatId(currentElement.getAttribute('data-id'), currentElement.getAttribute('data-email'));
   }
   globalClickAnimation(event);
 }
@@ -88,31 +158,13 @@ function renderUsers(users_response_result: UsersResponseResult) {
       const id_el = 'id' + user.id;
       $(
         '#search_request',
-      ).innerHTML += `<div class="element" id="${id_el}" data-userID="${user.id}">
+      ).innerHTML += `<div class="element openDialog" id="${id_el}" data-id="${user.id}" data-email="${user.email}">
       <div class="user_avatar user_avatar_small">
-        <img class="user_avatar_img" src="${user.avatar}" alt="" />
+        <img class="user_avatar_img openProfile" src="${user.avatar}" alt="" data-id="${user.id}"/>
         <div class="status"></div>
       </div>
       <span class="element_span">${user.username}</span>
     </div>`;
-      $('#' + id_el).addEventListener('click', (event) => {
-        const id = event.currentTarget.getAttribute('data-userID');
-        const currentUserId = localStorage.getItem('id');
-        let chatId = '';
-        $api
-          .get(`/findChatByUserId/${id}?hostUserId=${currentUserId}`)
-          .then((response) => {
-            if (response.data.length == 0) {
-              chatId = `new_${id}_${currentUserId}`;
-            } else {
-              chatId = response.data[0];
-            }
-            //TODO:: Отображать собеседника + обновлять чат
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      });
     });
   }
 }
@@ -156,7 +208,7 @@ function getAllUsers() {
  * рендер ативных чатов пользователя
  */
 export async function renderChats() {
-  const jsonData = await getAllUsers();
+  const jsonData = await getAllUsers(); //TODO:: тут получать только пользователей с которыми есть переписка и добавить data-chatId
   const chat_search = document.querySelector(
     '#chat_search',
   ) as HTMLInputElement;
@@ -164,9 +216,9 @@ export async function renderChats() {
   users.innerHTML = '';
   jsonData.forEach((element: any) => {
     const content = `<div class="line"></div>
-      <div class="user" title="${element.username}" data-username="${element.username}" data-email="${element.email}" data-avatar="${element.avatar}">
+      <div class="user openDialog" title="${element.username}" data-id="${element.id}" data-username="${element.username}" data-email="${element.email}" data-avatar="${element.avatar}" data-chatId="${element.id}">
         <div class="user_avatar user_avatar_small">
-          <img class="user_avatar_img" src="${element.avatar}" alt="" />
+          <img class="user_avatar_img openProfile" src="${element.avatar}" alt="" data-id="${element.id}"/>
           <div class="status"></div>
         </div>
         <div class="user_info">

@@ -19,51 +19,6 @@
     />
   </head>
   <body>
-    <script>
-      /**
-       * функция генерации chatID
-       */
-      function generateChatID(myEmail, companionData) {
-        const emails = [myEmail, companionData.email];
-        const sortedEmails = emails.sort();
-        return sortedEmails[0] + sortedEmails[1] + '';
-      }
-
-      /**
-       * отображение переписки с собеседником
-       */
-      function correspondence(chatID, companionData) {//TODO:: убрать от сюда
-        const dialogue_with_wrapper = document.getElementById(
-          'dialogue_with_wrapper',
-        );
-        dialogue_with_wrapper.innerHTML = '';
-        dialogue_with_wrapper.innerHTML = `
-        <div class="dialogue_with_text">
-          <div class="dialogue_with_name" id="data_chatID" data-chatID="${chatID}">${companionData.username}</div>
-          <div class="last_entrance">был в сети час назад</div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img class="user_avatar_img" src="${companionData.avatar}" alt="" />
-          <div class="status"></div>
-        </div>`;
-      }
-
-      /**
-       * обработка клика по чату с собеседником
-       */
-      function userHandler(event) {
-        console.log(event.currentTarget);
-        const companionData = {
-          username: event.currentTarget.getAttribute('data-username'),
-          email: event.currentTarget.getAttribute('data-email'),
-          avatar: event.currentTarget.getAttribute('data-avatar'),
-        };
-        const myEmail = localStorage.getItem('email');
-        const chatID = generateChatID(myEmail, companionData);
-        correspondence(chatID, companionData);
-        console.log(chatID);
-      }
-    </script>
     <div class="nav_wrapper">
       <div class="nav_elements">
         <header class="p-3 text-bg-dark header">
