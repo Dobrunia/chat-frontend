@@ -1,10 +1,10 @@
 import {
-  changeSection,
   globalClickAnimation,
+  hideSections,
   logInView,
   logOutView,
 } from '../animation';
-import { UsersResponseResult } from '../models/types';
+import { SectionType, UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
 import { $api } from '../http/api';
 import socketService from '../socket/socket-service';
@@ -61,7 +61,6 @@ function userHandler(elem, chatID: string) {
     avatar: elem.getAttribute('data-avatar'),
   };
   correspondence(chatID, companionData);
-  console.log(chatID);
 }
 
 /**
@@ -84,7 +83,180 @@ function renderChatId(currentElement) {
   //   });
   const companionEmail = currentElement.getAttribute('data-email');
   const companionId = currentElement.getAttribute('data-id');
-  userHandler(currentElement, generateChatID(companionEmail))//TODO:: сохранять chatId в БД
+  userHandler(currentElement, generateChatID(companionEmail)); //TODO:: сохранять chatId в БД
+}
+
+/**
+ * смена выбранной секции в навигации
+ */
+export function changeSection(data_section: SectionType, userId?: string) {
+  switch (data_section) {
+    case 'profile_page':
+      hideSections('profile_page');
+      userId
+        ? findUserProfilePage(userId)
+        : findUserProfilePage(localStorage.getItem('id'));
+      break;
+    case 'messenger':
+      hideSections('messenger');
+      break;
+    default:
+      hideSections('hideAll');
+      break;
+  }
+}
+
+/**
+ * поиск данных для страницы профиля пользователя и запуск отрисовки
+ */
+function findUserProfilePage(userId: string | null) {
+  $api
+    .get(`/find-user-by-id?search_value=${userId}`)
+    .then((response) => {
+      $('#profile_page').innerHTML = '';
+      $('#profile_page').innerHTML = `<div class="nav_profile_header">
+    <div class="nav_profile_avatar">
+      <img
+        class="nav_profile_avatar_img"
+        src="${response.data[0].avatar}"
+        alt=""
+      />
+      <div class="nav_status"></div>
+    </div>
+    <div class="nav_profile_name">${response.data[0].username}</div>
+  </div>
+  <div class="nav_user_info"><div class="nav_user_info_text">Id: ${response.data[0].id} email: ${response.data[0].email}</div></div>
+  <div class="nav_user_wall_wrapper">
+    <div class="nav_user_wall"></div>
+    <div class="nav_users_friends">
+      <div class="nav_friends nav_friends_line">
+        Друзья онлайн <span>2</span>
+        <div class="nav_friends_wrapper">
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav_friends">
+        Друзья <span>10</span>
+        <div class="nav_friends_wrapper">
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 /**
@@ -97,7 +269,7 @@ export function globalClickHandler(event: MouseEvent) {
     //добавлять в img класс openProfile и атрибут data-id="${element.id}"
     //TODO:: открытие профиля по id пользователя
     const userId = targetElement.getAttribute('data-id');
-    console.log(userId);
+    changeSection('profile_page', userId);
   }
 
   if (
@@ -108,7 +280,9 @@ export function globalClickHandler(event: MouseEvent) {
     const currentElement = targetElement.closest('.openDialog');
     const chatId = currentElement?.getAttribute('data-chatId');
     changeSection('messenger');
-    chatId ? userHandler(currentElement, 'chatId') : renderChatId(currentElement);
+    chatId
+      ? userHandler(currentElement, 'chatId')
+      : renderChatId(currentElement);
   }
   globalClickAnimation(event);
 }
@@ -189,10 +363,10 @@ export function searchInputHandler() {
     const users_search = document.querySelector(
       '#users_search',
     ) as HTMLInputElement;
-    const search_value = users_search.value.trim();
-    if (search_value && search_value !== ' ') {
+    const search_username_value = users_search.value.trim();
+    if (search_username_value && search_username_value !== ' ') {
       $api
-        .get(`/find-users?search_value=${search_value}`)
+        .get(`/find-users?search_value=${search_username_value}`)
         .then((response) => {
           renderUsers(response.data);
         })
@@ -207,7 +381,7 @@ export function searchInputHandler() {
 }
 
 /**
- * получение всех пользователей с БД, TODO:: сделать только тех с кем есть переписка
+ * получение всех пользователей с БД, TODO:1: сделать только тех с кем есть переписка
  */
 function getAllUsers() {
   return $api
@@ -220,7 +394,7 @@ function getAllUsers() {
  * рендер ативных чатов пользователя
  */
 export async function renderChats() {
-  const jsonData = await getAllUsers(); //TODO:: тут получать только пользователей с которыми есть переписка и добавить data-chatId
+  const jsonData = await getAllUsers(); //TODO:1: тут получать только пользователей с которыми есть переписка и добавить data-chatId
   const chat_search = document.querySelector(
     '#chat_search',
   ) as HTMLInputElement;
@@ -316,8 +490,8 @@ function removeUserData() {
  * запускать при входе пользователя анимация + данные
  */
 export function userIn() {
-  logInView();
   setInfo();
+  logInView();
 }
 
 /**

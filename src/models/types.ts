@@ -28,4 +28,4 @@ export type AuthResponse = {
   accessToken: string;
   refreshToken: string;
 };
-export type SectionType = 'my_page' | 'messenger' | 'hideAll';
+export type SectionType = 'profile_page' | 'messenger' | 'hideAll';

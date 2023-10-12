@@ -1,9 +1,9 @@
-import { changeSection } from '../animation';
 import {
   $,
   renderMessage,
   messageHandler,
   renderChats,
+  changeSection,
 } from '../services/main-page-service';
 
 /**

@@ -1,4 +1,4 @@
-import { $ } from './services/main-page-service';
+import { $, changeSection } from './services/main-page-service';
 import { ModuleMenuType, SectionType } from './models/types';
 import { functionsIn } from 'lodash';
 
@@ -128,7 +128,7 @@ export function logOutView() {
 export function logInView() {
   toggleModuleWindow('exit');
   toggleNavigation();
-  hideSections('my_page');
+  changeSection('profile_page');
   $('#reg_btns').classList.add('none');
   $('#account').classList.remove('none');
 }
@@ -151,7 +151,7 @@ export function chooseTheme(this: HTMLSelectElement) {
 /**
  * функция скрытия всех секций кроме переданной
  */
-function hideSections(selected_section: SectionType) {
+export function hideSections(selected_section: SectionType) {
   const sections = [...document.getElementsByClassName('nav_selected_section')];
   sections.forEach((section) => {
     if (selected_section !== section.getAttribute('data-section')) {
@@ -160,21 +160,4 @@ function hideSections(selected_section: SectionType) {
       section.classList.remove('none');
     }
   });
-}
-
-/**
- * смена выбранной секции в навигации
- */
-export function changeSection(data_section: SectionType) {
-  switch (data_section) {
-    case 'my_page':
-      hideSections('my_page');
-      break;
-    case 'messenger':
-      hideSections('messenger');
-      break;
-    default:
-      hideSections('hideAll');
-      break;
-  }
 }

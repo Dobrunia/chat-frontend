@@ -16,6 +16,7 @@
     width: max-content;
     left: 100px;
     bottom: -60px;
+    z-index: 5;
 }
 
 .nav_profile_avatar_img {
@@ -37,13 +38,38 @@
     right: 2px;
     bottom: 20px;
     border-radius: 50%;
+    z-index: 6;
+}
+
+.nav_profile_name {
+    position: absolute;
+    width: max-content;
+    height: 52px;
+    left: 300px;
+    bottom: 0;
+    transform: translate(0, 45%);
+    font-size: 34px;
+    color: var(--attention);
+    z-index: 5;
 }
 
 .nav_user_info {
+    position: relative;
     height: 200px;
     background-color: var(--navLightBg);
     border-top-right-radius: 0px !important;
     border-top-left-radius: 0px !important;
+    z-index: 1;
+}
+
+.nav_user_info_text {
+    position: absolute;
+    height: 100px;
+    width: 550px;
+    left: 300px;
+    bottom: 50%;
+    transform: translate(0, 50%);
+    border: 3px solid var(--navDarkBg);
 }
 
 .nav_user_wall_wrapper {
@@ -70,13 +96,13 @@
     margin-left: 20px;
 }
 
-.nav_friens {
+.nav_friends {
     width: 100%;
     height: 50%;
     padding: 10px;
 }
 
-.nav_friens span {
+.nav_friends span {
     opacity: 0.6;
 }
 
