@@ -94,8 +94,8 @@ export function changeSection(data_section: SectionType, userId?: string) {
     case 'profile_page':
       hideSections('profile_page');
       userId
-        ? findUserProfilePage(userId)
-        : findUserProfilePage(localStorage.getItem('id'));
+        ? renderUserProfilePage(userId)
+        : renderUserProfilePage(localStorage.getItem('id'));
       break;
     case 'messenger':
       hideSections('messenger');
@@ -110,153 +110,248 @@ export function changeSection(data_section: SectionType, userId?: string) {
  * поиск данных для страницы профиля пользователя и запуск отрисовки
  */
 function findUserProfilePage(userId: string | null) {
-  // $api
-  //   .get(`/find-user-by-id?search_value=${userId}`)
-  //   .then((response) => {
-  //     $('#profile_page').innerHTML = '';
-  //     $('#profile_page').innerHTML = `<div class="nav_profile_header">
-  //   <div class="nav_profile_avatar">
-  //     <img
-  //       class="nav_profile_avatar_img"
-  //       src="${response.data[0].avatar}"
-  //       alt=""
-  //     />
-  //     <div class="nav_status"></div>
-  //   </div>
-  //   <div class="nav_profile_name">${response.data[0].username}</div>
-  // </div>
-  // <div class="nav_user_info"><div class="nav_user_info_text">Id: ${response.data[0].id} email: ${response.data[0].email}</div></div>
-  // <div class="nav_user_wall_wrapper">
-  //   <div class="nav_user_wall"></div>
-  //   <div class="nav_users_friends">
-  //     <div class="nav_friends nav_friends_line">
-  //       Друзья онлайн <span>2</span>
-  //       <div class="nav_friends_wrapper">
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //     <div class="nav_friends">
-  //       Друзья <span>10</span>
-  //       <div class="nav_friends_wrapper">
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // </div>`;
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
+  $api
+    .get(`/find-user-by-id?search_value=${userId}`)
+    .then((response) => {
+      $('#profile_page').innerHTML = '';
+      $('#profile_page').innerHTML = `<div class="nav_profile_header">
+      <div class="nav_profile_avatar">
+        <img
+          class="nav_profile_avatar_img"
+          src="${response.data[0].avatar}"
+          alt=""
+        />
+        <div class="nav_status"></div>
+      </div>
+      <div class="nav_profile_name">${response.data[0].username}</div>
+    </div>
+    <div class="nav_user_info">
+      <div class="nav_user_info_text">
+        Id: ${response.data[0].id} email: ${response.data[0].email}
+      </div>
+    </div>
+    <div class="nav_user_wall_wrapper">
+      <div class="nav_user_wall">
+        <form
+          action="/upload"
+          id="addPost"
+          class="nav_user_wall_postForm"
+          enctype="multipart/form-data"
+          role="form"
+        >
+          <textarea
+            name="postText"
+            class="nav_user_wall_postTextarea"
+            id="postText"
+            placeholder="Что у Вас нового..."
+            oninput="autoResize(this)"
+            required
+          ></textarea>
+          <div class="nav_user_wall_files_wrapper">
+            <div class="emoji_picker" id="emoji_picker">
+              <!-- Здесь может быть панель с эмодзи для выбора -->
+              <!-- Например, используя библиотеку как EmojiMart -->
+              <img src="./src/img/smile.svg" alt="" />
+              <div
+                class="emoji_picker_wrapper none"
+                id="emoji_picker_wrapper"
+              ></div>
+            </div>
+            <input
+              id="photo"
+              type="file"
+              name="photo"
+              accept="image/*"
+              style="display: none"
+            />
+            <label
+              for="photo"
+              class="photo-icon picker"
+              title="Загрузить фото"
+            >
+              <img src="./src/img/Picture.svg" alt="" />
+            </label>
+            <input
+              id="files"
+              type="file"
+              name="files"
+              multiple
+              style="display: none"
+            />
+            <label
+              for="files"
+              class="file-icon picker"
+              title="Загрузить файл"
+            >
+              <img src="./src/img/File.svg" alt="" />
+            </label>
+            <button type="submit" class="btn btn-outline-light me-2">
+              Опубликовать
+            </button>
+          </div>
+        </form>
+        <div class="nav_user_wall_wrapper_posts" id="nav_user_wall_wrapper_posts"></div>
+      </div>
+      <div class="nav_users_friends">
+        <div class="nav_friends nav_friends_line">
+          Друзья онлайн <span>2</span>
+          <div class="nav_friends_wrapper">
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+          </div>
+        </div>
+        <div class="nav_friends">
+          Друзья <span>10</span>
+          <div class="nav_friends_wrapper">
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+            <div class="user_avatar user_avatar_small">
+              <img
+                class="user_avatar_img"
+                src="./src/img/1.jpg"
+                alt=""
+              />
+              <div class="status"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+      renderUsersPosts(response.data[0]);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+/**
+ * поиск и отрисовка постов на странице пользователя
+ */
+function renderUsersPosts(userData) {
+  $api
+    .get(`/get-user-posts?search_value=${userData.id}`)
+    .then((response) => {
+      console.log(response.data[0]);
+      $('#nav_user_wall_wrapper_posts').innerHTML = '';
+      $(
+        '#nav_user_wall_wrapper_posts',
+      ).innerHTML = `<div class="nav_user_wall_post">
+    <div class="nav_user_wall_postTextarea">${response.data[0].text}</div>
+    <div class="nav_user_wall_post_imgWrapper">
+      <img src="${response.data[0].photos}" alt="" />
+    </div>
+  </div>`;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
+/**
+ * рендер страницы пользователя
+ */
+function renderUserProfilePage(userId: string | null) {
+  findUserProfilePage(userId);
 }
 
 /**

@@ -40,4 +40,4 @@ sections.forEach((section) => {
 /**
  * выбор смайликов на главной
  */
-$("#emoji_picker").addEventListener('click', showSmiles)
+$("#emoji_picker")?.addEventListener('click', showSmiles)
