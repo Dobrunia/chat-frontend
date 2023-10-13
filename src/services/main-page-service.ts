@@ -133,7 +133,6 @@ function findUserProfilePage(userId: string | null) {
     <div class="nav_user_wall_wrapper">
       <div class="nav_user_wall">
         <form
-          action="/upload"
           id="addPost"
           class="nav_user_wall_postForm"
           enctype="multipart/form-data"
@@ -185,6 +184,13 @@ function findUserProfilePage(userId: string | null) {
             >
               <img src="./src/img/File.svg" alt="" />
             </label>
+            <input
+              id="wallId"
+              type="text"
+              value="${response.data[0].id}"
+              name="wallId"
+              style="display: none"
+            />
             <button type="submit" class="btn btn-outline-light me-2">
               Опубликовать
             </button>
@@ -331,12 +337,11 @@ function renderUsersPosts(userData) {
   $api
     .get(`/get-user-posts?search_value=${userData.id}`)
     .then((response) => {
-      console.log(response.data);
       $('#nav_user_wall_wrapper_posts').innerHTML = '';
       response.data.forEach((element) => {
-        $(
-          '#nav_user_wall_wrapper_posts',
-        ).innerHTML += `<div class="nav_user_wall_post">
+        $('#nav_user_wall_wrapper_posts').insertAdjacentHTML(
+          'afterbegin',
+          `<div class="nav_user_wall_post">
         <div class="user_avatar user_avatar_small" title="${userData.username}">
               <img
                 class="user_avatar_img openProfile"
@@ -364,8 +369,18 @@ function renderUsersPosts(userData) {
         : ``
     }
     
-  </div>`;
+  </div>`,
+        );
       });
+      /**
+       * выбор смайликов на главной
+       */
+      $('#emoji_picker').addEventListener('click', showSmiles);
+
+      /**
+       * выбор смайликов на главной
+       */
+      $('#addPost').addEventListener('submit', addPost);
     })
     .catch((error) => {
       console.error(error);
@@ -644,7 +659,42 @@ export function changeUsername(event: any) {
         localStorage.setItem('username', data);
         renderAccount();
         ($('#changeName_input') as HTMLFormElement).value = '';
-        console.log('Вы успешно сменили имя');
+        alert('Вы успешно сменили имя');
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
+  return false;
+}
+
+/**
+ * добавление нового поста
+ */
+export function addPost(event: any) {
+  event.preventDefault();
+  const formData = new FormData(this);
+  const wallId = formData.get('wallId')?.toString().trim();
+  const postText = formData.get('postText')?.toString().trim();
+  const photo = formData.get('photo')?.toString().trim();
+  const file = formData.get('file')?.toString().trim();
+  const email = localStorage.getItem('email');
+  const authorId = localStorage.getItem('id');
+  if (!email) {
+    return 'Прежде всего войдите в аккаунт';
+  }
+  const DATA = {
+    wallId,
+    authorId,
+    postText: postText ? postText : null,
+    photo: photo ? photo : null,
+    file: file ? file : null,
+  };
+  $api
+    .post('/addPost', { DATA })
+    .then((response) => {
+      const data = response.data;
+      if (data) {
+        renderUserProfilePage(wallId);
+        console.log('пост добавлен');
       }
     })
     .catch((error) => console.log('Ошибка:', error));
