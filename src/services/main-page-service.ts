@@ -335,11 +335,24 @@ function renderUsersPosts(userData) {
       $('#nav_user_wall_wrapper_posts').innerHTML = '';
       $(
         '#nav_user_wall_wrapper_posts',
-      ).innerHTML = `<div class="nav_user_wall_post">
-    <div class="nav_user_wall_postTextarea">${response.data[0].text}</div>
-    <div class="nav_user_wall_post_imgWrapper">
-      <img src="${response.data[0].photos}" alt="" />
-    </div>
+      ).innerHTML = `<div class="nav_user_wall_post">${
+        response.data[0].text
+          ? `<div class="nav_user_wall_postTextarea">${response.data[0].text}</div>`
+          : ``
+      }
+    ${
+      response.data[0].photos
+        ? `<div class="nav_user_wall_post_imgWrapper">
+    <img src="${response.data[0].photos}" alt="" />
+  </div>`
+        : ``
+    }
+    ${
+      response.data[0].files
+        ? `<a href="${response.data[0].files}" class="nav_user_wall_post_file" target="_blank"><img src="./src/img/File.svg" alt="" /></a>`
+        : ``
+    }
+    
   </div>`;
     })
     .catch((error) => {

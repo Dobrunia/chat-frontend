@@ -199,6 +199,12 @@
     height: 190px;
 }
 
+.nav_user_wall_post_file {
+    width: 20px;
+    height: 10px;
+    
+}
+
 @keyframes neon-animation {
     from {
         box-shadow: 0 0 0px #017EAC, 0 0 5px #017EAC, 0 0 10px #017EAC, 0 0 15px #017EAC, 0 0 20px #017EAC, 0 0 25px #017EAC, 0 0 30px #017EAC;
