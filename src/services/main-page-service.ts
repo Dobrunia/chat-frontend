@@ -551,7 +551,6 @@ export function messageHandler(event: any) {
   }
 }
 
-
 /**
  * show/hide smiles
  */
