@@ -248,8 +248,15 @@
         <div class="nav_content">
           <div class="nav_list" id="nav_list">
             <div class="nav_ul">
-              <div class="nav_li nav_select_section" data-section="profile_page">Моя страница</div>
-              <div class="nav_li nav_select_section" data-section="messenger">Мессенджер <span>4</span></div>
+              <div
+                class="nav_li nav_select_section"
+                data-section="profile_page"
+              >
+                Моя страница
+              </div>
+              <div class="nav_li nav_select_section" data-section="messenger">
+                Мессенджер <span>4</span>
+              </div>
               <div class="nav_li nav_select_section">dgdgdg</div>
               <div class="nav_li nav_select_section">dgdgdg</div>
               <div class="nav_li nav_select_section">dgdgdg</div>
@@ -262,8 +269,212 @@
             </div>
           </div>
           <div class="nav_sections">
-            <div class="nav_profile nav_selected_section none" id="profile_page" data-section="profile_page"></div>
-            <div class="nav_messaging nav_selected_section none" id="messenger" data-section="messenger">
+            <div
+              class="nav_profile nav_selected_section none"
+              id="profile_page"
+              data-section="profile_page"
+            >
+              <div class="nav_profile_header">
+                <div class="nav_profile_avatar">
+                  <img
+                    class="nav_profile_avatar_img"
+                    src="${response.data[0].avatar}"
+                    alt=""
+                  />
+                  <div class="nav_status"></div>
+                </div>
+                <div class="nav_profile_name">${response.data[0].username}</div>
+              </div>
+              <div class="nav_user_info">
+                <div class="nav_user_info_text">
+                  Id: ${response.data[0].id} email: ${response.data[0].email}
+                </div>
+              </div>
+              <div class="nav_user_wall_wrapper">
+                <div class="nav_user_wall">
+                  <form
+                    action="/upload"
+                    id="addPost"
+                    class="nav_user_wall_postForm"
+                    enctype="multipart/form-data"
+                    role="form"
+                  >
+                    <textarea
+                      name="postText"
+                      id="postText"
+                      class="nav_user_wall_postTextarea"
+                      style="resize: none"
+                      placeholder="Что у Вас нового..."
+                      required
+                    ></textarea>
+                    <div class="nav_user_wall_files_wrapper">
+                      <input
+                        type="file"
+                        name="photo"
+                        id="photo"
+                        accept="image/*"
+                        style="display: none"
+                      />
+                      <label
+                        for="photo"
+                        class="photo-icon picker"
+                        title="Загрузить фото"
+                      >
+                        <img src="./src/img/Picture.svg" alt="" />
+                      </label>
+                      <input
+                        type="file"
+                        name="files"
+                        id="files"
+                        multiple
+                        style="display: none"
+                      />
+                      <label
+                        for="files"
+                        class="file-icon picker"
+                        title="Загрузить файл"
+                      >
+                        <img src="./src/img/File.svg" alt="" />
+                      </label>
+                      <div class="emoji-picker">
+                        <!-- Здесь может быть панель с эмодзи для выбора -->
+                        <!-- Например, используя библиотеку как EmojiMart -->
+                      </div>
+                      <button type="submit" class="btn btn-outline-light me-2">Опубликовать</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="nav_users_friends">
+                  <div class="nav_friends nav_friends_line">
+                    Друзья онлайн <span>2</span>
+                    <div class="nav_friends_wrapper">
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nav_friends">
+                    Друзья <span>10</span>
+                    <div class="nav_friends_wrapper">
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                      <div class="user_avatar user_avatar_small">
+                        <img
+                          class="user_avatar_img"
+                          src="./src/img/1.jpg"
+                          alt=""
+                        />
+                        <div class="status"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="nav_messaging nav_selected_section none"
+              id="messenger"
+              data-section="messenger"
+            >
               <section class="users_wrapper" id="menu">
                 <!-- <button class="menuButton" id="menuButton">-></button> -->
                 <input

@@ -87,6 +87,9 @@
     width: 70%;
     height: 100%;
     background-color: var(--navLightBg);
+    display: flex;
+    align-items: start;
+    justify-content: center;
 }
 
 .nav_users_friends {
@@ -121,6 +124,37 @@
 
 .nav_friends_wrapper div {
     margin-right: 10px;
+}
+
+.nav_user_wall_files_wrapper {
+    display: flex;
+    width: max-content;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav_user_wall_postForm {
+    margin-top: 15px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.nav_user_wall_postTextarea {
+    width: 600px;
+    height: 70px;
+    padding: 5px;
+    color: #FFF;
+    background-color: var(--navDarkBg);
+    border-radius: var(--borderRadius);
+    border: 2px solid var(--navDarkBg);
+    outline: none;
+}
+
+.picker {
+    cursor: pointer;
 }
 
 @keyframes neon-animation {

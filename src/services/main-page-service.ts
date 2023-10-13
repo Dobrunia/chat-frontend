@@ -110,153 +110,153 @@ export function changeSection(data_section: SectionType, userId?: string) {
  * поиск данных для страницы профиля пользователя и запуск отрисовки
  */
 function findUserProfilePage(userId: string | null) {
-  $api
-    .get(`/find-user-by-id?search_value=${userId}`)
-    .then((response) => {
-      $('#profile_page').innerHTML = '';
-      $('#profile_page').innerHTML = `<div class="nav_profile_header">
-    <div class="nav_profile_avatar">
-      <img
-        class="nav_profile_avatar_img"
-        src="${response.data[0].avatar}"
-        alt=""
-      />
-      <div class="nav_status"></div>
-    </div>
-    <div class="nav_profile_name">${response.data[0].username}</div>
-  </div>
-  <div class="nav_user_info"><div class="nav_user_info_text">Id: ${response.data[0].id} email: ${response.data[0].email}</div></div>
-  <div class="nav_user_wall_wrapper">
-    <div class="nav_user_wall"></div>
-    <div class="nav_users_friends">
-      <div class="nav_friends nav_friends_line">
-        Друзья онлайн <span>2</span>
-        <div class="nav_friends_wrapper">
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-        </div>
-      </div>
-      <div class="nav_friends">
-        Друзья <span>10</span>
-        <div class="nav_friends_wrapper">
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+  // $api
+  //   .get(`/find-user-by-id?search_value=${userId}`)
+  //   .then((response) => {
+  //     $('#profile_page').innerHTML = '';
+  //     $('#profile_page').innerHTML = `<div class="nav_profile_header">
+  //   <div class="nav_profile_avatar">
+  //     <img
+  //       class="nav_profile_avatar_img"
+  //       src="${response.data[0].avatar}"
+  //       alt=""
+  //     />
+  //     <div class="nav_status"></div>
+  //   </div>
+  //   <div class="nav_profile_name">${response.data[0].username}</div>
+  // </div>
+  // <div class="nav_user_info"><div class="nav_user_info_text">Id: ${response.data[0].id} email: ${response.data[0].email}</div></div>
+  // <div class="nav_user_wall_wrapper">
+  //   <div class="nav_user_wall"></div>
+  //   <div class="nav_users_friends">
+  //     <div class="nav_friends nav_friends_line">
+  //       Друзья онлайн <span>2</span>
+  //       <div class="nav_friends_wrapper">
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //     <div class="nav_friends">
+  //       Друзья <span>10</span>
+  //       <div class="nav_friends_wrapper">
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //         <div class="user_avatar user_avatar_small">
+  //           <img
+  //             class="user_avatar_img"
+  //             src="./src/img/1.jpg"
+  //             alt=""
+  //           />
+  //           <div class="status"></div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // </div>`;
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
 }
 
 /**
