@@ -45,7 +45,7 @@ function correspondence(chatID: string, companionData) {
           <div class="last_entrance">был в сети час назад</div>
         </div>
         <div class="user_avatar user_avatar_small">
-          <img class="user_avatar_img openProfile" src="${companionData.avatar}" alt="" data-id="${companionData.id}"/>
+          <img class="user_avatar_img openProfile" src="${companionData.avatar}" alt="" data-id="${companionData.id}" title="${companionData.username}"/>
           <div class="status"></div>
         </div>`;
 }
@@ -331,29 +331,41 @@ function renderUsersPosts(userData) {
   $api
     .get(`/get-user-posts?search_value=${userData.id}`)
     .then((response) => {
-      console.log(response.data[0]);
+      console.log(response.data);
       $('#nav_user_wall_wrapper_posts').innerHTML = '';
-      $(
-        '#nav_user_wall_wrapper_posts',
-      ).innerHTML = `<div class="nav_user_wall_post">${
-        response.data[0].text
-          ? `<div class="nav_user_wall_postTextarea">${response.data[0].text}</div>`
-          : ``
-      }
+      response.data.forEach((element) => {
+        $(
+          '#nav_user_wall_wrapper_posts',
+        ).innerHTML = `<div class="nav_user_wall_post">
+        <div class="user_avatar user_avatar_small" title="${userData.username}">
+              <img
+                class="user_avatar_img openProfile"
+                src="${userData.avatar}"
+                data-id="${userData.id}"
+                alt=""
+              />
+              <div class="status"></div>
+        </div>
     ${
-      response.data[0].photos
+      element.text
+        ? `<div class="nav_user_wall_postTextarea">${element.text}</div>`
+        : ``
+    }
+    ${
+      element.photos
         ? `<div class="nav_user_wall_post_imgWrapper">
-    <img src="${response.data[0].photos}" alt="" />
+    <img src="${element.photos}" alt="" />
   </div>`
         : ``
     }
     ${
-      response.data[0].files
-        ? `<a href="${response.data[0].files}" class="nav_user_wall_post_file" target="_blank"><img src="./src/img/File.svg" alt="" /></a>`
+      element.files
+        ? `<a href="${element.files}" class="nav_user_wall_post_file" target="_blank"><img src="./src/img/File.svg" alt="" /></a>`
         : ``
     }
     
   </div>`;
+      });
     })
     .catch((error) => {
       console.error(error);
@@ -374,7 +386,7 @@ export function globalClickHandler(event: MouseEvent) {
   const targetElement = event.target as HTMLElement; // Элемент, на который был совершен клик
 
   if (targetElement.classList.contains('openProfile')) {
-    //добавлять в img класс openProfile и атрибут data-id="${element.id}"
+    //добавлять в img класс openProfile и атрибут data-id="${element.id}" title="${userData.username}"
     const userId = targetElement.getAttribute('data-id');
     changeSection('profile_page', userId);
   }
@@ -451,7 +463,7 @@ function renderUsers(users_response_result: UsersResponseResult) {
       const id_el = 'id' + user.id;
       $(
         '#search_request',
-      ).innerHTML += `<div class="element openDialog" id="${id_el}" data-id="${user.id}" data-username="${user.username}" data-email="${user.email}" data-avatar="${user.avatar}">
+      ).innerHTML += `<div class="element openDialog" id="${id_el}" data-id="${user.id}" data-username="${user.username}" data-email="${user.email}" data-avatar="${user.avatar}" title="${user.username}">
       <div class="user_avatar user_avatar_small">
         <img class="user_avatar_img openProfile" src="${user.avatar}" alt="" data-id="${user.id}"/>
         <div class="status"></div>
