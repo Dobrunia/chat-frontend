@@ -88,8 +88,10 @@
     height: 100%;
     background-color: var(--navLightBg);
     display: flex;
-    align-items: start;
-    justify-content: center;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: scroll;
 }
 
 .nav_users_friends {
@@ -144,8 +146,9 @@
 
 .nav_user_wall_postTextarea {
     width: 600px;
-    height: 70px;
+    height: auto;
     padding: 5px;
+    resize: none;
     color: #FFF;
     background-color: var(--navDarkBg);
     border-radius: var(--borderRadius);
@@ -155,6 +158,45 @@
 
 .picker {
     cursor: pointer;
+}
+
+.emoji_picker {
+    position: relative;
+}
+
+.emoji_picker img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.emoji_picker_wrapper {
+    position: absolute;
+    top: 50px;
+}
+
+.nav_user_wall_wrapper_posts {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.nav_user_wall_post {
+    margin-top: 50px;
+    background-color: var(--navDarkBg);
+    overflow: hidden;
+}
+
+.nav_user_wall_post_imgWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.nav_user_wall_post_imgWrapper img {
+    height: 190px;
 }
 
 @keyframes neon-animation {

@@ -301,17 +301,26 @@
                   >
                     <textarea
                       name="postText"
-                      id="postText"
                       class="nav_user_wall_postTextarea"
-                      style="resize: none"
+                      id="postText"
                       placeholder="Что у Вас нового..."
+                      oninput="autoResize(this)"
                       required
                     ></textarea>
                     <div class="nav_user_wall_files_wrapper">
+                      <div class="emoji_picker" id="emoji_picker">
+                        <!-- Здесь может быть панель с эмодзи для выбора -->
+                        <!-- Например, используя библиотеку как EmojiMart -->
+                        <img src="./src/img/smile.svg" alt="" />
+                        <div
+                          class="emoji_picker_wrapper none"
+                          id="emoji_picker_wrapper"
+                        ></div>
+                      </div>
                       <input
+                        id="photo"
                         type="file"
                         name="photo"
-                        id="photo"
                         accept="image/*"
                         style="display: none"
                       />
@@ -323,9 +332,9 @@
                         <img src="./src/img/Picture.svg" alt="" />
                       </label>
                       <input
+                        id="files"
                         type="file"
                         name="files"
-                        id="files"
                         multiple
                         style="display: none"
                       />
@@ -336,15 +345,74 @@
                       >
                         <img src="./src/img/File.svg" alt="" />
                       </label>
-                      <div class="emoji-picker">
-                        <!-- Здесь может быть панель с эмодзи для выбора -->
-                        <!-- Например, используя библиотеку как EmojiMart -->
-                      </div>
                       <button type="submit" class="btn btn-outline-light me-2">
                         Опубликовать
                       </button>
                     </div>
                   </form>
+                  <div class="nav_user_wall_wrapper_posts">
+                    <div class="nav_user_wall_post">
+                      <div class="nav_user_wall_postTextarea" disabled>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis culpa voluptas sapiente nostrum, repellat enim voluptatum ut provident est laboriosam voluptatem dolorem ipsa aut iste. Nesciunt officia quis magnam laborum.</div
+                      >
+                      <div class="nav_user_wall_post_imgWrapper">
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                      </div>
+                    </div>
+
+                    <div class="nav_user_wall_post">
+                      <div class="nav_user_wall_postTextarea" disabled>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis culpa voluptas sapiente nostrum, repellat enim voluptatum ut provident est laboriosam voluptatem dolorem ipsa aut iste. Nesciunt officia quis magnam laborum.</div
+                      >
+                      <div class="nav_user_wall_post_imgWrapper">
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                      </div>
+                    </div>
+                    <div class="nav_user_wall_post">
+                      <div class="nav_user_wall_postTextarea" disabled>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis culpa voluptas sapiente nostrum, repellat enim voluptatum ut provident est laboriosam voluptatem dolorem ipsa aut iste. Nesciunt officia quis magnam laborum.</div
+                      >
+                      <div class="nav_user_wall_post_imgWrapper">
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                      </div>
+                    </div>
+                    <div class="nav_user_wall_post">
+                      <div class="nav_user_wall_postTextarea" disabled>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis culpa voluptas sapiente nostrum, repellat enim voluptatum ut provident est laboriosam voluptatem dolorem ipsa aut iste. Nesciunt officia quis magnam laborum.</div
+                      >
+                      <div class="nav_user_wall_post_imgWrapper">
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                      </div>
+                    </div>
+                    <div class="nav_user_wall_post">
+                      <div class="nav_user_wall_postTextarea" disabled>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis culpa voluptas sapiente nostrum, repellat enim voluptatum ut provident est laboriosam voluptatem dolorem ipsa aut iste. Nesciunt officia quis magnam laborum.</div
+                      >
+                      <div class="nav_user_wall_post_imgWrapper">
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                      </div>
+                    </div>
+                    <div class="nav_user_wall_post">
+                      <div class="nav_user_wall_postTextarea" disabled>
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis culpa voluptas sapiente nostrum, repellat enim voluptatum ut provident est laboriosam voluptatem dolorem ipsa aut iste. Nesciunt officia quis magnam laborum.</div
+                      >
+                      <div class="nav_user_wall_post_imgWrapper">
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                        <img src="./src/img/1.jpg" alt="" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="nav_users_friends">
                   <div class="nav_friends nav_friends_line">
@@ -549,6 +617,22 @@
       </div>
     </div>
   </body>
+  <script>
+    function autoResize(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 5 + 'px';
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
+  <script>
+    function insertEmoji(emoji) {
+      //TODO:: сделать по человесески
+      document.getElementById('postText').value += emoji.native;
+    }
+    const pickerOptions = { onEmojiSelect: insertEmoji };
+    const picker = new EmojiMart.Picker(pickerOptions);
+    document.getElementById('emoji_picker_wrapper').appendChild(picker);
+  </script>
   <script type="module" src="./src/socket/socket.ts"></script>
   <script type="module" src="./src/socket/socket-service.ts"></script>
   <script type="module" src="./src/handlers/header-handler.ts"></script>

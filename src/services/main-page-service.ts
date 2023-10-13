@@ -550,3 +550,11 @@ export function messageHandler(event: any) {
     alert('Выберите собеседника');
   }
 }
+
+
+/**
+ * show/hide smiles
+ */
+export function showSmiles() {
+  $('.emoji_picker_wrapper')?.classList.toggle('none');
+}

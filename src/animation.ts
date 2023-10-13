@@ -50,6 +50,12 @@ export function globalClickAnimation(event: MouseEvent) {
     search_request_counter = 0;
   }
   //скрыть поиск пользователей при 2м клике
+
+  //скрыть смайлы
+  if (!$('#emoji_picker').contains(targetElement)) {
+    $('.emoji_picker_wrapper')?.classList.add('none');
+  }
+  //скрыть смайлы
 }
 
 /**

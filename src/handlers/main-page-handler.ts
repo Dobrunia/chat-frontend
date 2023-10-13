@@ -4,6 +4,7 @@ import {
   messageHandler,
   renderChats,
   changeSection,
+  showSmiles,
 } from '../services/main-page-service';
 
 /**
@@ -35,3 +36,8 @@ sections.forEach((section) => {
     changeSection(section.getAttribute('data-section')),
   );
 });
+
+/**
+ * выбор смайликов на главной
+ */
+$("#emoji_picker").addEventListener('click', showSmiles)
