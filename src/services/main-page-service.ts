@@ -336,7 +336,7 @@ function renderUsersPosts(userData) {
       response.data.forEach((element) => {
         $(
           '#nav_user_wall_wrapper_posts',
-        ).innerHTML = `<div class="nav_user_wall_post">
+        ).innerHTML += `<div class="nav_user_wall_post">
         <div class="user_avatar user_avatar_small" title="${userData.username}">
               <img
                 class="user_avatar_img openProfile"

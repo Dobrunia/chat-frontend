@@ -4,7 +4,7 @@ import './styles/profile.css';
 import './registration-authorization/reg_auth.css';
 import { isUserLoggedIn, userIn, userOut } from './services/main-page-service';
 
-if (true) {//
+if (isUserLoggedIn()) {//isUserLoggedIn()
   userIn();
 } else {
   userOut();
