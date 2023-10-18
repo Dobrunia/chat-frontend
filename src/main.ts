@@ -2,10 +2,7 @@ import './style.css';
 import './styles/navigation.css';
 import './styles/profile.css';
 import './registration-authorization/reg_auth.css';
-import { isUserLoggedIn, userIn, userOut } from './services/main-page-service';
+import { isUserLoggedInCheck } from './services/main-page-service';
 
-if (isUserLoggedIn()) {//isUserLoggedIn()
-  userIn();
-} else {
-  userOut();
-}
+isUserLoggedInCheck();
+// setTimeout(isUserLoggedIn, 5000);

@@ -3,17 +3,6 @@ import { ModuleMenuType, SectionType } from './models/types';
 import { functionsIn } from 'lodash';
 
 /**
- * открыть/закрыть окно с чатами
- */
-// export function toggleMenu() {
-//   if (!$('#menu') || !$('#menuButton')) return;
-//   $('#menu').classList.toggle('hide');
-//   $('#menuButton').textContent === '<-'
-//     ? ($('#menuButton').textContent = '->')
-//     : ($('#menuButton').textContent = '<-');
-// }
-
-/**
  * открытие меню профиля
  */
 export function toggleSmallMenu() {
@@ -111,17 +100,10 @@ export function toggleModuleWindow(e: ModuleMenuType) {
 }
 
 /**
- * открытие/закрытие вкладки с навигацией
- */
-function toggleNavigation() {
-  $('#nav_list').classList.toggle('none');
-}
-
-/**
  * отображение не авторизованного пользователя
  */
 export function logOutView() {
-  toggleNavigation();
+  $('#nav_list').classList.add('none');
   toggleModuleWindow('get_in');
   $('#reg_btns').classList.remove('none');
   $('#account').classList.add('none');
@@ -133,7 +115,7 @@ export function logOutView() {
  */
 export function logInView() {
   toggleModuleWindow('exit');
-  toggleNavigation();
+  $('#nav_list').classList.remove('none');
   changeSection('profile_page');
   $('#reg_btns').classList.add('none');
   $('#account').classList.remove('none');

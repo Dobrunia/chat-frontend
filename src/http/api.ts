@@ -39,6 +39,7 @@ $api.interceptors.response.use(
       } catch (e) {
         userOut();
         console.log('Not authorized!');
+        return null;
       }
     }
     throw error;

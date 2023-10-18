@@ -334,15 +334,15 @@ body {
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  max-width: 100%;
   height: 64px;
   padding: 8px;
   cursor: pointer;
-  transition: 0.3;
+  /* transition: 0.3; */
 }
 
 .user:hover {
-  transition: 0.5s;
+  transition: 0.3s;
 }
 
 .line {
@@ -407,10 +407,31 @@ body {
   text-overflow: ellipsis;
 }
 
-.user_last_message {}
+.user_last_message {
+  font-size: 18px;
+  font-weight: 100;
+  white-space: nowrap; /* Запрещаем перенос слов на новую строку */
+  overflow: hidden; /* Обрезаем текст, который превышает заданную ширину контейнера */
+  text-overflow: ellipsis;
+}
 
 .user_metric {
   text-align: right;
+}
+
+.user_metric span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  padding: 1px;
+  height: 20px;
+  border-radius: 5px;
+  background-color: #828282;
+  margin-left: 5px;
+  text-align: center;
+  color: var(--attention);
+  font-weight: 400;
 }
 
 .messages_wrapper {

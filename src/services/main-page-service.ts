@@ -15,12 +15,18 @@ export const $ = (element: string) =>
   document.querySelector(element) as HTMLFormElement;
 
 /**
- * проверка авторизовал ли пользователь
- * @returns true - если авторизован, false - если нет
+ * проверка и авторизация пользователя
  */
-export function isUserLoggedIn(): boolean {
-  //TODO:: запрос на проверку
-  //return localStorage.getItem('accessToken') != undefined;
+export async function isUserLoggedInCheck() {
+  const userId = localStorage.getItem('id');
+  if (!userId) {
+    userOut();
+  } else {
+    const userData = await findUserById(userId);
+    if(userData !== null) {
+      userIn();
+    };
+  }
 }
 
 /**
@@ -338,12 +344,12 @@ async function renderProfilePage(userDATA) {
  * поиск и отрисовка постов на странице пользователя
  */
 async function renderUsersPosts(userDATA) {
+  //TODO:: emoji_picker
   $api
     .get(`/get-user-posts?search_value=${userDATA.id}`)
     .then(async (response) => {
       $('#nav_user_wall_wrapper_posts').innerHTML = '';
       for (const element of response.data) {
-        console.log(element.photos);
         let content = '';
         element.text
           ? (content += `<div class="nav_user_wall_postTextarea">${element.text}</div>`)
@@ -430,7 +436,7 @@ export function globalClickHandler(event: MouseEvent) {
     const chatId = currentElement?.getAttribute('data-chatId');
     changeSection('messenger');
     chatId
-      ? userHandler(currentElement, 'chatId')
+      ? userHandler(currentElement, chatId)
       : renderChatId(currentElement);
   }
   globalClickAnimation(event);
@@ -530,7 +536,7 @@ export function searchInputHandler() {
 }
 
 /**
- * получение всех пользователей с БД, TODO:1: сделать только тех с кем есть переписка
+ * получение всех пользователей с БД
  */
 function getAllUsers() {
   return $api
@@ -540,10 +546,20 @@ function getAllUsers() {
 }
 
 /**
+ * получение чатов пользователя
+ */
+function getUsersChats() {
+  return $api
+  .get(`/returnActiveChats/${localStorage.getItem('id')}`)
+  .then((response) => response.data)
+  .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
  * рендер ативных чатов пользователя
  */
 export async function renderChats() {
-  const jsonData = await getAllUsers(); //TODO:1: тут получать только пользователей с которыми есть переписка и добавить data-chatId
+  const jsonData = await getUsersChats();
   const chat_search = document.querySelector(
     '#chat_search',
   ) as HTMLInputElement;
@@ -551,23 +567,23 @@ export async function renderChats() {
   users.innerHTML = '';
   jsonData.forEach((element: any) => {
     const content = `<div class="line"></div>
-      <div class="user openDialog" title="${element.username}" data-id="${element.id}" data-username="${element.username}" data-email="${element.email}" data-avatar="${element.avatar}" data-chatId="${element.id}">
+      <div class="user openDialog" title="${element.name}" data-id="${element.userId}" data-username="${element.name}" data-email="${element.userEmail}" data-avatar="${element.avatar}" data-chatId="${element.chatId}">
         <div class="user_avatar user_avatar_small">
-          <img class="user_avatar_img openProfile" src="${element.avatar}" alt="" data-id="${element.id}"/>
+          <img class="user_avatar_img" src="${element.avatar}" alt=""/>
           <div class="status"></div>
         </div>
         <div class="user_info">
-          <div class="user_name"><strong>${element.username}</strong></div>
-          <div class="user_last_message">${element.last_message}</div>
+          <div class="user_name"><strong>${element.name}</strong></div>
+          <div class="user_last_message" title="${element.last_message}">${element.last_message}</div>
         </div>
         <div class="user_metric">
-          <div>${element.time}</div>
           <span>${element.notifications}</span>
+          <div>${element.time}</div>
         </div>
       </div>`;
     if (chat_search.value) {
       const regex = new RegExp(chat_search.value, 'gi');
-      const matches = element.username.match(regex);
+      const matches = element.name.match(regex);
       if (matches) {
         users.innerHTML += content;
       }
@@ -685,6 +701,7 @@ export function changeUsername(event: any) {
  * добавление нового поста
  */
 export function addPost(event: any) {
+  //TODO:: photo\file
   event.preventDefault();
   const formData = new FormData(this);
   const wallId = formData.get('wallId')?.toString().trim();
@@ -703,6 +720,10 @@ export function addPost(event: any) {
     photo: photo ? photo : '',
     file: file ? file : '',
   };
+  // if (DATA.postText === '' || DATA.photo === '' || DATA.file === '') {
+  //   alert('Пустой пост');
+  //   return false;
+  // }
   $api
     .post('/addPost', { DATA })
     .then((response) => {
@@ -720,13 +741,14 @@ export function addPost(event: any) {
  * отправка сообщений по клику
  */
 export function messageHandler(event: any) {
+  //TODO:: Нужно сделать окно уведомлений
   event.preventDefault();
   // const chatID = 'lents@mail.ru';
   try {
     const chatID = $('#data_chatID').getAttribute('data-chatID');
     const content = $('#message_text').value.trim();
     if (!chatID || content == '') {
-      alert('Не отправляйте пустые сообщения'); //TODO:: Нужно сделать окно уведомлений
+      alert('Не отправляйте пустые сообщения');
     } else {
       socketService.sendMessage(content, chatID);
       $('#message_text').value = '';
