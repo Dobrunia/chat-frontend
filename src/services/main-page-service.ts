@@ -23,9 +23,9 @@ export async function isUserLoggedInCheck() {
     userOut();
   } else {
     const userData = await findUserById(userId);
-    if(userData !== null) {
+    if (userData !== null) {
       userIn();
-    };
+    }
   }
 }
 
@@ -186,14 +186,14 @@ async function renderProfilePage(userDATA) {
           <img src="./src/img/Picture.svg" alt="" />
         </label>
         <input
-          id="files"
+          id="file"
           type="file"
-          name="files"
+          name="file"
           multiple
           style="display: none"
         />
         <label
-          for="files"
+          for="file"
           class="file-icon picker"
           title="Загрузить файл"
         >
@@ -344,20 +344,55 @@ async function renderProfilePage(userDATA) {
  * поиск и отрисовка постов на странице пользователя
  */
 async function renderUsersPosts(userDATA) {
-  //TODO:: emoji_picker
+  //TODO:: emoji_picker вынести переделать SQL
   $api
     .get(`/get-user-posts?search_value=${userDATA.id}`)
     .then(async (response) => {
       $('#nav_user_wall_wrapper_posts').innerHTML = '';
       for (const element of response.data) {
+        console.log()
         let content = '';
         element.text
           ? (content += `<div class="nav_user_wall_postTextarea">${element.text}</div>`)
           : (content += '');
-        element.photos
-          ? (content += `<div class="nav_user_wall_post_imgWrapper"><img src="${element.photos}" alt="" /></div>`)
+          async function downloadImage(files) {
+            const filePromises = files.map((file) => {
+              // Return a promise per file
+              return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = async () => {
+                  try {
+                    let response = reader.result;
+                    // Resolve the promise with the response value
+                    resolve(response);
+                  } catch (err) {
+                    reject(err);
+                  }
+                };
+                reader.onerror = (error) => {
+                  reject(error);
+                };
+                reader.readAsDataURL(file);
+              });
+            });
+          
+            // Wait for all promises to be resolved
+            const fileInfos = await Promise.all(filePromises);
+          
+            console.log('COMPLETED');
+          
+            // Profit
+            return fileInfos;
+          };  
+        let blob = new Blob(element.photos.data, {
+          type: 'image/png',
+        });
+        let arr = [blob]
+        const base64data = await downloadImage(arr)
+        element.photos.data[0]
+          ? (content += `<div class="nav_user_wall_post_imgWrapper"><img src="${base64data}" alt="" /></div>`)
           : (content += '');
-        element.files
+        element.files.data[0]
           ? (content += `<a href="${element.files}" class="nav_user_wall_post_file" target="_blank"><img src="./src/img/File.svg" alt="" /></a>`)
           : (content += '');
         if (userDATA.id === element.authorId) {
@@ -391,13 +426,24 @@ async function renderUsersPosts(userDATA) {
           );
         }
       }
+
+      /**
+       * наполнение смайликов
+       */
+      function insertEmoji(emoji) {
+        document.getElementById('postText').value += emoji.native;
+      }
+      const pickerOptions = { onEmojiSelect: insertEmoji };
+      const picker = new EmojiMart.Picker(pickerOptions);
+      $('#emoji_picker_wrapper')?.appendChild(picker);
+
       /**
        * выбор смайликов на главной
        */
       $('#emoji_picker').addEventListener('click', showSmiles);
 
       /**
-       * выбор смайликов на главной
+       * submit поста
        */
       $('#addPost').addEventListener('submit', addPost);
     })
@@ -435,9 +481,7 @@ export function globalClickHandler(event: MouseEvent) {
     const currentElement = targetElement.closest('.openDialog');
     const chatId = currentElement?.getAttribute('data-chatId');
     changeSection('messenger');
-    chatId
-      ? userHandler(currentElement, chatId)
-      : renderChatId(currentElement);
+    chatId ? userHandler(currentElement, chatId) : renderChatId(currentElement);
   }
   globalClickAnimation(event);
 }
@@ -518,7 +562,9 @@ export function searchInputHandler() {
     const users_search = document.querySelector(
       '#users_search',
     ) as HTMLInputElement;
-    const search_username_value = users_search.value.trim();
+    const search_username_value = escapeSql(
+      escapeHtml(users_search.value.trim()),
+    );
     if (search_username_value && search_username_value !== ' ') {
       $api
         .get(`/find-users?search_value=${search_username_value}`)
@@ -550,9 +596,9 @@ function getAllUsers() {
  */
 function getUsersChats() {
   return $api
-  .get(`/returnActiveChats/${localStorage.getItem('id')}`)
-  .then((response) => response.data)
-  .catch((error) => console.log('Ошибка:', error));
+    .get(`/returnActiveChats/${localStorage.getItem('id')}`)
+    .then((response) => response.data)
+    .catch((error) => console.log('Ошибка:', error));
 }
 
 /**
@@ -673,7 +719,9 @@ export function userOut() {
 export function changeUsername(event: any) {
   event.preventDefault();
   const formData = new FormData(this);
-  const username = formData.get('username')?.toString().trim();
+  const username = escapeSql(
+    escapeHtml(formData.get('username')?.toString().trim()),
+  );
   const email = localStorage.getItem('email');
   if (!email) {
     return 'Прежде всего войдите в аккаунт';
@@ -698,16 +746,58 @@ export function changeUsername(event: any) {
 }
 
 /**
+ * экранирование текста
+ * @param text
+ * @returns
+ */
+function escapeHtml(text: string) {
+  const map = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;',
+  };
+  return text.replace(/[&<>"']/g, function (m) {
+    return map[m];
+  });
+}
+function escapeSql(text: string) {
+  return text.replace(/[\0\x08\x09\x1a\n\r"'\\%_]/g, function (char) {
+    switch (char) {
+      case '\0':
+        return '\\0';
+      case '\x08':
+        return '\\b';
+      case '\x09':
+        return '\\t';
+      case '\x1a':
+        return '\\z';
+      case '\n':
+        return '\\n';
+      case '\r':
+        return '\\r';
+      case '"':
+      case "'":
+      case '\\':
+      case '%':
+      case '_':
+        return '\\' + char; // экранирование специальных символов
+    }
+  });
+}
+
+/**
  * добавление нового поста
  */
 export function addPost(event: any) {
-  //TODO:: photo\file
+  //TODO:: photo\file ВАЛИДАЦИЯ
   event.preventDefault();
   const formData = new FormData(this);
   const wallId = formData.get('wallId')?.toString().trim();
   const postText = formData.get('postText')?.toString().trim();
-  const photo = '';
-  const file = '';
+  const photo = formData.get('photo');
+ // const file = formData.get('file');
   const email = localStorage.getItem('email');
   const authorId = localStorage.getItem('id');
   if (!email) {
@@ -716,16 +806,24 @@ export function addPost(event: any) {
   const DATA = {
     wallId,
     authorId,
-    postText: postText ? postText : '',
-    photo: photo ? photo : '',
-    file: file ? file : '',
+    postText: postText ? escapeSql(escapeHtml(postText)) : '',
+    //photo: photo,
+   // file: file,
   };
-  // if (DATA.postText === '' || DATA.photo === '' || DATA.file === '') {
-  //   alert('Пустой пост');
-  //   return false;
+  // if (photo.size > 0) {
+  //   DATA.photo = photo;
   // }
-  $api
-    .post('/addPost', { DATA })
+  // if (file.size > 0) {
+  //   DATA.file = file;
+  // }
+  console.log(DATA);
+// formData.append("photo", photo);
+console.log(formData.get('photo'))
+$api.post('/addPost', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+}) 
     .then((response) => {
       const data = response.data;
       if (data) {
@@ -762,5 +860,5 @@ export function messageHandler(event: any) {
  * show/hide smiles
  */
 export function showSmiles() {
-  $('.emoji_picker_wrapper')?.classList.toggle('none');
+  $('#emoji_picker_wrapper')?.classList.toggle('none');
 }

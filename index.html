@@ -358,15 +358,6 @@
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
-  <script>
-    function insertEmoji(emoji) {
-      //TODO:: сделать по человесески
-      document.getElementById('postText').value += emoji.native;
-    }
-    const pickerOptions = { onEmojiSelect: insertEmoji };
-    const picker = new EmojiMart.Picker(pickerOptions);
-    document.getElementById('emoji_picker_wrapper')?.appendChild(picker);
-  </script>
   <script type="module" src="./src/socket/socket.ts"></script>
   <script type="module" src="./src/socket/socket-service.ts"></script>
   <script type="module" src="./src/handlers/header-handler.ts"></script>
