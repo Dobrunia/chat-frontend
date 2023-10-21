@@ -17,8 +17,8 @@ export function globalClickAnimation(event: MouseEvent) {
   const targetElement = event.target; // Элемент, на который был совершен клик
   // Проверяем, является ли элемент меню или его потомком
   if (
-    !$('#my_avatar').contains(targetElement) &&
-    !$('#avatar_hover').contains(targetElement)
+    !$('#my_avatar')?.contains(targetElement) &&
+    !$('#avatar_hover')?.contains(targetElement)
   ) {
     // убираем меню под аватаром (настройки)
     // Клик был совершен вне меню, поэтому закрываем его
@@ -31,7 +31,7 @@ export function globalClickAnimation(event: MouseEvent) {
   // }
 
   //скрыть поиск пользователей при 2м клике
-  if (!$('#search_request').contains(targetElement)) {
+  if (!$('#search_request')?.contains(targetElement)) {
     search_request_counter += 1;
   }
   if (search_request_counter === 3) {
@@ -41,7 +41,7 @@ export function globalClickAnimation(event: MouseEvent) {
   //скрыть поиск пользователей при 2м клике
 
   //скрыть смайлы
-  if (!$('#emoji_picker').contains(targetElement)) {
+  if (!$('#emoji_picker')?.contains(targetElement)) {
     $('.emoji_picker_wrapper')?.classList.add('none');
   }
   //скрыть смайлы

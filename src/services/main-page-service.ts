@@ -4,12 +4,13 @@ import {
   logInView,
   logOutView,
 } from '../animation';
-import { SectionType, UsersResponseResult } from '../models/types';
+import { FriendshipStatus, SectionType, UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
 import { $api } from '../http/api';
 import socketService from '../socket/socket-service';
 import { functionsIn, isNull } from 'lodash';
 import fs from 'fs';
+import { makeCats } from '../pages/cats';
 
 export const $ = (element: string) =>
   document.querySelector(element) as HTMLFormElement;
@@ -18,14 +19,17 @@ export const $ = (element: string) =>
  * проверка и авторизация пользователя
  */
 export async function isUserLoggedInCheck() {
-  const userId = localStorage.getItem('id');
-  if (!userId) {
-    userOut();
-  } else {
-    const userData = await findUserById(userId);
-    if (userData !== null) {
-      userIn();
+  try {
+    const userId = localStorage.getItem('id');
+    if (userId) {
+      const userData = await findUserById(userId);
+      if (userData !== null) {
+        userIn();
+      }
     }
+  } catch (eror) {
+    userOut();
+    return console.log('dfdfdf');
   }
 }
 
@@ -106,6 +110,10 @@ export function changeSection(data_section: SectionType, userId?: string) {
     case 'messenger':
       hideSections('messenger');
       break;
+    case 'cats':
+      hideSections('cats');
+      makeCats();
+      break;
     default:
       hideSections('hideAll');
       break;
@@ -125,219 +133,242 @@ async function findUserById(userId: string | null) {
 }
 
 /**
+ * функция получения статуса дружбы
+ * @param userId id пользователя, который делает запрос
+ * @param status статус запроса в друзья 'pending' | 'accepted' | 'rejected'
+ */
+function getFriendStatusInfo(userId: string, status: FriendshipStatus) {
+  return $api
+  .get(`/getFriendStatusInfo/userId=${userId}/status=${status}`)
+  .then((response) => response.data)
+  .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
  * рендер верстки страницы пользователя
  */
 async function renderProfilePage(userDATA) {
-  $('#profile_page').innerHTML = '';
-  $('#profile_page').innerHTML = `<div class="nav_profile_header">
-  <div class="nav_profile_avatar">
-    <img
-      class="nav_profile_avatar_img"
-      src="${userDATA.avatar}"
-      alt=""
-    />
-    <div class="nav_status"></div>
-  </div>
-  <div class="nav_profile_name">${userDATA.username}</div>
-</div>
-<div class="nav_user_info">
-  <div class="nav_user_info_text">
-    Id: ${userDATA.id} email: ${userDATA.email}
-  </div>
-</div>
-<div class="nav_user_wall_wrapper">
-  <div class="nav_user_wall">
-    <form
-      id="addPost"
-      class="nav_user_wall_postForm"
-      enctype="multipart/form-data"
-      role="form"
-    >
-      <textarea
-        name="postText"
-        class="nav_user_wall_postTextarea"
-        id="postText"
-        placeholder="Что у Вас нового..."
-        oninput="autoResize(this)"
-        required
-      ></textarea>
-      <div class="nav_user_wall_files_wrapper">
-        <div class="emoji_picker" id="emoji_picker">
-          <!-- Здесь может быть панель с эмодзи для выбора -->
-          <!-- Например, используя библиотеку как EmojiMart -->
-          <img src="./src/img/smile.svg" alt="" />
-          <div
-            class="emoji_picker_wrapper none"
-            id="emoji_picker_wrapper"
-          ></div>
-        </div>
-        <input
-          id="photo"
-          type="file"
-          name="photo"
-          accept="image/*"
-          style="display: none"
-        />
-        <label
-          for="photo"
-          class="photo-icon picker"
-          title="Загрузить фото"
-        >
-          <img src="./src/img/Picture.svg" alt="" />
-        </label>
-        <input
-          id="file"
-          type="file"
-          name="file"
-          multiple
-          style="display: none"
-        />
-        <label
-          for="file"
-          class="file-icon picker"
-          title="Загрузить файл"
-        >
-          <img src="./src/img/File.svg" alt="" />
-        </label>
-        <input
-          id="wallId"
-          type="text"
-          value="${userDATA.id}"
-          name="wallId"
-          style="display: none"
-        />
-        <button type="submit" class="btn btn-outline-light me-2">
-          Опубликовать
-        </button>
-      </div>
-    </form>
-    <div class="nav_user_wall_wrapper_posts" id="nav_user_wall_wrapper_posts"></div>
-  </div>
-  <div class="nav_users_friends">
-    <div class="nav_friends nav_friends_line">
-      Друзья онлайн <span>2</span>
-      <div class="nav_friends_wrapper">
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-      </div>
-    </div>
-    <div class="nav_friends">
-      Друзья <span>10</span>
-      <div class="nav_friends_wrapper">
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-        <div class="user_avatar user_avatar_small">
-          <img
-            class="user_avatar_img"
-            src="./src/img/1.jpg"
-            alt=""
-          />
-          <div class="status"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>`;
+  let friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
+  if (userDATA.id.toString() === localStorage.getItem('id')) {
+    friendBtn = '';
+  }
+  const fgfg = await getFriendStatusInfo(localStorage.getItem('id'), 'accepted');
+  console.log(fgfg)
+  if (false) {
+    //TODO:: проверка есть ли в друзьях
+    friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" title="Удалить из друзей ${userDATA.username}"><img src="../src/img/delete-friend-svgrepo-com.svg" alt=""/></div>`;
+  }
+//   $('#profile_page').innerHTML = '';
+//   $('#profile_page').innerHTML = `<div class="nav_profile_header">
+//   <div class="nav_profile_avatar">
+//     <img
+//       class="nav_profile_avatar_img"
+//       src="${userDATA.avatar}"
+//       alt=""
+//     />
+//     <div class="nav_status"></div>
+//   </div>
+//   <div class="nav_profile_name">${userDATA.username}</div>
+// </div>
+// <div class="nav_user_info">
+//   <div class="nav_user_info_text">
+//     Id: ${userDATA.id} email: ${userDATA.email}
+//   </div>
+//   ${friendBtn}
+// </div>
+// <div class="nav_user_wall_wrapper">
+//   <div class="nav_user_wall">
+//     <form
+//       id="addPost"
+//       class="nav_user_wall_postForm"
+//       enctype="multipart/form-data"
+//       role="form"
+//     >
+//       <textarea
+//         name="postText"
+//         class="nav_user_wall_postTextarea"
+//         id="postText"
+//         placeholder="Что у Вас нового..."
+//         oninput="autoResize(this)"
+//         required
+//       ></textarea>
+//       <div class="nav_user_wall_files_wrapper">
+//         <div class="emoji_picker" id="emoji_picker">
+//           <!-- Здесь может быть панель с эмодзи для выбора -->
+//           <!-- Например, используя библиотеку как EmojiMart -->
+//           <img src="./src/img/smile.svg" alt="" />
+//           <div
+//             class="emoji_picker_wrapper none"
+//             id="emoji_picker_wrapper"
+//           ></div>
+//         </div>
+//         <input
+//           id="photo"
+//           type="file"
+//           name="photo"
+//           accept="image/*"
+//           style="display: none"
+//         />
+//         <label
+//           for="photo"
+//           class="photo-icon picker"
+//           title="Загрузить фото"
+//         >
+//           <img src="./src/img/Picture.svg" alt="" />
+//         </label>
+//         <input
+//           id="file"
+//           type="file"
+//           name="file"
+//           multiple
+//           style="display: none"
+//         />
+//         <label
+//           for="file"
+//           class="file-icon picker"
+//           title="Загрузить файл"
+//         >
+//           <img src="./src/img/File.svg" alt="" />
+//         </label>
+//         <input
+//           id="wallId"
+//           type="text"
+//           value="${userDATA.id}"
+//           name="wallId"
+//           style="display: none"
+//         />
+//         <button type="submit" class="btn btn-outline-light me-2">
+//           Опубликовать
+//         </button>
+//       </div>
+//     </form>
+//     <div class="nav_user_wall_wrapper_posts" id="nav_user_wall_wrapper_posts"></div>
+//   </div>
+//   <div class="nav_users_friends">
+//     <div class="nav_friends nav_friends_line">
+//       Друзья онлайн <span>2</span>
+//       <div class="nav_friends_wrapper">
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//       </div>
+//     </div>
+//     <div class="nav_friends">
+//       Друзья <span>10</span>
+//       <div class="nav_friends_wrapper">
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//         <div class="user_avatar user_avatar_small">
+//           <img
+//             class="user_avatar_img"
+//             src="./src/img/1.jpg"
+//             alt=""
+//           />
+//           <div class="status"></div>
+//         </div>
+//       </div>
+//     </div>
+//   </div>
+// </div>`;
 }
 
 /**
@@ -350,49 +381,14 @@ async function renderUsersPosts(userDATA) {
     .then(async (response) => {
       $('#nav_user_wall_wrapper_posts').innerHTML = '';
       for (const element of response.data) {
-        console.log()
         let content = '';
         element.text
           ? (content += `<div class="nav_user_wall_postTextarea">${element.text}</div>`)
           : (content += '');
-          async function downloadImage(files) {
-            const filePromises = files.map((file) => {
-              // Return a promise per file
-              return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = async () => {
-                  try {
-                    let response = reader.result;
-                    // Resolve the promise with the response value
-                    resolve(response);
-                  } catch (err) {
-                    reject(err);
-                  }
-                };
-                reader.onerror = (error) => {
-                  reject(error);
-                };
-                reader.readAsDataURL(file);
-              });
-            });
-          
-            // Wait for all promises to be resolved
-            const fileInfos = await Promise.all(filePromises);
-          
-            console.log('COMPLETED');
-          
-            // Profit
-            return fileInfos;
-          };  
-        let blob = new Blob(element.photos.data, {
-          type: 'image/png',
-        });
-        let arr = [blob]
-        const base64data = await downloadImage(arr)
-        element.photos.data[0]
-          ? (content += `<div class="nav_user_wall_post_imgWrapper"><img src="${base64data}" alt="" /></div>`)
+        element.photos && element.photos.data[0]
+          ? (content += `<div class="nav_user_wall_post_imgWrapper"><img src="data:image/png;base64,${element.photosString}" alt="" /></div>`)
           : (content += '');
-        element.files.data[0]
+        element.files && element.files.data[0]
           ? (content += `<a href="${element.files}" class="nav_user_wall_post_file" target="_blank"><img src="./src/img/File.svg" alt="" /></a>`)
           : (content += '');
         if (userDATA.id === element.authorId) {
@@ -612,6 +608,19 @@ export async function renderChats() {
   const users = $('#users');
   users.innerHTML = '';
   jsonData.forEach((element: any) => {
+    const messageDate = new Date(element.datetime);
+    const now = new Date();
+    const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const isMessageThisWeek = messageDate > oneWeekAgo;
+    let formattedTime = ''; // Переменная для хранения форматированной даты и времени
+    if (isMessageThisWeek) {
+      formattedTime = messageDate.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      }); // Формат часы, минуты
+    } else {
+      formattedTime = messageDate.toLocaleDateString(); // Формат день, месяц, год
+    }
     const content = `<div class="line"></div>
       <div class="user openDialog" title="${element.name}" data-id="${element.userId}" data-username="${element.name}" data-email="${element.userEmail}" data-avatar="${element.avatar}" data-chatId="${element.chatId}">
         <div class="user_avatar user_avatar_small">
@@ -624,7 +633,7 @@ export async function renderChats() {
         </div>
         <div class="user_metric">
           <span>${element.notifications}</span>
-          <div>${element.time}</div>
+          <div>${formattedTime}</div>
         </div>
       </div>`;
     if (chat_search.value) {
@@ -795,11 +804,11 @@ export function addPost(event: any) {
   event.preventDefault();
   const formData = new FormData(this);
   const wallId = formData.get('wallId')?.toString().trim();
+  const authorId = localStorage.getItem('id');
   const postText = formData.get('postText')?.toString().trim();
   const photo = formData.get('photo');
- // const file = formData.get('file');
+  const file = formData.get('file');
   const email = localStorage.getItem('email');
-  const authorId = localStorage.getItem('id');
   if (!email) {
     return 'Прежде всего войдите в аккаунт';
   }
@@ -807,23 +816,15 @@ export function addPost(event: any) {
     wallId,
     authorId,
     postText: postText ? escapeSql(escapeHtml(postText)) : '',
-    //photo: photo,
-   // file: file,
+    photo: photo,
+    file: file,
   };
-  // if (photo.size > 0) {
-  //   DATA.photo = photo;
-  // }
-  // if (file.size > 0) {
-  //   DATA.file = file;
-  // }
-  console.log(DATA);
-// formData.append("photo", photo);
-console.log(formData.get('photo'))
-$api.post('/addPost', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-}) 
+  $api
+    .post('/addPost', DATA, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
     .then((response) => {
       const data = response.data;
       if (data) {

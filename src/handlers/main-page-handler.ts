@@ -1,3 +1,4 @@
+import { removeCats } from '../pages/cats';
 import {
   $,
   renderMessage,
@@ -35,3 +36,8 @@ sections.forEach((section) => {
     changeSection(section.getAttribute('data-section')),
   );
 });
+
+/**
+ * очистка поля с котами
+ */
+$('#cats_refresh').addEventListener('click', removeCats)

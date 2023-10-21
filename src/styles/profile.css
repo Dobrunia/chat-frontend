@@ -67,9 +67,27 @@
     height: 100px;
     width: 550px;
     left: 300px;
-    bottom: 50%;
+    bottom: 35%;
     transform: translate(0, 50%);
     border: 3px solid var(--navDarkBg);
+}
+
+.nav_user_writeTo {
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    left: 300px;
+    top: 5%;
+    transform: translate(0, 50%);
+}
+
+.nav_user_add_friend {
+    position: absolute;
+    width: 50px;
+    height: 40px;
+    left: 420px;
+    top: 5%;
+    transform: translate(0, 50%);
 }
 
 .nav_user_wall_wrapper {
@@ -196,7 +214,9 @@
 }
 
 .nav_user_wall_post_imgWrapper img {
+    max-width: 600px;
     height: 190px;
+    margin-bottom: 30px;
 }
 
 .nav_user_wall_post_file {

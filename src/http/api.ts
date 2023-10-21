@@ -22,7 +22,6 @@ $api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    console.log(error)
     if (
       error.response.status == 401 &&
       error.config &&
@@ -37,9 +36,9 @@ $api.interceptors.response.use(
         localStorage.setItem('accessToken', response.data.accessToken);
         return $api.request(originalRequest);
       } catch (e) {
-        userOut();
-        console.log('Not authorized!');
-        return null;
+        //userOut();
+        //console.log('Not authorized!');
+        throw e;
       }
     }
     throw error;
