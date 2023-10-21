@@ -134,12 +134,13 @@ async function findUserById(userId: string | null) {
 
 /**
  * функция получения статуса дружбы
- * @param userId id пользователя, который делает запрос
+ * @param myId id пользователя, который делает запрос
+ * @param userId id пользователя, к которому на страницу зашел
  * @param status статус запроса в друзья 'pending' | 'accepted' | 'rejected'
  */
-function getFriendStatusInfo(userId: string, status: FriendshipStatus) {
+function getFriendStatusInfo(myId: string, userId: string, status: FriendshipStatus) {
   return $api
-  .get(`/getFriendStatusInfo/userId=${userId}/status=${status}`)
+  .get(`/getFriendStatusInfo/myId=${myId}/userId=${userId}/status=${status}`)
   .then((response) => response.data)
   .catch((error) => console.log('Ошибка:', error));
 }
@@ -152,7 +153,7 @@ async function renderProfilePage(userDATA) {
   if (userDATA.id.toString() === localStorage.getItem('id')) {
     friendBtn = '';
   }
-  const fgfg = await getFriendStatusInfo(localStorage.getItem('id'), 'accepted');
+  const fgfg = await getFriendStatusInfo(localStorage.getItem('id'), '28', 'accepted');
   console.log(fgfg)
   if (false) {
     //TODO:: проверка есть ли в друзьях
