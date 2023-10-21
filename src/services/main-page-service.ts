@@ -13,7 +13,7 @@ import debounce from 'lodash/debounce';
 import { $api } from '../http/api';
 import socketService from '../socket/socket-service';
 import { functionsIn, isNull } from 'lodash';
-import fs from 'fs';
+import fs, { statSync } from 'fs';
 import { makeCats } from '../pages/cats';
 
 export const $ = (element: string) =>
@@ -145,10 +145,14 @@ async function findUserById(userId: string | null) {
 function getFriendStatusInfo(
   myId: string,
   userId: string,
-  status: FriendshipStatus,
+  status?: FriendshipStatus,
 ) {
   return $api
-    .get(`/getFriendStatusInfo/myId=${myId}/userId=${userId}/status=${status}`)
+    .get(
+      `/getFriendStatusInfo/myId=${myId}/userId=${userId}/status=${
+        status ? status : `status`
+      }`,
+    )
     .then((response) => response.data)
     .catch((error) => console.log('Ошибка:', error));
 }
@@ -164,230 +168,234 @@ async function renderProfilePage(userDATA) {
   } else {
     const isFriend = await getFriendStatusInfo(
       localStorage.getItem('id'),
-      '28',
-      'accepted',
+      userDATA.id.toString(),
     );
-    if (isFriend[0].status === 'accepted') {
-      //TODO:: проверка есть ли в друзьях
-      friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" title="Удалить из друзей ${userDATA.username}"><img src="../src/img/delete-friend-svgrepo-com.svg" alt=""/></div>`;
-    } else if (isFriend[0].status === 'rejected') {
+    console.log(isFriend);
+    if (!isFriend[0]) {
       friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
-    } else if (isFriend[0].status === 'pending') {
-      friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div>`;
+    } else {
+      if (isFriend[0].status === 'accepted') {
+        //TODO:: проверка есть ли в друзьях
+        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" title="Удалить из друзей ${userDATA.username}"><img src="../src/img/delete-friend-svgrepo-com.svg" alt=""/></div>`;
+      } else if (isFriend[0].status === 'rejected') {
+        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
+      } else if (isFriend[0].status === 'pending') {
+        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div>`;
+      }
     }
   }
 
-  //   $('#profile_page').innerHTML = '';
-  //   $('#profile_page').innerHTML = `<div class="nav_profile_header">
-  //   <div class="nav_profile_avatar">
-  //     <img
-  //       class="nav_profile_avatar_img"
-  //       src="${userDATA.avatar}"
-  //       alt=""
-  //     />
-  //     <div class="nav_status"></div>
-  //   </div>
-  //   <div class="nav_profile_name">${userDATA.username}</div>
-  // </div>
-  // <div class="nav_user_info">
-  //   <div class="nav_user_info_text">
-  //     Id: ${userDATA.id} email: ${userDATA.email}
-  //   </div>
-  //   ${friendBtn}
-  // </div>
-  // <div class="nav_user_wall_wrapper">
-  //   <div class="nav_user_wall">
-  //     <form
-  //       id="addPost"
-  //       class="nav_user_wall_postForm"
-  //       enctype="multipart/form-data"
-  //       role="form"
-  //     >
-  //       <textarea
-  //         name="postText"
-  //         class="nav_user_wall_postTextarea"
-  //         id="postText"
-  //         placeholder="Что у Вас нового..."
-  //         oninput="autoResize(this)"
-  //         required
-  //       ></textarea>
-  //       <div class="nav_user_wall_files_wrapper">
-  //         <div class="emoji_picker" id="emoji_picker">
-  //           <!-- Здесь может быть панель с эмодзи для выбора -->
-  //           <!-- Например, используя библиотеку как EmojiMart -->
-  //           <img src="./src/img/smile.svg" alt="" />
-  //           <div
-  //             class="emoji_picker_wrapper none"
-  //             id="emoji_picker_wrapper"
-  //           ></div>
-  //         </div>
-  //         <input
-  //           id="photo"
-  //           type="file"
-  //           name="photo"
-  //           accept="image/*"
-  //           style="display: none"
-  //         />
-  //         <label
-  //           for="photo"
-  //           class="photo-icon picker"
-  //           title="Загрузить фото"
-  //         >
-  //           <img src="./src/img/Picture.svg" alt="" />
-  //         </label>
-  //         <input
-  //           id="file"
-  //           type="file"
-  //           name="file"
-  //           multiple
-  //           style="display: none"
-  //         />
-  //         <label
-  //           for="file"
-  //           class="file-icon picker"
-  //           title="Загрузить файл"
-  //         >
-  //           <img src="./src/img/File.svg" alt="" />
-  //         </label>
-  //         <input
-  //           id="wallId"
-  //           type="text"
-  //           value="${userDATA.id}"
-  //           name="wallId"
-  //           style="display: none"
-  //         />
-  //         <button type="submit" class="btn btn-outline-light me-2">
-  //           Опубликовать
-  //         </button>
-  //       </div>
-  //     </form>
-  //     <div class="nav_user_wall_wrapper_posts" id="nav_user_wall_wrapper_posts"></div>
-  //   </div>
-  //   <div class="nav_users_friends">
-  //     <div class="nav_friends nav_friends_line">
-  //       Друзья онлайн <span>2</span>
-  //       <div class="nav_friends_wrapper">
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //     <div class="nav_friends">
-  //       Друзья <span>10</span>
-  //       <div class="nav_friends_wrapper">
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //         <div class="user_avatar user_avatar_small">
-  //           <img
-  //             class="user_avatar_img"
-  //             src="./src/img/1.jpg"
-  //             alt=""
-  //           />
-  //           <div class="status"></div>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // </div>`;
+  $('#profile_page').innerHTML = '';
+  $('#profile_page').innerHTML = `<div class="nav_profile_header">
+    <div class="nav_profile_avatar">
+      <img
+        class="nav_profile_avatar_img"
+        src="${userDATA.avatar}"
+        alt=""
+      />
+      <div class="nav_status"></div>
+    </div>
+    <div class="nav_profile_name">${userDATA.username}</div>
+  </div>
+  <div class="nav_user_info">
+    <div class="nav_user_info_text">
+      Id: ${userDATA.id} email: ${userDATA.email}
+    </div>
+    ${friendBtn}
+  </div>
+  <div class="nav_user_wall_wrapper">
+    <div class="nav_user_wall">
+      <form
+        id="addPost"
+        class="nav_user_wall_postForm"
+        enctype="multipart/form-data"
+        role="form"
+      >
+        <textarea
+          name="postText"
+          class="nav_user_wall_postTextarea"
+          id="postText"
+          placeholder="Что у Вас нового..."
+          oninput="autoResize(this)"
+          required
+        ></textarea>
+        <div class="nav_user_wall_files_wrapper">
+          <div class="emoji_picker" id="emoji_picker">
+            <!-- Здесь может быть панель с эмодзи для выбора -->
+            <!-- Например, используя библиотеку как EmojiMart -->
+            <img src="./src/img/smile.svg" alt="" />
+            <div
+              class="emoji_picker_wrapper none"
+              id="emoji_picker_wrapper"
+            ></div>
+          </div>
+          <input
+            id="photo"
+            type="file"
+            name="photo"
+            accept="image/*"
+            style="display: none"
+          />
+          <label
+            for="photo"
+            class="photo-icon picker"
+            title="Загрузить фото"
+          >
+            <img src="./src/img/Picture.svg" alt="" />
+          </label>
+          <input
+            id="file"
+            type="file"
+            name="file"
+            multiple
+            style="display: none"
+          />
+          <label
+            for="file"
+            class="file-icon picker"
+            title="Загрузить файл"
+          >
+            <img src="./src/img/File.svg" alt="" />
+          </label>
+          <input
+            id="wallId"
+            type="text"
+            value="${userDATA.id}"
+            name="wallId"
+            style="display: none"
+          />
+          <button type="submit" class="btn btn-outline-light me-2">
+            Опубликовать
+          </button>
+        </div>
+      </form>
+      <div class="nav_user_wall_wrapper_posts" id="nav_user_wall_wrapper_posts"></div>
+    </div>
+    <div class="nav_users_friends">
+      <div class="nav_friends nav_friends_line">
+        Друзья онлайн <span>2</span>
+        <div class="nav_friends_wrapper">
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+        </div>
+      </div>
+      <div class="nav_friends">
+        Друзья <span>10</span>
+        <div class="nav_friends_wrapper">
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+          <div class="user_avatar user_avatar_small">
+            <img
+              class="user_avatar_img"
+              src="./src/img/1.jpg"
+              alt=""
+            />
+            <div class="status"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
 }
 
 /**
