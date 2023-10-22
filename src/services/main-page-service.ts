@@ -34,7 +34,7 @@ export async function isUserLoggedInCheck() {
     }
   } catch (eror) {
     userOut();
-    return console.log('dfdfdf');
+    return console.log('ошибку при входе отловил');
   }
 }
 
@@ -156,6 +156,59 @@ function getFriendStatusInfo(
     )
     .then((response) => response.data)
     .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * рендер уведомлений
+ */
+async function renderNotifications() {
+  let standart = '<div class="notification">Уведомлений нет</div>';
+  let friendInfo = `<div class="user_avatar user_avatar_small notification_user" title="">
+  <img
+    class="user_avatar_img openProfile"
+    src=""
+    data-id=""
+    alt=""
+  />
+</div> &nbsp; хочет добавить Вас в друзья
+<div class="reaction" id="yes">Принять</div>
+<div class="reaction" id="no">Отказать</div>`;
+  let content = '';
+  $('#notifications_list').innerHTML = '';
+  const isFriend = await getFriendStatusInfo(`user_id`, localStorage.getItem('id'));
+  isFriend.forEach((element) => {
+    if (element.status === 'pending') {
+      content += `<div class="user_avatar user_avatar_small notification_user" title="">
+      <img
+        class="user_avatar_img openProfile"
+        src=""
+        data-id="${element.user_id}"
+        alt=""
+      />
+    </div>${element.user_id}&nbsp; хочет добавить Вас в друзья
+    <div class="reaction responseToFriendRequest" data-id="${element.user_id}" data-status='accepted'>Принять</div>
+    <div class="reaction responseToFriendRequest" data-id="${element.user_id}" data-status='rejected'>Отказать</div></br>`;
+    }
+  });
+  if (isFriend.length === 0) {
+    content = standart;
+  }
+  content === standart
+    ? true
+    : $('#notification_bell_number').classList.remove('none');
+  $('#notifications_list').innerHTML = content;
+  /**
+   * ответ на запрос дружбы
+   */
+  let btns = [...document.getElementsByClassName('responseToFriendRequest')];
+  btns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      responseToFriendRequest(
+        btn.getAttribute('data-id'),
+        btn.getAttribute('data-status'),
+      );
+    });
+  });
 }
 
 /**
@@ -727,6 +780,7 @@ function setInfo() {
   if (email) {
     socketService.login(email);
   }
+  renderNotifications();
   renderAccount();
   renderThemes();
   renderChats();
@@ -913,9 +967,9 @@ function announcementMessage(text: string) {
  * Добавить в друзья
  */
 export function addFriend(event: MouseEvent) {
-  const targetElement = event.target as HTMLElement;
-  const currentElement = targetElement.closest('.nav_user_add_friend');
-  const friendId = currentElement?.getAttribute('data-id');
+  let targetElement = event.target as HTMLElement;
+  let currentElement = targetElement.closest('.nav_user_add_friend');
+  let friendId = currentElement?.getAttribute('data-id');
   let DATA = {
     myId: localStorage.getItem('id'),
     friendId: friendId,
@@ -950,6 +1004,27 @@ export function removeFriend(event: MouseEvent) {
       if (data) {
         announcementMessage('Пользователь удален из друзей');
         renderUserProfilePage(friendId);
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * ответ на запрос дружбы
+ */
+function responseToFriendRequest(friend_id: string, status: string) {
+  let DATA = {
+    myId: localStorage.getItem('id'),
+    friend_id,
+    status,
+  };
+  console.log(DATA)
+  $api
+    .post('/responseToFriendRequest', DATA)
+    .then((response) => {
+      const data = response.data;
+      if (data) {
+        renderNotifications();
       }
     })
     .catch((error) => console.log('Ошибка:', error));
