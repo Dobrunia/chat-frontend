@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
-    <meta name="viewport" content="width=1550">
+    <meta name="viewport" content="width=1550" />
     <title>Websoket chat 2.0</title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
@@ -115,6 +115,41 @@
                           fill="red"
                         />
                       </svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="notifications_wrapper">
+                  <img
+                    class="notification_bell"
+                    id="notification_bell"
+                    src="./src/img/notification-bell.svg"
+                    alt=""
+                  />
+                  <div class="notifications none" id="notifications">
+                    <div class="up-arrow"></div>
+                    <div class="notifications_list" id="notifications_list">
+                      <div class="notification">Уведомлений нет</div>
+                      <div class="notification">
+                        <div
+                          class="user_avatar user_avatar_small notification_user"
+                          title="${authorDATA.username}"
+                        >
+                          <img
+                            class="user_avatar_img openProfile"
+                            src="./src/img/1.jpg"
+                            data-id="${authorDATA.id}"
+                            alt=""
+                          />
+                        </div>
+                        Александр хочет добавить Вас в друзья
+                        <div class="reaction" id="yes">Принять</div>
+                        <div class="reaction" id="no">Отказать</div>
+                      </div>
+                      <div class="notification">Уведомлений нет</div>
+                      <div class="notification">Уведомлений нет</div>
+                      <div class="notification">Уведомлений нет</div>
+                      <div class="notification">Уведомлений нет</div>
+                      <div class="notification">Уведомлений нет</div>
                     </div>
                   </div>
                 </div>
@@ -357,7 +392,10 @@
               <div class="cats_info">
                 Нажмимте мышкой в области экрана внизу
                 <img src="./src/img/Cursor.svg" alt="" />, сформируйте
-                прямоугольник и отпустите.&nbsp;<span style="color: var(--attention);">Для еще одной попытки нажмите сюда ->&nbsp;</span>
+                прямоугольник и отпустите.&nbsp;<span
+                  style="color: var(--attention)"
+                  >Для еще одной попытки нажмите сюда ->&nbsp;</span
+                >
                 <img
                   class="cats_refresh"
                   id="cats_refresh"

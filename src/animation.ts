@@ -10,6 +10,13 @@ export function toggleSmallMenu() {
 }
 
 /**
+ * открытие списка уведомлений
+ */
+export function toggleNotificationsMenu() {
+  $('#notifications').classList.remove('none');
+}
+
+/**
  * функция закрытия при клике вне области
  */
 export function globalClickAnimation(event: MouseEvent) {
@@ -45,6 +52,17 @@ export function globalClickAnimation(event: MouseEvent) {
     $('.emoji_picker_wrapper')?.classList.add('none');
   }
   //скрыть смайлы
+
+  //скрыть уведомления
+  if (
+    !$('#notification_bell')?.contains(targetElement) &&
+    !$('#notifications')?.contains(targetElement)
+  ) {
+    // убираем меню под аватаром (настройки)
+    // Клик был совершен вне меню, поэтому закрываем его
+    $('#notifications').classList.add('none');
+  }
+  //скрыть уведомления
 }
 
 /**

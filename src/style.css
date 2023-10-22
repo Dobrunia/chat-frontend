@@ -178,7 +178,7 @@ body {
 }
 
 .avatar_hover {
-  background-color: var(--navDarkBg);
+  background-color: var(--notificationBg);
 }
 
 .up-arrow {
@@ -188,8 +188,9 @@ body {
   border: 10px solid transparent;
   display: inline-flex;
   transform: rotate(90deg);
-  border-right: 10px solid var(--navDarkBg);
+  border-right: 10px solid var(--notificationBg);
   border-left: none;
+  z-index: 10;
 }
 
 .avatar_hover>*:hover {
@@ -565,6 +566,71 @@ body {
 .input_color {
   background-color: var(--navLightBg) !important;
   border-color: var(--borderVk);
+}
+
+.notifications_wrapper {
+  position: relative;
+}
+
+.notification_bell {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.notifications {
+  position: absolute;
+  width: 300px;
+  max-height: 500px;
+  height: max-content;
+  top: 50px;
+  right: 0;
+  /* transform: translate(0, 50%); */
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  text-align: center;
+  padding: 15px;
+  border-radius: 0.5rem;
+  color: var(--white);
+  background-color: var(--notificationBg);
+  z-index: 10;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notifications_list {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.notification {
+  width: 250px;
+  max-height: 100px;
+  padding: 5px;
+  margin: 15px 0;
+  border-radius: 0.5rem;
+  background-color: #747474;
+  text-align: start;
+}
+
+.notification_user {
+  display: inline;
+}
+
+.reaction {
+  display: inline;
+  width: max-content;
+  height: max-content;
+  font-size: 12px;
+  padding: 5px;
+  border-radius: 0.5rem;
+  background-color: var(--navDarkBg);
+  cursor: pointer;
+}
+
+.reaction:hover {
+  background-color: #2F2F2F;
 }
 
 @media screen and (max-width: 991px) {

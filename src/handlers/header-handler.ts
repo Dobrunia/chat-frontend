@@ -3,6 +3,7 @@ import {
   closeSettingsWindow,
   openSettingsWindow,
   toggleModuleWindow,
+  toggleNotificationsMenu,
   toggleSmallMenu,
 } from '../animation';
 import { $, globalClickHandler } from '../services/main-page-service';
@@ -28,6 +29,11 @@ $('#registrationForm').addEventListener('submit', registration);
  * открытие меню профиля
  */
 $('#my_avatar').addEventListener('click', toggleSmallMenu);
+
+/**
+ * открытие уведомлений
+ */
+$('#notification_bell').addEventListener('click', toggleNotificationsMenu);
 
 /**
  * отображение не авторизованного пользователя
