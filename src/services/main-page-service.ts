@@ -3,6 +3,7 @@ import {
   hideSections,
   logInView,
   logOutView,
+  showAnnouncementMenu,
 } from '../animation';
 import {
   FriendshipStatus,
@@ -170,21 +171,19 @@ async function renderProfilePage(userDATA) {
       localStorage.getItem('id'),
       userDATA.id.toString(),
     );
-    console.log(isFriend);
     if (!isFriend[0]) {
-      friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
+      friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" id="nav_user_add_friend" data-id="${userDATA.id}" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
     } else {
       if (isFriend[0].status === 'accepted') {
         //TODO:: проверка есть ли в друзьях
-        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" title="Удалить из друзей ${userDATA.username}"><img src="../src/img/delete-friend-svgrepo-com.svg" alt=""/></div>`;
+        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend nav_user_remove_friend" id="nav_user_remove_friend" data-id="${userDATA.id}" title="Удалить из друзей ${userDATA.username}"><img src="../src/img/delete-friend-svgrepo-com.svg" alt=""/></div>`;
       } else if (isFriend[0].status === 'rejected') {
-        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
+        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" id="nav_user_add_friend" data-id="${userDATA.id}" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
       } else if (isFriend[0].status === 'pending') {
         friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div>`;
       }
     }
   }
-
   $('#profile_page').innerHTML = '';
   $('#profile_page').innerHTML = `<div class="nav_profile_header">
     <div class="nav_profile_avatar">
@@ -396,6 +395,16 @@ async function renderProfilePage(userDATA) {
       </div>
     </div>
   </div>`;
+
+  /**
+   * Добавить в друзья
+   */
+  $('#nav_user_add_friend')?.addEventListener('click', addFriend);
+
+  /**
+   * Удалить из друзей
+   */
+  $('#nav_user_remove_friend')?.addEventListener('click', removeFriend);
 }
 
 /**
@@ -774,7 +783,7 @@ export function changeUsername(event: any) {
         localStorage.setItem('username', data);
         renderAccount();
         ($('#changeName_input') as HTMLFormElement).value = '';
-        alert('Вы успешно сменили имя');
+        announcementMessage('Вы успешно сменили имя');
       }
     })
     .catch((error) => console.log('Ошибка:', error));
@@ -874,13 +883,13 @@ export function messageHandler(event: any) {
     const chatID = $('#data_chatID').getAttribute('data-chatID');
     const content = $('#message_text').value.trim();
     if (!chatID || content == '') {
-      alert('Не отправляйте пустые сообщения');
+      announcementMessage('Не отправляйте пустые сообщения');
     } else {
       socketService.sendMessage(content, chatID);
       $('#message_text').value = '';
     }
   } catch (e) {
-    alert('Выберите собеседника');
+    announcementMessage('Выберите собеседника');
   }
 }
 
@@ -889,4 +898,59 @@ export function messageHandler(event: any) {
  */
 export function showSmiles() {
   $('#emoji_picker_wrapper')?.classList.toggle('none');
+}
+
+/**
+ * Добавить текст в окно оповещений
+ */
+function announcementMessage(text: string) {
+  $('#announcement_text').innerHTML = '';
+  $('#announcement_text').innerHTML = `${text}`;
+  showAnnouncementMenu();
+}
+
+/**
+ * Добавить в друзья
+ */
+export function addFriend(event: MouseEvent) {
+  const targetElement = event.target as HTMLElement;
+  const currentElement = targetElement.closest('.nav_user_add_friend');
+  const friendId = currentElement?.getAttribute('data-id');
+  let DATA = {
+    myId: localStorage.getItem('id'),
+    friendId: friendId,
+  };
+  $api
+    .post('/addFriend', DATA)
+    .then((response) => {
+      const data = response.data;
+      if (data) {
+        announcementMessage('Пользователь добавлен в друзья');
+        renderUserProfilePage(friendId);
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * Удалить из друзей
+ */
+export function removeFriend(event: MouseEvent) {
+  const targetElement = event.target as HTMLElement;
+  const currentElement = targetElement.closest('.nav_user_remove_friend');
+  const friendId = currentElement?.getAttribute('data-id');
+  let DATA = {
+    myId: localStorage.getItem('id'),
+    friendId: friendId,
+  };
+  $api
+    .post('/removeFriend', DATA)
+    .then((response) => {
+      const data = response.data;
+      if (data) {
+        announcementMessage('Пользователь удален из друзей');
+        renderUserProfilePage(friendId);
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
 }

@@ -214,9 +214,7 @@ body {
   background-color: var(--message);
 }
 
-.classic_btn {
-
-}
+.classic_btn {}
 
 .none {
   display: none !important;
@@ -403,16 +401,20 @@ body {
 .user_name {
   font-size: 18px;
   font-weight: 100;
-  white-space: nowrap; /* Запрещаем перенос слов на новую строку */
-  overflow: hidden; /* Обрезаем текст, который превышает заданную ширину контейнера */
+  white-space: nowrap;
+  /* Запрещаем перенос слов на новую строку */
+  overflow: hidden;
+  /* Обрезаем текст, который превышает заданную ширину контейнера */
   text-overflow: ellipsis;
 }
 
 .user_last_message {
   font-size: 18px;
   font-weight: 100;
-  white-space: nowrap; /* Запрещаем перенос слов на новую строку */
-  overflow: hidden; /* Обрезаем текст, который превышает заданную ширину контейнера */
+  white-space: nowrap;
+  /* Запрещаем перенос слов на новую строку */
+  overflow: hidden;
+  /* Обрезаем текст, который превышает заданную ширину контейнера */
   text-overflow: ellipsis;
 }
 
@@ -508,7 +510,7 @@ body {
   outline: none;
   border: none;
   cursor: pointer;
-  background-color: var(--message);
+  background-color: var(--notificationBg);
 }
 
 .dialogue_with {
@@ -631,6 +633,55 @@ body {
 
 .reaction:hover {
   background-color: #2F2F2F;
+}
+
+.notification_bell_number {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  right: 0px;
+  top: 0px;
+  border-radius: 50px;
+  background-color: var(--attention);
+}
+
+.announcement {
+  position: absolute;
+  right: 50%;
+  top: 20%;
+  transform: translate(50%, -50%);
+  width: 400px;
+  height: 150px;
+  background-color: #5D4BA6;
+  z-index: 100;
+  border-radius: 0.5rem;
+}
+
+.announcement_text {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.announcement_exit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 25px;
+  height: 20px;
+  font-size: 30px;
+  border: none;
+  padding: 0;
+  outline: none;
+  background-color: inherit;
+  color: red;
+  border-radius: 0.5rem;
 }
 
 @media screen and (max-width: 991px) {

@@ -5,15 +5,31 @@ import { functionsIn } from 'lodash';
 /**
  * открытие меню профиля
  */
-export function toggleSmallMenu() {
+export function showSmallMenu() {
   $('#avatar_hover').classList.remove('none');
 }
 
 /**
  * открытие списка уведомлений
  */
-export function toggleNotificationsMenu() {
+export function showNotificationsMenu() {
   $('#notifications').classList.remove('none');
+}
+
+/**
+ * закрыть окно оповещений
+ */
+export function hideAnnouncementMenu() {
+  $('#announcement').classList.add('none');
+  $('#nav_elements').classList.remove('blur');
+}
+
+/**
+ * показать окно оповещений
+ */
+export function showAnnouncementMenu() {
+  $('#announcement').classList.remove('none');
+  $('#nav_elements').classList.add('blur');
 }
 
 /**
@@ -63,6 +79,12 @@ export function globalClickAnimation(event: MouseEvent) {
     $('#notifications').classList.add('none');
   }
   //скрыть уведомления
+
+  //скрыть оконо оповещений
+  if (!$('#announcement')?.contains(targetElement)) {
+    hideAnnouncementMenu();
+  }
+  //скрыть оконо оповещений
 }
 
 /**

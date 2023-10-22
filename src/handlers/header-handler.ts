@@ -3,8 +3,8 @@ import {
   closeSettingsWindow,
   openSettingsWindow,
   toggleModuleWindow,
-  toggleNotificationsMenu,
-  toggleSmallMenu,
+  showNotificationsMenu,
+  showSmallMenu,
 } from '../animation';
 import { $, globalClickHandler } from '../services/main-page-service';
 import { authorization } from '../registration-authorization/authorization';
@@ -28,12 +28,12 @@ $('#registrationForm').addEventListener('submit', registration);
 /**
  * открытие меню профиля
  */
-$('#my_avatar').addEventListener('click', toggleSmallMenu);
+$('#my_avatar').addEventListener('click', showSmallMenu);
 
 /**
  * открытие уведомлений
  */
-$('#notification_bell').addEventListener('click', toggleNotificationsMenu);
+$('#notification_bell').addEventListener('click', showNotificationsMenu);
 
 /**
  * отображение не авторизованного пользователя

@@ -21,7 +21,7 @@
   </head>
   <body>
     <div class="nav_wrapper">
-      <div class="nav_elements">
+      <div class="nav_elements" id="nav_elements">
         <header class="p-3 text-bg-dark header">
           <div class="container">
             <div
@@ -125,6 +125,7 @@
                     src="./src/img/notification-bell.svg"
                     alt=""
                   />
+                  <div class="notification_bell_number"></div>
                   <div class="notifications none" id="notifications">
                     <div class="up-arrow"></div>
                     <div class="notifications_list" id="notifications_list">
@@ -408,6 +409,10 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="announcement none" id="announcement">
+        <div class="announcement_text" id="announcement_text"></div>
+        <button class="announcement_exit" id="announcement_exit">x</button>
       </div>
     </div>
   </body>

@@ -1,3 +1,4 @@
+import { hideAnnouncementMenu } from '../animation';
 import { removeCats } from '../pages/cats';
 import {
   $,
@@ -40,4 +41,9 @@ sections.forEach((section) => {
 /**
  * очистка поля с котами
  */
-$('#cats_refresh').addEventListener('click', removeCats)
+$('#cats_refresh').addEventListener('click', removeCats);
+
+/**
+ * закрытие окна уведомлений
+ */
+$('#announcement_exit').addEventListener('click', hideAnnouncementMenu);
