@@ -33,6 +33,22 @@ export function showAnnouncementMenu() {
 }
 
 /**
+ * открыть окно оповещений
+ */
+export function showConfirmationMenu() {
+  $('#confirmation').classList.remove('none');
+  $('#nav_elements').classList.add('blur');
+}
+
+/**
+ * закрыть окно подтверждений
+ */
+export function hideConfirmationMenu() {
+  $('#confirmation').classList.add('none');
+  $('#nav_elements').classList.remove('blur');
+}
+
+/**
  * функция закрытия при клике вне области
  */
 export function globalClickAnimation(event: MouseEvent) {

@@ -2,7 +2,7 @@ import { hideAnnouncementMenu } from '../animation';
 import { removeCats } from '../pages/cats';
 import {
   $,
-  renderMessage,
+  handlerMessageEvent,
   messageHandler,
   renderChats,
   changeSection,
@@ -26,7 +26,7 @@ $('#chat_form').addEventListener('submit', messageHandler);
 /**
  * рендер сообщений
  */
-document.addEventListener('newMessage', renderMessage);
+document.addEventListener('newMessage', handlerMessageEvent);
 
 /**
  * сменя выбранной секции в навигации

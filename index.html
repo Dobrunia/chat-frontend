@@ -125,7 +125,10 @@
                     src="./src/img/notification-bell.svg"
                     alt=""
                   />
-                  <div class="notification_bell_number none" id="notification_bell_number"></div>
+                  <div
+                    class="notification_bell_number none"
+                    id="notification_bell_number"
+                  ></div>
                   <div class="notifications none" id="notifications">
                     <div class="up-arrow"></div>
                     <div
@@ -235,17 +238,15 @@
         </section>
         <section class="settings_wrapper none" id="settings_window">
           <div class="settings_window">
-            <form enctype="multipart/form-data" method="post">
+            <div class="change_photo" id="change_photo">
               <p>Сменить аватар</p>
               <p>
-                <input type="file" name="photo" accept="image/*,image/jpeg" />
-                <input
-                  class="btn btn-outline-light me-2"
-                  type="submit"
-                  value="Сменить аватар"
-                />
+                <input type="text" id="photoUrl" />
+                <button class="btn btn-outline-light me-2" id="change_photoUrl">
+                  Сменить аватар
+                </button>
               </p>
-            </form>
+            </div>
             <form enctype="multipart/form-data" role="form" id="changeName">
               <p>Сменить имя</p>
               <p>
@@ -393,6 +394,23 @@
       <div class="announcement none" id="announcement">
         <div class="announcement_text" id="announcement_text"></div>
         <button class="announcement_exit" id="announcement_exit">x</button>
+      </div>
+      <div class="confirmation none" id="confirmation">
+        <div class="confirmation_text" id="confirmation_text"></div>
+        <div class="confirmation_btns">
+          <button
+            class="confirmation_btn btn btn-outline-light me-2"
+            id="confirmation_yes"
+          >
+            да
+          </button>
+          <button
+            class="confirmation_btn btn btn-outline-light me-2"
+            id="confirmation_no"
+          >
+            нет
+          </button>
+        </div>
       </div>
     </div>
   </body>

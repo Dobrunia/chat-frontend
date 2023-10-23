@@ -6,14 +6,16 @@ import {
   showNotificationsMenu,
   showSmallMenu,
 } from '../animation';
-import { $, globalClickHandler } from '../services/main-page-service';
-import { authorization } from '../registration-authorization/authorization';
-import { registration } from '../registration-authorization/registration';
 import {
+  $,
+  changePhoto,
+  globalClickHandler,
   changeUsername,
   searchInputHandler,
   userOut,
 } from '../services/main-page-service';
+import { authorization } from '../registration-authorization/authorization';
+import { registration } from '../registration-authorization/registration';
 
 /**
  * функция афторизации пользователей
@@ -68,7 +70,7 @@ $('#registration_exit').addEventListener('click', () =>
 );
 
 /**
- * функция закрытия при клике вне области, а также обработчик некоторых глобальных вещей 
+ * функция закрытия при клике вне области, а также обработчик некоторых глобальных вещей
  */
 document.addEventListener('click', globalClickHandler);
 
@@ -84,3 +86,8 @@ document.addEventListener('click', globalClickHandler);
  * смена имени в настройках
  */
 $('#changeName').addEventListener('click', changeUsername);
+
+/**
+ * смена аватара профиля
+ */
+$('#change_photoUrl').addEventListener('click', changePhoto);

@@ -1,9 +1,11 @@
 import {
   globalClickAnimation,
+  hideConfirmationMenu,
   hideSections,
   logInView,
   logOutView,
   showAnnouncementMenu,
+  showConfirmationMenu,
 } from '../animation';
 import {
   FriendshipStatus,
@@ -49,9 +51,9 @@ function generateChatID(companionEmail: string) {
 }
 
 /**
- * отображение переписки с собеседником
+ * рендер пользователя с которым переписка
  */
-function correspondence(chatID: string, companionData) {
+function renderChatHeader(chatID: string, companionData) {
   const dialogue_with_wrapper = $('#dialogue_with_wrapper');
   dialogue_with_wrapper.innerHTML = '';
   dialogue_with_wrapper.innerHTML = `
@@ -66,16 +68,32 @@ function correspondence(chatID: string, companionData) {
 }
 
 /**
+ * рендер переписки с собеседником
+ */
+function renderMessages(chatID: string, companionData) {
+  $api
+    .get(`/getMessagesByChatId/${chatID}`)
+    .then((response) =>
+      response.data.forEach((message) => {
+        renderMessage(message);
+      }),
+    )
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
  * обработка клика по чату с собеседником
  */
-function userHandler(elem, chatID: string) {
+function selectChatHandler(elem, chatID: string) {
   const companionData = {
     id: elem.getAttribute('data-id'),
     username: elem.getAttribute('data-username'),
     email: elem.getAttribute('data-email'),
     avatar: elem.getAttribute('data-avatar'),
   };
-  correspondence(chatID, companionData);
+  socketService.startChat(chatID, localStorage.getItem('id'));
+  renderChatHeader(chatID, companionData);
+  renderMessages(chatID, companionData);
 }
 
 /**
@@ -98,7 +116,7 @@ function renderChatId(currentElement) {
   //   });
   const companionEmail = currentElement.getAttribute('data-email');
   const companionId = currentElement.getAttribute('data-id');
-  userHandler(currentElement, generateChatID(companionEmail)); //TODO:: сохранять chatId в БД
+  selectChatHandler(currentElement, generateChatID(companionEmail)); //TODO:: сохранять chatId в БД
 }
 
 /**
@@ -163,19 +181,12 @@ function getFriendStatusInfo(
  */
 async function renderNotifications() {
   let standart = '<div class="notification">Уведомлений нет</div>';
-  let friendInfo = `<div class="user_avatar user_avatar_small notification_user" title="">
-  <img
-    class="user_avatar_img openProfile"
-    src=""
-    data-id=""
-    alt=""
-  />
-</div> &nbsp; хочет добавить Вас в друзья
-<div class="reaction" id="yes">Принять</div>
-<div class="reaction" id="no">Отказать</div>`;
   let content = '';
   $('#notifications_list').innerHTML = '';
-  const isFriend = await getFriendStatusInfo(`user_id`, localStorage.getItem('id'));
+  const isFriend = await getFriendStatusInfo(
+    `user_id`,
+    localStorage.getItem('id'),
+  );
   isFriend.forEach((element) => {
     if (element.status === 'pending') {
       content += `<div class="user_avatar user_avatar_small notification_user" title="">
@@ -464,7 +475,8 @@ async function renderProfilePage(userDATA) {
  * поиск и отрисовка постов на странице пользователя
  */
 async function renderUsersPosts(userDATA) {
-  //TODO:: emoji_picker вынести переделать SQL
+  //TODO:: переделать SQL
+  const myId = localStorage.getItem('id');
   $api
     .get(`/get-user-posts?search_value=${userDATA.id}`)
     .then(async (response) => {
@@ -480,6 +492,9 @@ async function renderUsersPosts(userDATA) {
         element.files && element.files.data[0]
           ? (content += `<a href="${element.files}" class="nav_user_wall_post_file" target="_blank"><img src="./src/img/File.svg" alt="" /></a>`)
           : (content += '');
+        myId === element.wallId.toString()
+          ? (content += `<div class="delete_post" data-postId="${element.id}" data-wallId="${element.wallId}" title="Удалить пост">x</div>`)
+          : (content += '');
         if (userDATA.id === element.authorId) {
           $('#nav_user_wall_wrapper_posts').insertAdjacentHTML(
             'afterbegin',
@@ -492,7 +507,7 @@ async function renderUsersPosts(userDATA) {
                   alt=""
                 />
                 <div class="status"></div>
-          </div>${content}`,
+          </div>${content}</div>`,
           );
         } else {
           let authorDATA = await findUserById(element.authorId);
@@ -531,6 +546,19 @@ async function renderUsersPosts(userDATA) {
        * submit поста
        */
       $('#addPost').addEventListener('submit', addPost);
+
+      /**
+       * удаление поста
+       */
+      let deleteBtns = [...document.getElementsByClassName('delete_post')];
+      deleteBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          deletePost(
+            btn.getAttribute('data-postId'),
+            btn.getAttribute('data-wallId'),
+          );
+        });
+      });
     })
     .catch((error) => {
       console.error(error);
@@ -566,7 +594,9 @@ export function globalClickHandler(event: MouseEvent) {
     const currentElement = targetElement.closest('.openDialog');
     const chatId = currentElement?.getAttribute('data-chatId');
     changeSection('messenger');
-    chatId ? userHandler(currentElement, chatId) : renderChatId(currentElement);
+    chatId
+      ? selectChatHandler(currentElement, chatId)
+      : renderChatId(currentElement);
   }
   globalClickAnimation(event);
 }
@@ -745,12 +775,24 @@ function removeChats() {
 }
 
 /**
+ * обработчик события НОВОЕ СООБЩЕНИЕ
+ */
+export function handlerMessageEvent(event: CustomEvent) {
+  let datetime = new Date();
+  let message = {
+    sendBy: event.detail.message.from,
+    datetime,
+    content: event.detail.message.content,
+  };
+  renderMessage(message);
+}
+
+/**
  * рендер сообщений
  * @param content текст сообщения
  */
-export function renderMessage(event: CustomEvent) {
+export function renderMessage(message) {
   const messagesWrapper = $('#messages') as HTMLFormElement;
-  let date = new Date();
   let formatter1 = new Intl.DateTimeFormat('ru', {
     month: 'long',
     day: 'numeric',
@@ -760,12 +802,12 @@ export function renderMessage(event: CustomEvent) {
     minute: 'numeric',
   });
   messagesWrapper.innerHTML += `
-    <div class="message ${event.detail.message.from === 'me' ? 'my' : 'from'}">
+    <div class="message ${message.sendBy === 'me' ? 'my' : 'from'}">
       <div class="message_metric">${formatter2.format(
-        date,
-      )}<br />${formatter1.format(date)}</div>
+        new Date(message.datetime),
+      )}<br />${formatter1.format(new Date(message.datetime))}</div>
       <div class="message_text">
-        ${event.detail.message.content}
+        ${message.content}
       </div>
       <div class="user_avatar user_avatar_small"></div>
     </div>`;
@@ -777,9 +819,9 @@ export function renderMessage(event: CustomEvent) {
 function setInfo() {
   let email = localStorage.getItem('email');
   console.log(socketService);
-  if (email) {
-    socketService.login(email);
-  }
+  // if (email) {
+  //   socketService.login(email);
+  // }
   renderNotifications();
   renderAccount();
   renderThemes();
@@ -842,6 +884,40 @@ export function changeUsername(event: any) {
     })
     .catch((error) => console.log('Ошибка:', error));
   return false;
+}
+
+/**
+ * смена аватара профиля
+ */
+export function changePhoto() {
+  let userId = localStorage.getItem('id');
+  let photoUrl = $('#photoUrl').value.toString().trim();
+  if (!photoUrl) {
+    alert('Вставьте ссылку на изображение в поле ввода (слева от кнопки)');
+    return;
+  }
+  if (!userId) return;
+  askConfirmationFromUser('Вы уверены, что хотите сменить аватар?').then(
+    (confirmed) => {
+      if (confirmed) {
+        $api
+          .post('/changePhoto', {
+            userId,
+            photoUrl: escapeSql(escapeHtml(photoUrl)),
+          })
+          .then((response) => {
+            const data = response.data;
+            if (data) {
+              localStorage.setItem('avatar', escapeSql(escapeHtml(photoUrl)));
+              renderAccount();
+              ($('#photoUrl') as HTMLFormElement).value = '';
+              announcementMessage('Вы успешно сменили аватар');
+            }
+          })
+          .catch((error) => console.log('Ошибка:', error));
+      }
+    },
+  );
 }
 
 /**
@@ -927,6 +1003,74 @@ export function addPost(event: any) {
 }
 
 /**
+ * функция запроса подтверждения у пользователя
+ * @param text текст который нужно подтвердить
+ */
+function askConfirmationFromUser(text: string) {
+  $('#confirmation_text').innerHTML = '';
+  return new Promise((resolve, reject) => {
+    $('#confirmation_text').innerHTML = text;
+    showConfirmationMenu();
+
+    const handleConfirmationYes = () => {
+      resolve(true);
+      cleanup(); // Удаление eventListener'ов
+    };
+
+    const handleConfirmationNo = () => {
+      resolve(false);
+      cleanup(); // Удаление eventListener'ов
+    };
+
+    // Добавление eventListener'ов
+    $('#confirmation_yes').addEventListener('click', handleConfirmationYes);
+    $('#confirmation_no').addEventListener('click', handleConfirmationNo);
+
+    // Функция для удаления eventListener'ов
+    function cleanup() {
+      $('#confirmation_yes').removeEventListener(
+        'click',
+        handleConfirmationYes,
+      );
+      $('#confirmation_no').removeEventListener('click', handleConfirmationNo);
+      hideConfirmationMenu();
+    }
+  });
+}
+
+/**
+ * удаление поста
+ */
+export function deletePost(postId: string, wallId: string) {
+  const myId = localStorage.getItem('id');
+  if (myId !== wallId) return; //Доп вроверка
+  // console.log(postId)
+  askConfirmationFromUser('Вы уверены, что хотите удалить пост?').then(
+    (confirmed) => {
+      if (confirmed) {
+        // Пользователь подтвердил удаление (нажал "Да")
+        console.log('DA');
+        // deletePost(postId, wallId);
+      } else {
+        console.log('net');
+        // Пользователь отказался от удаления (нажал "Нет" или закрыл окно)
+        // Вы можете добавить здесь логику, которую нужно выполнить, если пользователь отказался от удаления
+      }
+    },
+  );
+  // $api
+  //   .post('/deletePost', {postId})
+  //   .then((response) => {
+  //     const data = response.data;
+  //     if (data) {
+  //       renderUserProfilePage(wallId);//TODO:: тут лучше только посты ререндерить
+  //       announcementMessage('Вы успешно удалили пост');
+  //     }
+  //   })
+  //   .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
  * отправка сообщений по клику
  */
 export function messageHandler(event: any) {
@@ -939,7 +1083,7 @@ export function messageHandler(event: any) {
     if (!chatID || content == '') {
       announcementMessage('Не отправляйте пустые сообщения');
     } else {
-      socketService.sendMessage(content, chatID);
+      socketService.sendMessage(content, chatID, localStorage.getItem('id'));
       $('#message_text').value = '';
     }
   } catch (e) {
@@ -1018,7 +1162,7 @@ function responseToFriendRequest(friend_id: string, status: string) {
     friend_id,
     status,
   };
-  console.log(DATA)
+  console.log(DATA);
   $api
     .post('/responseToFriendRequest', DATA)
     .then((response) => {
