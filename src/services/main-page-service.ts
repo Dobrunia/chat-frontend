@@ -1067,7 +1067,6 @@ export function deletePost(postId: string, wallId: string) {
  * отправка сообщений по клику
  */
 export function messageHandler(event: any) {
-  //TODO:: Нужно сделать окно уведомлений
   event.preventDefault();
   // const chatID = 'lents@mail.ru';
   try {
