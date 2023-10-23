@@ -1048,26 +1048,19 @@ export function deletePost(postId: string, wallId: string) {
   askConfirmationFromUser('Вы уверены, что хотите удалить пост?').then(
     (confirmed) => {
       if (confirmed) {
-        // Пользователь подтвердил удаление (нажал "Да")
-        console.log('DA');
-        // deletePost(postId, wallId);
-      } else {
-        console.log('net');
-        // Пользователь отказался от удаления (нажал "Нет" или закрыл окно)
-        // Вы можете добавить здесь логику, которую нужно выполнить, если пользователь отказался от удаления
+        $api
+          .post('/deletePost', { postId })
+          .then((response) => {
+            const data = response.data;
+            if (data) {
+              renderUserProfilePage(wallId); //TODO:: тут лучше только посты ререндерить
+              announcementMessage('Вы успешно удалили пост');
+            }
+          })
+          .catch((error) => console.log('Ошибка:', error));
       }
     },
   );
-  // $api
-  //   .post('/deletePost', {postId})
-  //   .then((response) => {
-  //     const data = response.data;
-  //     if (data) {
-  //       renderUserProfilePage(wallId);//TODO:: тут лучше только посты ререндерить
-  //       announcementMessage('Вы успешно удалили пост');
-  //     }
-  //   })
-  //   .catch((error) => console.log('Ошибка:', error));
 }
 
 /**
