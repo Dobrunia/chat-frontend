@@ -218,7 +218,7 @@ export function changeSection(data_section: SectionType, userId?: string) {
  */
 async function findUserById(userId: string | null) {
   try {
-    const response = await $api.get(`/find-user-by-id?search_value=${userId}`);
+    const response = await $api.get(`/findUserById?search_value=${userId}`);
     return response.data[0];
   } catch (error) {
     throw error;
@@ -427,7 +427,7 @@ async function renderUsersPosts(userDATA) {
   //TODO:: переделать SQL
   const myId = localStorage.getItem('id');
   $api
-    .get(`/get-user-posts?search_value=${userDATA.id}`)
+    .get(`/getUserPosts?search_value=${userDATA.id}`)
     .then(async (response) => {
       $('#nav_user_wall_wrapper_posts').innerHTML = '';
       for (const element of response.data) {
@@ -934,21 +934,22 @@ export function changeUsername(event: any) {
   const username = escapeSql(
     escapeHtml(formData.get('username')?.toString().trim()),
   );
-  const email = localStorage.getItem('email');
-  if (!email) {
+  if (!localStorage.getItem('email')) {
+    announcementMessage('Прежде всего войдите в аккаунт');
     return 'Прежде всего войдите в аккаунт';
   }
   if (!username) {
-    //TODO:: привезать к общей ф-ии валидации
+    announcementMessage('Некорректное имя пользователя');
     return 'Некорректное имя пользователя';
   }
   $api
-    .post('/changeUsername', { username: username, email: email })
+    .post('/changeUsername', { username: username })
     .then((response) => {
       const data = response.data;
       if (data) {
         localStorage.setItem('username', data);
         renderAccount();
+        renderUserProfilePage(localStorage.getItem('id'));
         ($('#changeName_input') as HTMLFormElement).value = '';
         announcementMessage('Вы успешно сменили имя');
       }
@@ -973,7 +974,6 @@ export function changePhoto() {
       if (confirmed) {
         $api
           .post('/changePhoto', {
-            userId,
             photoUrl: escapeSql(escapeHtml(photoUrl)),
           })
           .then((response) => {

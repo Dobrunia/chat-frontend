@@ -85,7 +85,7 @@ document.addEventListener('click', globalClickHandler);
 /**
  * смена имени в настройках
  */
-$('#changeName').addEventListener('click', changeUsername);
+$('#changeName').addEventListener('submit', changeUsername);
 
 /**
  * смена аватара профиля

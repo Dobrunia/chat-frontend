@@ -98,7 +98,7 @@ body {
 }
 
 .status {
-  background-color: var(--exit);
+  background-color: green;
 }
 
 .user:hover {
