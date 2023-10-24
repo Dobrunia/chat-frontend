@@ -191,6 +191,8 @@
 .emoji_picker_wrapper {
     position: absolute;
     top: 50px;
+    right: -190px;
+    z-index: 6;
 }
 
 .nav_user_wall_wrapper_posts {

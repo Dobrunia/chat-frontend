@@ -718,12 +718,8 @@ body {
   text-transform: uppercase;
 }
 
-@media screen and (max-width: 991px) {
+/* @media screen and (max-width: 991px) {
   .wrapper {
     height: calc(100vh - 126px);
   }
-
-  /* .users_wrapper {
-    top: 174px;
-  } */
-}
+} */
