@@ -91,7 +91,58 @@ function selectChatHandler(elem, chatID: string) {
     email: elem.getAttribute('data-email'),
     avatar: elem.getAttribute('data-avatar'),
   };
+  $('#messages_wrapper').style.backgroundImage = "url('./img/ChatbackG.png')";
+  $('#messages_wrapper').innerHTML = `<div class="messages" id="messages">
+  <!-- <div class="message from">
+    <div class="user_avatar user_avatar_small"></div>
+    <div class="message_text">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste,
+      laudantium praesentium obcaecati facere et hic quia corrupti enim!
+      Veritatis praesentium dolorum quo nostrum dicta sit tenetur
+      possimus doloribus cupiditate consequuntur. Lorem ipsum dolor sit
+      amet consectetur adipisicing elit. Iste, laudantium praesentium
+      obcaecati facere et hic quia corrupti enim! Veritatis praesentium
+      dolorum quo nostrum dicta sit tenetur possimus doloribus
+      cupiditate consequuntur. Lorem ipsum dolor sit amet consectetur
+      adipisicing elit. Iste, laudantium praesentium obcaecati facere et
+      hic quia corrupti enim! Veritatis praesentium dolorum quo nostrum
+      dicta sit tenetur possimus doloribus cupiditate consequuntur.
+    </div>
+    <div class="message_metric">12:00 PM<br />Aug 13</div>
+  </div>
+  <div class="message my">
+    <div class="message_metric">12:00 PM<br />Aug 13</div>
+    <div class="message_text">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste,
+      laudantium praesentium obcaecati facere et hic quia corrupti enim!
+      Veritatis praesentium dolorum quo nostrum dicta sit tenetur
+      possimus doloribus cupiditate consequuntur.
+    </div>
+    <div class="user_avatar user_avatar_small"></div>
+  </div> -->
+</div>
+<form class="message_send" id="chat_form">
+  <input
+    class="message_text_value"
+    id="message_text"
+    type="text"
+    name="message"
+    placeholder="Ваше сообщение..."
+    required="true"
+  />
+  <input
+    class="message_submit btn btn-warning"
+    type="submit"
+    name="submit"
+    value="Отправить"
+  />
+</form>`;
+  $('#messages').innerHTML = '';
   socketService.startChat(chatID, localStorage.getItem('id'));
+  /**
+   * отправка сообщений по кнопке
+   */
+  $('#chat_form').addEventListener('submit', messageHandler);
   renderChatHeader(chatID, companionData);
   renderMessages(chatID, companionData);
 }
@@ -249,7 +300,8 @@ async function renderProfilePage(userDATA) {
     }
   }
   $('#profile_page').innerHTML = '';
-  $('#profile_page').innerHTML = `<div class="nav_profile_header">
+  $('#profile_page').innerHTML = `
+<div class="nav_profile_header">
     <div class="nav_profile_avatar">
       <img
         class="nav_profile_avatar_img"
@@ -335,128 +387,7 @@ async function renderProfilePage(userDATA) {
       <div class="nav_user_wall_wrapper_posts" id="nav_user_wall_wrapper_posts"></div>
     </div>
     <div class="nav_users_friends">
-      <div class="nav_friends nav_friends_line">
-        Друзья онлайн <span>2</span>
-        <div class="nav_friends_wrapper">
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-        </div>
-      </div>
-      <div class="nav_friends">
-        Друзья <span>10</span>
-        <div class="nav_friends_wrapper">
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-          <div class="user_avatar user_avatar_small">
-            <img
-              class="user_avatar_img"
-              src="./src/img/1.jpg"
-              alt=""
-            />
-            <div class="status"></div>
-          </div>
-        </div>
-      </div>
+      <div class="nav_friends" id="nav_all_friends"></div>
     </div>
   </div>`;
 
@@ -566,12 +497,116 @@ async function renderUsersPosts(userDATA) {
 }
 
 /**
+ * возвращает всех друзей пользователя с бд с их данными
+ */
+function getAllFriendsIfnfo(userId: string | null) {
+  return $api
+    .get(`/getAllFriendsIfnfo/${userId}`)
+    .then((response) => response.data)
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * рендер друзей пользователя
+ */
+async function renderUsersFriends(userDATA) {
+  let save = `<div class="nav_friends nav_friends_line">
+  Друзья онлайн <span>2</span>
+  <div class="nav_friends_wrapper">
+    <div class="user_avatar user_avatar_small">
+      <img
+        class="user_avatar_img"
+        src="./src/img/1.jpg"
+        alt=""
+      />
+      <div class="status"></div>
+    </div>
+    <div class="user_avatar user_avatar_small">
+      <img
+        class="user_avatar_img"
+        src="./src/img/1.jpg"
+        alt=""
+      />
+      <div class="status"></div>
+    </div>
+    <div class="user_avatar user_avatar_small">
+      <img
+        class="user_avatar_img"
+        src="./src/img/1.jpg"
+        alt=""
+      />
+      <div class="status"></div>
+    </div>
+    <div class="user_avatar user_avatar_small">
+      <img
+        class="user_avatar_img"
+        src="./src/img/1.jpg"
+        alt=""
+      />
+      <div class="status"></div>
+    </div>
+    <div class="user_avatar user_avatar_small">
+      <img
+        class="user_avatar_img"
+        src="./src/img/1.jpg"
+        alt=""
+      />
+      <div class="status"></div>
+    </div>
+    <div class="user_avatar user_avatar_small">
+      <img
+        class="user_avatar_img"
+        src="./src/img/1.jpg"
+        alt=""
+      />
+      <div class="status"></div>
+    </div>
+    <div class="user_avatar user_avatar_small">
+      <img
+        class="user_avatar_img"
+        src="./src/img/1.jpg"
+        alt=""
+      />
+      <div class="status"></div>
+    </div>
+  </div>
+</div>`;
+  let numberOfFriends = 0;
+  let friends = '';
+  $('#nav_all_friends').innerHTML = '';
+  const friendsArray = await getAllFriendsIfnfo(userDATA.id);
+  await Promise.all(
+    friendsArray.map(async (friend) => {
+      friends += `
+    <div class="user_avatar user_avatar_small" title="${friend.username}">
+      <img class="user_avatar_img openProfile" src="${friend.avatar}" data-id="${friend.id}" alt=""/>
+      <div class="status"></div>
+    </div>`;
+      numberOfFriends += 1;
+    }),
+  );
+  let content = `Друзья <span>${numberOfFriends}</span><div class="nav_friends_wrapper">${friends}</div>`;
+  $('#nav_all_friends').innerHTML = content;
+}
+
+/**
  * общий рендер страницы пользователя
  */
+let isRendering = false;
 async function renderUserProfilePage(userId: string | null) {
-  const userDATA = await findUserById(userId);
-  renderProfilePage(userDATA);
-  renderUsersPosts(userDATA);
+  //TODO:: БАГ быстро кликать по друзьям
+  if (isRendering) {
+    return;
+  }
+  isRendering = true;
+  try {
+    const userDATA = await findUserById(userId);
+    renderProfilePage(userDATA);
+    renderUsersPosts(userDATA);
+    renderUsersFriends(userDATA);
+  } finally {
+    isRendering = false;
+  }
 }
 
 /**
@@ -775,15 +810,30 @@ function removeChats() {
 }
 
 /**
+ * сохраняет сообщение в БД
+ */
+export function saveMessageToDb(message) {
+  $api
+    .post('/saveMessage', { message })
+    .then((response) => {
+      const data = response.data;
+      console.log(data);
+    })
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
  * обработчик события НОВОЕ СООБЩЕНИЕ
  */
 export function handlerMessageEvent(event: CustomEvent) {
   let datetime = new Date();
   let message = {
+    chatId: event.detail.chatId,
     sendBy: event.detail.message.from,
     datetime,
-    content: event.detail.message.content,
+    content: escapeSql(escapeHtml(event.detail.message.content)),
   };
+  saveMessageToDb(message);//TODO:: видимо тут сохраняем в базу
   renderMessage(message);
 }
 
@@ -801,8 +851,22 @@ export function renderMessage(message) {
     hour: 'numeric',
     minute: 'numeric',
   });
+  let user = `
+  <div class="user_avatar user_avatar_small" title="${
+    message.username ? message.username : localStorage.getItem('usename')
+  }">
+    <img class="user_avatar_img openProfile" src="${
+      message.avatar ? message.avatar : localStorage.getItem('avatar')
+    }" data-id="${
+    message.id ? message.id : localStorage.getItem('id')
+  }" alt=""/>
+    <div class="status"></div>
+  </div>`;
   messagesWrapper.innerHTML += `
-    <div class="message ${message.sendBy === 'me' ? 'my' : 'from'}">
+    <div class="message ${
+      message.sendBy.toString() === localStorage.getItem('id') ? 'my' : 'from'
+    }">
+    ${message.sendBy.toString() === localStorage.getItem('id') ? '' : user}
       <div class="message_metric">${formatter2.format(
         new Date(message.datetime),
       )}<br />${formatter1.format(new Date(message.datetime))}</div>
@@ -810,6 +874,7 @@ export function renderMessage(message) {
         ${message.content}
       </div>
       <div class="user_avatar user_avatar_small"></div>
+      ${message.sendBy.toString() === localStorage.getItem('id') ? user : ''}
     </div>`;
 }
 
@@ -983,8 +1048,11 @@ export function addPost(event: any) {
     authorId,
     postText: postText ? escapeSql(escapeHtml(postText)) : '',
     photo: photo,
-    file: file,
+    //file: file,
   };
+  if (DATA.photo.size === 0) {
+    DATA.photo = '';
+  }
   $api
     .post('/addPost', DATA, {
       headers: {
@@ -995,7 +1063,6 @@ export function addPost(event: any) {
       const data = response.data;
       if (data) {
         renderUserProfilePage(wallId);
-        console.log('пост добавлен');
       }
     })
     .catch((error) => console.log('Ошибка:', error));
@@ -1042,6 +1109,7 @@ function askConfirmationFromUser(text: string) {
  * удаление поста
  */
 export function deletePost(postId: string, wallId: string) {
+  //TODO:: тут лучше только посты ререндерить
   const myId = localStorage.getItem('id');
   if (myId !== wallId) return; //Доп вроверка
   // console.log(postId)
@@ -1053,7 +1121,7 @@ export function deletePost(postId: string, wallId: string) {
           .then((response) => {
             const data = response.data;
             if (data) {
-              renderUserProfilePage(wallId); //TODO:: тут лучше только посты ререндерить
+              renderUserProfilePage(wallId);
               announcementMessage('Вы успешно удалили пост');
             }
           })

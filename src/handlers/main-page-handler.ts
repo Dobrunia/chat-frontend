@@ -3,7 +3,6 @@ import { removeCats } from '../pages/cats';
 import {
   $,
   handlerMessageEvent,
-  messageHandler,
   renderChats,
   changeSection,
 } from '../services/main-page-service';
@@ -17,11 +16,6 @@ import {
  * рендер активных чатов
  */
 $('#chat_search').addEventListener('input', renderChats);
-
-/**
- * отправка сообщений по кнопке
- */
-$('#chat_form').addEventListener('submit', messageHandler);
 
 /**
  * рендер сообщений
