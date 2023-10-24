@@ -43,22 +43,22 @@ export async function isUserLoggedInCheck() {
 /**
  * функция генерации chatID
  */
-function generateChatID(companionEmail: string) {
-  const myEmail = localStorage.getItem('email');
-  const emails = [myEmail, companionEmail];
-  const sortedEmails = emails.sort();
-  return sortedEmails[0] + sortedEmails[1] + '';
-}
+// function generateChatID(companionEmail: string) {
+//   const myEmail = localStorage.getItem('email');
+//   const emails = [myEmail, companionEmail];
+//   const sortedEmails = emails.sort();
+//   return sortedEmails[0] + sortedEmails[1] + '';
+// }
 
 /**
  * рендер пользователя с которым переписка
  */
-function renderChatHeader(chatID: string, companionData) {
+function renderChatHeader(chatId: string, companionData) {
   const dialogue_with_wrapper = $('#dialogue_with_wrapper');
   dialogue_with_wrapper.innerHTML = '';
   dialogue_with_wrapper.innerHTML = `
         <div class="dialogue_with_text">
-          <div class="dialogue_with_name" id="data_chatID" data-chatId="${chatID}">${companionData.username}</div>
+          <div class="dialogue_with_name" id="data_chatID" data-chatId="${chatId}">${companionData.username}</div>
           <div class="last_entrance">был в сети час назад</div>
         </div>
         <div class="user_avatar user_avatar_small">
@@ -70,9 +70,9 @@ function renderChatHeader(chatID: string, companionData) {
 /**
  * рендер переписки с собеседником
  */
-function renderMessages(chatID: string, companionData) {
+function renderMessages(chatId: string, companionData) {
   $api
-    .get(`/getMessagesByChatId/${chatID}`)
+    .get(`/getMessagesByChatId/${chatId}`)
     .then((response) =>
       response.data.forEach((message) => {
         renderMessage(message);
@@ -84,14 +84,14 @@ function renderMessages(chatID: string, companionData) {
 /**
  * обработка клика по чату с собеседником
  */
-function selectChatHandler(elem, chatID: string) {
+function selectChatHandler(elem, chatId: string) {
   const companionData = {
     id: elem.getAttribute('data-id'),
     username: elem.getAttribute('data-username'),
     email: elem.getAttribute('data-email'),
     avatar: elem.getAttribute('data-avatar'),
   };
-  $('#messages_wrapper').style.backgroundImage = "url('./img/ChatbackG.png')";
+  $('#messages_wrapper').style.backgroundImage = "url('src/img/ChatbackG.png')";
   $('#messages_wrapper').innerHTML = `<div class="messages" id="messages">
   <!-- <div class="message from">
     <div class="user_avatar user_avatar_small"></div>
@@ -138,36 +138,55 @@ function selectChatHandler(elem, chatID: string) {
   />
 </form>`;
   $('#messages').innerHTML = '';
-  socketService.startChat(chatID, localStorage.getItem('id'));
+  socketService.startChat(chatId, localStorage.getItem('id'));
   /**
    * отправка сообщений по кнопке
    */
   $('#chat_form').addEventListener('submit', messageHandler);
-  renderChatHeader(chatID, companionData);
-  renderMessages(chatID, companionData);
+  renderChatHeader(chatId, companionData);
+  renderMessages(chatId, companionData);
+}
+
+/**
+ * создает в бд новый объект chat
+ */
+async function createNewChat(isPrivate: boolean) {
+  return $api
+    .post('/createNewChat', { isPrivate })
+    .then((response) => {
+      const chatId = response.data.insertId;
+      return chatId;
+    })
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * создает в бд новый объект chat
+ */
+async function writeNewUserInChat(userId: number, chatId: number) {
+  return $api
+    .post('/writeNewUserInChat', { userId, chatId })
+    .then((response) => {
+      return response.data.affectedRows;
+      // return chatId ? true : false;
+    })
+    .catch((error) => console.log('Ошибка:', error));
 }
 
 /**
  * создания chatId если он отсутствует
  */
-function renderChatId(currentElement) {
-  // const currentUserId = localStorage.getItem('id');
-  // let chatId = '';
-  // $api
-  //   .get(`/findChatByUserId/${id}?hostUserId=${currentUserId}`)
-  //   .then((response) => {
-  //     if (response.data.length == 0) {
-  //       chatId = `new_${id}_${currentUserId}`;
-  //     } else {
-  //       chatId = response.data[0];
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error(error);
-  //   });
-  const companionEmail = currentElement.getAttribute('data-email');
+async function renderChatId(currentElement) {
+  const newPrivateChatId = await createNewChat(true);
   const companionId = currentElement.getAttribute('data-id');
-  selectChatHandler(currentElement, generateChatID(companionEmail)); //TODO:: сохранять chatId в БД
+  const request1 = writeNewUserInChat(
+    localStorage.getItem('id'),
+    newPrivateChatId,
+  );
+  const request2 = writeNewUserInChat(companionId, newPrivateChatId);
+  if ((await request1) && (await request2)) {
+    selectChatHandler(currentElement, newPrivateChatId);
+  }
 }
 
 /**
@@ -629,7 +648,7 @@ export function globalClickHandler(event: MouseEvent) {
     const currentElement = targetElement.closest('.openDialog');
     const chatId = currentElement?.getAttribute('data-chatId');
     changeSection('messenger');
-    chatId
+    chatId !== 'null'
       ? selectChatHandler(currentElement, chatId)
       : renderChatId(currentElement);
   }
@@ -693,7 +712,7 @@ function renderUsers(users_response_result: UsersResponseResult) {
       const id_el = 'id' + user.id;
       $(
         '#search_request',
-      ).innerHTML += `<div class="element openDialog" id="${id_el}" data-id="${user.id}" data-username="${user.username}" data-email="${user.email}" data-avatar="${user.avatar}" title="${user.username}">
+      ).innerHTML += `<div class="element openDialog" id="${id_el}" data-id="${user.id}" data-username="${user.username}" data-email="${user.email}" data-avatar="${user.avatar}" data-chatid="${user.chatId}" title="${user.username}">
       <div class="user_avatar user_avatar_small">
         <img class="user_avatar_img openProfile" src="${user.avatar}" alt="" data-id="${user.id}"/>
         <div class="status"></div>
@@ -712,12 +731,11 @@ export function searchInputHandler() {
     const users_search = document.querySelector(
       '#users_search',
     ) as HTMLInputElement;
-    const search_username_value = escapeSql(
-      escapeHtml(users_search.value.trim()),
-    );
-    if (search_username_value && search_username_value !== ' ') {
+    const userName = escapeSql(escapeHtml(users_search.value.trim()));
+    const myId = localStorage.getItem('id');
+    if (userName && userName !== ' ') {
       $api
-        .get(`/find-users?search_value=${search_username_value}`)
+        .get(`/findUserByName/${userName}/${myId}`)
         .then((response) => {
           renderUsers(response.data);
         })
@@ -817,7 +835,6 @@ export function saveMessageToDb(message) {
     .post('/saveMessage', { message })
     .then((response) => {
       const data = response.data;
-      console.log(data);
     })
     .catch((error) => console.log('Ошибка:', error));
 }
@@ -833,7 +850,7 @@ export function handlerMessageEvent(event: CustomEvent) {
     datetime,
     content: escapeSql(escapeHtml(event.detail.message.content)),
   };
-  saveMessageToDb(message);//TODO:: видимо тут сохраняем в базу
+  saveMessageToDb(message);
   renderMessage(message);
 }
 
@@ -883,7 +900,6 @@ export function renderMessage(message) {
  */
 function setInfo() {
   let email = localStorage.getItem('email');
-  console.log(socketService);
   // if (email) {
   //   socketService.login(email);
   // }
@@ -1112,7 +1128,6 @@ export function deletePost(postId: string, wallId: string) {
   //TODO:: тут лучше только посты ререндерить
   const myId = localStorage.getItem('id');
   if (myId !== wallId) return; //Доп вроверка
-  // console.log(postId)
   askConfirmationFromUser('Вы уверены, что хотите удалить пост?').then(
     (confirmed) => {
       if (confirmed) {
@@ -1222,7 +1237,6 @@ function responseToFriendRequest(friend_id: string, status: string) {
     friend_id,
     status,
   };
-  console.log(DATA);
   $api
     .post('/responseToFriendRequest', DATA)
     .then((response) => {

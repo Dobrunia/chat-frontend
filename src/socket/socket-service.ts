@@ -23,10 +23,10 @@ export class SocketService {
   startChat(chatId: string, userId: string) {
     socket.auth = { chatId, userId};
     socket.connect();
-    console.log('зашли в чат ' + userId + ' подключился');
+    //console.log('зашли в чат ' + userId + ' подключился');
     socket.on('user connected', (socket) => {
-      console.log('в чат  ' + (socket as any).chatId);
-      console.log('в чат зашёл ' + (socket as any).userId);
+      // console.log('в чат  ' + (socket as any).chatId);
+      // console.log('в чат зашёл ' + (socket as any).userId);
     });
     socket.on('private message', (message) => {
       let event = new CustomEvent('newMessage', {
