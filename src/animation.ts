@@ -47,12 +47,11 @@ export function hideConfirmationMenu() {
   $('#confirmation').classList.add('none');
   $('#nav_elements').classList.remove('blur');
 }
-
+let search_request_counter = 0;
 /**
  * функция закрытия при клике вне области
  */
 export function globalClickAnimation(event: MouseEvent) {
-  let search_request_counter = 0;
   const targetElement = event.target; // Элемент, на который был совершен клик
   // Проверяем, является ли элемент меню или его потомком
   if (

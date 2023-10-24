@@ -318,6 +318,20 @@ async function renderProfilePage(userDATA) {
       }
     }
   }
+  let save = `<input
+  id="file"
+  type="file"
+  name="file"
+  multiple
+  style="display: none"
+/>
+<label
+  for="file"
+  class="file-icon picker"
+  title="Загрузить файл"
+>
+  <img src="./src/img/File.svg" alt="" />
+</label>`;
   $('#profile_page').innerHTML = '';
   $('#profile_page').innerHTML = `
 <div class="nav_profile_header">
@@ -332,9 +346,7 @@ async function renderProfilePage(userDATA) {
     <div class="nav_profile_name">${userDATA.username}</div>
   </div>
   <div class="nav_user_info">
-    <div class="nav_user_info_text">
-      Id: ${userDATA.id} email: ${userDATA.email}
-    </div>
+    <div class="nav_user_info_text"></div>
     ${friendBtn}
   </div>
   <div class="nav_user_wall_wrapper">
@@ -377,20 +389,7 @@ async function renderProfilePage(userDATA) {
           >
             <img src="./src/img/Picture.svg" alt="" />
           </label>
-          <input
-            id="file"
-            type="file"
-            name="file"
-            multiple
-            style="display: none"
-          />
-          <label
-            for="file"
-            class="file-icon picker"
-            title="Загрузить файл"
-          >
-            <img src="./src/img/File.svg" alt="" />
-          </label>
+          
           <input
             id="wallId"
             type="text"
@@ -481,7 +480,7 @@ async function renderUsersPosts(userDATA) {
        * наполнение смайликов
        */
       function insertEmoji(emoji) {
-        document.getElementById('postText').value += emoji.native;
+        $('#postText').value += emoji.native;
       }
       const pickerOptions = { onEmojiSelect: insertEmoji };
       const picker = new EmojiMart.Picker(pickerOptions);
@@ -611,21 +610,12 @@ async function renderUsersFriends(userDATA) {
 /**
  * общий рендер страницы пользователя
  */
-let isRendering = false;
+
 async function renderUserProfilePage(userId: string | null) {
-  //TODO:: БАГ быстро кликать по друзьям
-  if (isRendering) {
-    return;
-  }
-  isRendering = true;
-  try {
-    const userDATA = await findUserById(userId);
-    renderProfilePage(userDATA);
-    renderUsersPosts(userDATA);
-    renderUsersFriends(userDATA);
-  } finally {
-    isRendering = false;
-  }
+  const userDATA = await findUserById(userId);
+  await renderProfilePage(userDATA);
+  await renderUsersPosts(userDATA);
+  await renderUsersFriends(userDATA);
 }
 
 /**
