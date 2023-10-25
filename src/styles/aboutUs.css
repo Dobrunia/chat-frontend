@@ -1,0 +1,24 @@
+.nav_aboutUs {
+    width: 100%;
+    height: 100%;
+}
+
+.nav_aboutUs_header {
+    width: 100%;
+    height: 60px;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--attention);
+}
+
+.nav_aboutUs_text {
+    width: 100%;
+    height: calc(100% - 60px);
+    font-size: 18px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px;
+}

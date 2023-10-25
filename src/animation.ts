@@ -1,6 +1,13 @@
 import { $, changeSection } from './services/main-page-service';
 import { ModuleMenuType, SectionType } from './models/types';
-import { functionsIn } from 'lodash';
+
+/**
+ * Функция, которая будет скроллировать блок переписки вниз
+ */
+export function scrollChatToBottom() {
+  const chatContainer = $('#messages');
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
 
 /**
  * открытие меню профиля

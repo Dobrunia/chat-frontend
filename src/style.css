@@ -194,6 +194,11 @@ body {
   z-index: 10;
 }
 
+.friendName {
+  font-size: 18px;
+  color: var(--attention);
+}
+
 .avatar_hover>*:hover {
   color: var(--attention);
 }
@@ -603,8 +608,10 @@ body {
 }
 
 .notifications_list {
-  height: 100%;
-  overflow-y: scroll;
+  width: 100%;
+  height: max-content;
+  /* overflow-y: scroll; */
+  text-align: start;
 }
 
 .notification {

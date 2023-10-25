@@ -4,14 +4,11 @@ import {
   hideSections,
   logInView,
   logOutView,
+  scrollChatToBottom,
   showAnnouncementMenu,
   showConfirmationMenu,
 } from '../animation';
-import {
-  FriendshipStatus,
-  SectionType,
-  UsersResponseResult,
-} from '../models/types';
+import { SectionType, UsersResponseResult } from '../models/types';
 import debounce from 'lodash/debounce';
 import { $api } from '../http/api';
 import socketService from '../socket/socket-service';
@@ -70,7 +67,7 @@ function renderChatHeader(chatId: string, companionData) {
 /**
  * рендер переписки с собеседником
  */
-function renderMessages(chatId: string, companionData) {
+async function renderMessages(chatId: string, companionData) {
   $api
     .get(`/getMessagesByChatId/${chatId}`)
     .then((response) =>
@@ -84,7 +81,7 @@ function renderMessages(chatId: string, companionData) {
 /**
  * обработка клика по чату с собеседником
  */
-function selectChatHandler(elem, chatId: string) {
+async function selectChatHandler(elem, chatId: string) {
   const companionData = {
     id: elem.getAttribute('data-id'),
     username: elem.getAttribute('data-username'),
@@ -144,7 +141,7 @@ function selectChatHandler(elem, chatId: string) {
    */
   $('#chat_form').addEventListener('submit', messageHandler);
   renderChatHeader(chatId, companionData);
-  renderMessages(chatId, companionData);
+  await renderMessages(chatId, companionData);
 }
 
 /**
@@ -207,6 +204,9 @@ export function changeSection(data_section: SectionType, userId?: string) {
       hideSections('cats');
       makeCats();
       break;
+    case 'aboutUs':
+      hideSections('aboutUs');
+      break;
     default:
       hideSections('hideAll');
       break;
@@ -231,17 +231,19 @@ async function findUserById(userId: string | null) {
  * @param userId id пользователя, к которому на страницу зашел
  * @param status статус запроса в друзья 'pending' | 'accepted' | 'rejected'
  */
-function getFriendStatusInfo(
-  myId: string,
-  userId: string,
-  status?: FriendshipStatus,
-) {
+function getFriendStatusInfo(userId: string) {
   return $api
-    .get(
-      `/getFriendStatusInfo/myId=${myId}/userId=${userId}/status=${
-        status ? status : `status`
-      }`,
-    )
+    .get(`/getFriendStatusInfo/${userId}`)
+    .then((response) => response.data)
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * поиск всех уведомлений
+ */
+async function getNotifications() {
+  return $api
+    .get(`/getNotifications`)
     .then((response) => response.data)
     .catch((error) => console.log('Ошибка:', error));
 }
@@ -250,34 +252,34 @@ function getFriendStatusInfo(
  * рендер уведомлений
  */
 async function renderNotifications() {
-  let standart = '<div class="notification">Уведомлений нет</div>';
+  let notificationsNumber = 0;
   let content = '';
   $('#notifications_list').innerHTML = '';
-  const isFriend = await getFriendStatusInfo(
-    `user_id`,
-    localStorage.getItem('id'),
-  );
+  const isFriend = await getNotifications();
   isFriend.forEach((element) => {
     if (element.status === 'pending') {
-      content += `<div class="user_avatar user_avatar_small notification_user" title="">
+      notificationsNumber += 1;
+      content += `<div class="user_avatar user_avatar_small notification_user" title="${element.username}">
       <img
         class="user_avatar_img openProfile"
-        src=""
+        src="${element.avatar}"
         data-id="${element.user_id}"
         alt=""
       />
-    </div>${element.user_id}&nbsp; хочет добавить Вас в друзья
+    </div><span class="friendName">${element.username}</span><br>хочет добавить Вас в друзья<br>
     <div class="reaction responseToFriendRequest" data-id="${element.user_id}" data-status='accepted'>Принять</div>
-    <div class="reaction responseToFriendRequest" data-id="${element.user_id}" data-status='rejected'>Отказать</div></br>`;
+    <div class="reaction responseToFriendRequest" data-id="${element.user_id}" data-status='rejected'>Отказать</div><br><br><br>`;
     }
   });
-  if (isFriend.length === 0) {
-    content = standart;
+
+  if (notificationsNumber === 0) {
+    content = '<div class="notification">Уведомлений нет</div>';
+    $('#notification_bell_number').classList.add('none');
+  } else {
+    $('#notification_bell_number').classList.remove('none');
   }
-  content === standart
-    ? true
-    : $('#notification_bell_number').classList.remove('none');
   $('#notifications_list').innerHTML = content;
+
   /**
    * ответ на запрос дружбы
    */
@@ -298,13 +300,9 @@ async function renderNotifications() {
 async function renderProfilePage(userDATA) {
   let friendBtn;
   if (userDATA.id.toString() === localStorage.getItem('id')) {
-    //TODO:: можно самого себя добавить изменив id в storage
     friendBtn = '';
   } else {
-    const isFriend = await getFriendStatusInfo(
-      localStorage.getItem('id'),
-      userDATA.id.toString(),
-    );
+    const isFriend = await getFriendStatusInfo(userDATA.id.toString());
     if (!isFriend[0]) {
       friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" id="nav_user_add_friend" data-id="${userDATA.id}" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
     } else {
@@ -834,7 +832,7 @@ export function saveMessageToDb(message) {
 export function handlerMessageEvent(event: CustomEvent) {
   let datetime = new Date();
   let message = {
-    chatId: event.detail.chatId,
+    chatId: event.detail.message.chatId,
     sendBy: event.detail.message.from,
     datetime,
     content: escapeSql(escapeHtml(event.detail.message.content)),
@@ -882,6 +880,7 @@ export function renderMessage(message) {
       <div class="user_avatar user_avatar_small"></div>
       ${message.sendBy.toString() === localStorage.getItem('id') ? user : ''}
     </div>`;
+  scrollChatToBottom();
 }
 
 /**
@@ -1183,7 +1182,7 @@ export function addFriend(event: MouseEvent) {
     .then((response) => {
       const data = response.data;
       if (data) {
-        announcementMessage('Пользователь добавлен в друзья');
+        announcementMessage('Запрос на добавления в друзья отправлен');
         renderUserProfilePage(friendId);
       }
     })

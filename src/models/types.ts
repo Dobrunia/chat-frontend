@@ -28,5 +28,10 @@ export type AuthResponse = {
   accessToken: string;
   refreshToken: string;
 };
-export type SectionType = 'profile_page' | 'messenger' | 'cats' | 'hideAll';
+export type SectionType =
+  | 'profile_page'
+  | 'messenger'
+  | 'cats'
+  | 'aboutUs'
+  | 'hideAll';
 export type FriendshipStatus = 'pending' | 'accepted' | 'rejected';

@@ -21,7 +21,7 @@ export class SocketService {
   // }
 
   startChat(chatId: string, userId: string) {
-    socket.auth = { chatId, userId};
+    socket.auth = { chatId, userId };
     socket.connect();
     //console.log('зашли в чат ' + userId + ' подключился');
     socket.on('user connected', (socket) => {
@@ -45,11 +45,12 @@ export class SocketService {
       to: chatId,
     });
     let message = {
+      chatId,
       content,
       from: userId,
     };
     let event = new CustomEvent('newMessage', {
-      detail: { message, chatId },
+      detail: { message },
       bubbles: true,
       cancelable: true,
       composed: false,
@@ -58,17 +59,3 @@ export class SocketService {
   }
 }
 export default new SocketService();
-// let selectedUser: any;
-// function selectMessageTo() {
-//   document.querySelectorAll('.chats_with').forEach((elem) => {
-//     elem.addEventListener('click', (e) => {
-//       selectedUser = (e.currentTarget as HTMLElement).textContent;
-//     });
-//   });
-// }
-
-// const send = document.getElementById('send');
-// send?.addEventListener('click', () => {
-//   sendMessage('54321');
-//   console.log('сообщение отправил на сервер');
-// });
