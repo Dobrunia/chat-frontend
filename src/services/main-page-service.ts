@@ -517,9 +517,9 @@ async function renderUsersPosts(userDATA) {
 /**
  * возвращает всех друзей пользователя с бд с их данными
  */
-function getAllFriendsIfnfo(userId: string | null) {
+function getAllFriendsInfo(userId: string | null) {
   return $api
-    .get(`/getAllFriendsIfnfo/${userId}`)
+    .get(`/getAllFriendsInfo/${userId}`)
     .then((response) => response.data)
     .catch((error) => console.log('Ошибка:', error));
 }
@@ -592,7 +592,7 @@ async function renderUsersFriends(userDATA) {
   let numberOfFriends = 0;
   let friends = '';
   $('#nav_all_friends').innerHTML = '';
-  const friendsArray = await getAllFriendsIfnfo(userDATA.id);
+  const friendsArray = await getAllFriendsInfo(userDATA.id);
   await Promise.all(
     friendsArray.map(async (friend) => {
       friends += `
