@@ -722,10 +722,9 @@ export function searchInputHandler() {
       '#users_search',
     ) as HTMLInputElement;
     const userName = escapeSql(escapeHtml(users_search.value.trim()));
-    const myId = localStorage.getItem('id');
     if (userName && userName !== ' ') {
       $api
-        .get(`/findUserByName/${userName}/${myId}`)
+        .get(`/findUserByName/${userName}`)
         .then((response) => {
           renderUsers(response.data);
         })
@@ -752,9 +751,9 @@ function getAllUsers() {
 /**
  * получение чатов пользователя
  */
-function getUsersChats() {
+async function getUsersChats() {
   return $api
-    .get(`/returnActiveChats/${localStorage.getItem('id')}`)
+    .get(`/returnActiveChats`)
     .then((response) => response.data)
     .catch((error) => console.log('Ошибка:', error));
 }
@@ -1179,12 +1178,8 @@ export function addFriend(event: MouseEvent) {
   let targetElement = event.target as HTMLElement;
   let currentElement = targetElement.closest('.nav_user_add_friend');
   let friendId = currentElement?.getAttribute('data-id');
-  let DATA = {
-    myId: localStorage.getItem('id'),
-    friendId: friendId,
-  };
   $api
-    .post('/addFriend', DATA)
+    .post('/addFriend', { friendId })
     .then((response) => {
       const data = response.data;
       if (data) {
@@ -1202,12 +1197,8 @@ export function removeFriend(event: MouseEvent) {
   const targetElement = event.target as HTMLElement;
   const currentElement = targetElement.closest('.nav_user_remove_friend');
   const friendId = currentElement?.getAttribute('data-id');
-  let DATA = {
-    myId: localStorage.getItem('id'),
-    friendId: friendId,
-  };
   $api
-    .post('/removeFriend', DATA)
+    .post('/removeFriend', { friendId })
     .then((response) => {
       const data = response.data;
       if (data) {
@@ -1223,7 +1214,6 @@ export function removeFriend(event: MouseEvent) {
  */
 function responseToFriendRequest(friend_id: string, status: string) {
   let DATA = {
-    myId: localStorage.getItem('id'),
     friend_id,
     status,
   };

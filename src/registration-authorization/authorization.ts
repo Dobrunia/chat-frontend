@@ -28,6 +28,7 @@ export function authorization(event: any) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    credentias: 'include',
     body: JSON.stringify(DATA),
   };
   fetch('http://localhost:5000/api/authorization', requestOptions)
