@@ -1,5 +1,5 @@
 import { FormValidationType } from '../models/types';
-import { userIn } from '../services/main-page-service';
+import { announcementMessage, userIn } from '../services/main-page-service';
 import { validation } from './validation';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 /**
@@ -28,7 +28,7 @@ export function authorization(event: any) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    credentias: 'include',
+    credentials: 'include',
     body: JSON.stringify(DATA),
   };
   fetch('http://localhost:5000/api/authorization', requestOptions)
@@ -41,6 +41,6 @@ export function authorization(event: any) {
       localStorage.setItem('accessToken', data.accessToken);
       userIn(); //рендер входа
     })
-    .catch((error) => console.log('Ошибка:', error));
+    .catch((error) => announcementMessage('Неверное имя пользователя или пароль'));
   return false;
 }

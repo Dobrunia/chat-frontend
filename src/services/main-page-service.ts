@@ -160,12 +160,11 @@ async function createNewChat(isPrivate: boolean) {
 /**
  * создает в бд новый объект chat
  */
-async function writeNewUserInChat(userId: number, chatId: number) {
+async function writeNewUserInChat(chatId: number, userId?: number) {
   return $api
-    .post('/writeNewUserInChat', { userId, chatId })
+    .post('/writeNewUserInChat', { chatId, userId })
     .then((response) => {
       return response.data.affectedRows;
-      // return chatId ? true : false;
     })
     .catch((error) => console.log('Ошибка:', error));
 }
@@ -176,11 +175,8 @@ async function writeNewUserInChat(userId: number, chatId: number) {
 async function renderChatId(currentElement) {
   const newPrivateChatId = await createNewChat(true);
   const companionId = currentElement.getAttribute('data-id');
-  const request1 = writeNewUserInChat(
-    localStorage.getItem('id'),
-    newPrivateChatId,
-  );
-  const request2 = writeNewUserInChat(companionId, newPrivateChatId);
+  const request1 = writeNewUserInChat(newPrivateChatId);
+  const request2 = writeNewUserInChat(newPrivateChatId, companionId);
   if ((await request1) && (await request2)) {
     selectChatHandler(currentElement, newPrivateChatId);
   }
@@ -298,21 +294,21 @@ async function renderNotifications() {
  * рендер верстки страницы пользователя
  */
 async function renderProfilePage(userDATA) {
-  let friendBtn;
+  let friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" data-username="${userDATA.username}" data-email="${userDATA.email}" data-avatar="${userDATA.avatar}" data-chatid="${userDATA.chatId}" title="Открыть переписку с ${userDATA.username}">Написать</div>`;
   if (userDATA.id.toString() === localStorage.getItem('id')) {
     friendBtn = '';
   } else {
     const isFriend = await getFriendStatusInfo(userDATA.id.toString());
     if (!isFriend[0]) {
-      friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" id="nav_user_add_friend" data-id="${userDATA.id}" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
+      friendBtn += `<div class="btn btn-outline-light me-2 nav_user_add_friend" id="nav_user_add_friend" data-id="${userDATA.id}" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
     } else {
       if (isFriend[0].status === 'accepted') {
         //TODO:: проверка есть ли в друзьях
-        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend nav_user_remove_friend" id="nav_user_remove_friend" data-id="${userDATA.id}" title="Удалить из друзей ${userDATA.username}"><img src="../src/img/delete-friend-svgrepo-com.svg" alt=""/></div>`;
+        friendBtn += `<div class="btn btn-outline-light me-2 nav_user_add_friend nav_user_remove_friend" id="nav_user_remove_friend" data-id="${userDATA.id}" title="Удалить из друзей ${userDATA.username}"><img src="../src/img/delete-friend-svgrepo-com.svg" alt=""/></div>`;
       } else if (isFriend[0].status === 'rejected') {
-        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div><div class="btn btn-outline-light me-2 nav_user_add_friend" id="nav_user_add_friend" data-id="${userDATA.id}" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
+        friendBtn += `<div class="btn btn-outline-light me-2 nav_user_add_friend" id="nav_user_add_friend" data-id="${userDATA.id}" title="Добавить ${userDATA.username} в друзья"><img src="../src/img/add-friend-svgrepo-com.svg" alt=""/></div>`;
       } else if (isFriend[0].status === 'pending') {
-        friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" title="Открыть переписку с ${userDATA.username}">Написать</div>`;
+        friendBtn += ``;
       }
     }
   }
@@ -423,7 +419,6 @@ async function renderProfilePage(userDATA) {
  */
 async function renderUsersPosts(userDATA) {
   //TODO:: переделать SQL
-  const myId = localStorage.getItem('id');
   $api
     .get(`/getUserPosts?search_value=${userDATA.id}`)
     .then(async (response) => {
@@ -439,7 +434,7 @@ async function renderUsersPosts(userDATA) {
         element.files && element.files.data[0]
           ? (content += `<a href="${element.files}" class="nav_user_wall_post_file" target="_blank"><img src="./src/img/File.svg" alt="" /></a>`)
           : (content += '');
-        myId === element.wallId.toString()
+        localStorage.getItem('id') === element.wallId.toString()
           ? (content += `<div class="delete_post" data-postId="${element.id}" data-wallId="${element.wallId}" title="Удалить пост">x</div>`)
           : (content += '');
         if (userDATA.id === element.authorId) {
@@ -960,13 +955,11 @@ export function changeUsername(event: any) {
  * смена аватара профиля
  */
 export function changePhoto() {
-  let userId = localStorage.getItem('id');
   let photoUrl = $('#photoUrl').value.toString().trim();
   if (!photoUrl) {
     alert('Вставьте ссылку на изображение в поле ввода (слева от кнопки)');
     return;
   }
-  if (!userId) return;
   askConfirmationFromUser('Вы уверены, что хотите сменить аватар?').then(
     (confirmed) => {
       if (confirmed) {
@@ -1039,7 +1032,6 @@ export function addPost(event: any) {
   event.preventDefault();
   const formData = new FormData(this);
   const wallId = formData.get('wallId')?.toString().trim();
-  const authorId = localStorage.getItem('id');
   const postText = formData.get('postText')?.toString().trim();
   const photo = formData.get('photo');
   const file = formData.get('file');
@@ -1049,7 +1041,6 @@ export function addPost(event: any) {
   }
   const DATA = {
     wallId,
-    authorId,
     postText: postText ? escapeSql(escapeHtml(postText)) : '',
     photo: photo,
     //file: file,
@@ -1113,9 +1104,7 @@ function askConfirmationFromUser(text: string) {
  * удаление поста
  */
 export function deletePost(postId: string, wallId: string) {
-  //TODO:: тут лучше только посты ререндерить
-  const myId = localStorage.getItem('id');
-  if (myId !== wallId) return; //Доп вроверка
+  //TODO:: тут лучше только посты ререндерить и на сервере проверять права на удаление
   askConfirmationFromUser('Вы уверены, что хотите удалить пост?').then(
     (confirmed) => {
       if (confirmed) {
@@ -1164,7 +1153,7 @@ export function showSmiles() {
 /**
  * Добавить текст в окно оповещений
  */
-function announcementMessage(text: string) {
+export function announcementMessage(text: string) {
   $('#announcement_text').innerHTML = '';
   $('#announcement_text').innerHTML = `${text}`;
   showAnnouncementMenu();
@@ -1200,6 +1189,7 @@ export function removeFriend(event: MouseEvent) {
     .post('/removeFriend', { friendId })
     .then((response) => {
       const data = response.data;
+      console.log(data);
       if (data) {
         announcementMessage('Пользователь удален из друзей');
         renderUserProfilePage(friendId);
