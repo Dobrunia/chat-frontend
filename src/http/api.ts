@@ -2,7 +2,9 @@ import axios from 'axios';
 import { AuthResponse } from '../models/types';
 import { userOut } from '../services/main-page-service';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = `${import.meta.env.VITE_SERVER_HOST}:${
+  import.meta.env.VITE_SERVER_PORT
+}/api`;
 
 export const $api = axios.create({
   withCredentials: true,
@@ -27,7 +29,6 @@ $api.interceptors.response.use(
       error.config &&
       !error.config._isRetry
     ) {
-      
       originalRequest._isRetry = true;
       try {
         const response = await axios.get<AuthResponse>(`${API_URL}/refresh`, {

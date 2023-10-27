@@ -2,6 +2,7 @@ import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { RegistrationFormDataType, FormValidationType } from '../models/types';
 import { validation } from './validation';
 import { announcementMessage, userOut } from '../services/main-page-service';
+
 /**
  * функция регистрации пользователей
  */
@@ -36,7 +37,12 @@ export function registration(event: any) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(DATA),
   };
-  fetch('http://localhost:5000/api/registration', requestOptions)
+  fetch(
+    `${import.meta.env.VITE_SERVER_HOST}:${
+      import.meta.env.VITE_SERVER_PORT
+    }/api/registration`,
+    requestOptions,
+  )
     .then((response) => response.json())
     .then((data) => {
       if (data === false) {

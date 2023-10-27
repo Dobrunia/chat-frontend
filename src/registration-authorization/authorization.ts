@@ -30,7 +30,12 @@ export function authorization(event: any) {
     credentials: 'include',
     body: JSON.stringify(DATA),
   };
-  fetch('http://localhost:5000/api/authorization', requestOptions)
+  fetch(
+    `${import.meta.env.VITE_SERVER_HOST}:${
+      import.meta.env.VITE_SERVER_PORT
+    }/api/authorization`,
+    requestOptions,
+  )
     .then((response) => response.json())
     .then((data) => {
       localStorage.setItem('id', data.id);
@@ -40,6 +45,8 @@ export function authorization(event: any) {
       localStorage.setItem('accessToken', data.accessToken);
       userIn(); //рендер входа
     })
-    .catch((error) => announcementMessage('Неверное имя пользователя или пароль'));
+    .catch((error) =>
+      announcementMessage('Неверное имя пользователя или пароль'),
+    );
   return false;
 }
