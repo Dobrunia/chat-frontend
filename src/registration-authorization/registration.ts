@@ -1,6 +1,7 @@
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 import { RegistrationFormDataType, FormValidationType } from '../models/types';
 import { validation } from './validation';
+import { announcementMessage, userOut } from '../services/main-page-service';
 /**
  * функция регистрации пользователей
  */
@@ -21,6 +22,7 @@ export function registration(event: any) {
   const valRes = validation(data, 'registration');
   if (!(valRes === true)) {
     alert(valRes);
+    return;
   }
   let salt = genSaltSync(10);
   let passwordHash = hashSync(password as string, salt);
@@ -38,9 +40,10 @@ export function registration(event: any) {
     .then((response) => response.json())
     .then((data) => {
       if (data === false) {
-        console.log('Пользователь c такой почтой уже существует');
+        announcementMessage('Пользователь c такой почтой уже существует');
       } else {
-        console.log('Пользователь успешно зарегистрирован');
+        userOut();
+        announcementMessage('Пользователь успешно зарегистрирован');
       }
     })
     .catch((error) => console.log('Ошибка:', error));
