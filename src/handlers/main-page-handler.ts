@@ -1,11 +1,11 @@
-import { hideAnnouncementMenu } from '../animation';
-import { removeCats } from '../pages/cats';
+import { hideAnnouncementMenu } from '../animation.js';
+import { removeCats } from '../pages/cats.js';
 import {
   $,
   handlerMessageEvent,
   renderChats,
   changeSection,
-} from '../services/main-page-service';
+} from '../services/main-page-service.js';
 
 /**
  * открыть/закрыть окно с чатами

@@ -1,6 +1,6 @@
-import { FormValidationType } from '../models/types';
-import { announcementMessage, userIn } from '../services/main-page-service';
-import { validation } from './validation';
+import { FormValidationType } from '../models/types.js';
+import { announcementMessage, userIn } from '../services/main-page-service.js';
+import { validation } from './validation.js';
 
 /**
  * функция афторизации пользователей

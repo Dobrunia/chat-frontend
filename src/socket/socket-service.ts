@@ -1,4 +1,4 @@
-import socket from './socket';
+import socket from './socket.js';
 
 export class SocketService {
   // login(email: string) {

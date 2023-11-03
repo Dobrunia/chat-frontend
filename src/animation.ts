@@ -1,5 +1,5 @@
-import { $, changeSection } from './services/main-page-service';
-import { ModuleMenuType, SectionType } from './models/types';
+import { $, changeSection } from './services/main-page-service.js';
+import { ModuleMenuType, SectionType } from './models/types.js';
 
 /**
  * Функция, которая будет скроллировать блок переписки вниз

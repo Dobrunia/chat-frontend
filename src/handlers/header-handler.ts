@@ -5,7 +5,7 @@ import {
   toggleModuleWindow,
   showNotificationsMenu,
   showSmallMenu,
-} from '../animation';
+} from '../animation.js';
 import {
   $,
   changePhoto,
@@ -13,9 +13,9 @@ import {
   changeUsername,
   searchInputHandler,
   userOut,
-} from '../services/main-page-service';
-import { authorization } from '../registration-authorization/authorization';
-import { registration } from '../registration-authorization/registration';
+} from '../services/main-page-service.js';
+import { authorization } from '../registration-authorization/authorization.js';
+import { registration } from '../registration-authorization/registration.js';
 
 /**
  * функция афторизации пользователей

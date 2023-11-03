@@ -1,7 +1,7 @@
 import { genSaltSync, hashSync } from 'bcrypt-ts';
-import { RegistrationFormDataType, FormValidationType } from '../models/types';
-import { validation } from './validation';
-import { announcementMessage, userOut } from '../services/main-page-service';
+import { RegistrationFormDataType, FormValidationType } from '../models/types.js';
+import { validation } from './validation.js';
+import { announcementMessage, userOut } from '../services/main-page-service.js';
 
 /**
  * функция регистрации пользователей

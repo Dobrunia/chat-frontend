@@ -7,14 +7,12 @@ import {
   scrollChatToBottom,
   showAnnouncementMenu,
   showConfirmationMenu,
-} from '../animation';
-import { SectionType, UsersResponseResult } from '../models/types';
+} from '../animation.js';
+import { SectionType, UsersResponseResult } from '../models/types.js';
 import debounce from 'lodash/debounce';
-import { $api } from '../http/api';
-import socketService from '../socket/socket-service';
-import { functionsIn, isNull } from 'lodash';
-import fs, { statSync } from 'fs';
-import { makeCats } from '../pages/cats';
+import { $api } from '../http/api.js';
+import socketService from '../socket/socket-service.js';
+import { makeCats } from '../pages/cats.js';
 
 export const $ = (element: string) =>
   document.querySelector(element) as HTMLFormElement;

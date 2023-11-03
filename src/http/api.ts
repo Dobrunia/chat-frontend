@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { AuthResponse } from '../models/types';
-import { userOut } from '../services/main-page-service';
+import { AuthResponse } from '../models/types.js';
 
 const API_URL = `${import.meta.env.VITE_SERVER_HOST}:${
   import.meta.env.VITE_SERVER_PORT

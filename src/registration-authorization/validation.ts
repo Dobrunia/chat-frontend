@@ -1,4 +1,4 @@
-import { FormValidationType, ValidationType } from '../models/types';
+import { FormValidationType, ValidationType } from '../models/types.js';
 
 /**
  * Функция валидации формы
