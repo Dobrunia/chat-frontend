@@ -320,6 +320,16 @@ body {
   transform: translateX(-300px);
 }
 
+.reg_form_btns {
+  color: var(--white);
+  background-color: inherit;
+  border: none;
+}
+
+.reg_form_btns:hover {
+  text-decoration: underline;
+}
+
 .menuButton {
   position: absolute;
   top: 45%;

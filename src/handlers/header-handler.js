@@ -61,13 +61,18 @@ $('#themes').addEventListener('change', chooseTheme);
  * открытие/закрытие окн регистриции/авторизации
  */
 $('#get_in').addEventListener('click', () => toggleModuleWindow('get_in'));
+$('#get_in_2').addEventListener('click', () => toggleModuleWindow('get_in'));
 $('#get_in_exit').addEventListener('click', () => toggleModuleWindow('exit'));
 $('#registration').addEventListener('click', () =>
+  toggleModuleWindow('registration'),
+);
+$('#registration_2').addEventListener('click', () =>
   toggleModuleWindow('registration'),
 );
 $('#registration_exit').addEventListener('click', () =>
   toggleModuleWindow('exit'),
 );
+
 
 /**
  * функция закрытия при клике вне области, а также обработчик некоторых глобальных вещей
