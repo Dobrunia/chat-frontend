@@ -77,7 +77,7 @@ document.addEventListener('click', globalClickHandler);
 /**
  * раз в 500мл проверка, что ввел пользователь и запрос на сервер
  */
-(document.querySelector('#users_search') as HTMLInputElement).addEventListener(
+(document.querySelector('#users_search')).addEventListener(
   'input',
   searchInputHandler,
 );

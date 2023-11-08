@@ -1,17 +1,16 @@
-import { FormValidationType } from '../models/types.js';
 import { announcementMessage, userIn } from '../services/main-page-service.js';
-import { validation } from './validation.js';
+import { validation } from './validation.ts';
 
 /**
  * функция афторизации пользователей
  */
-export function authorization(event: any) {
+export function authorization(event) {
   //TODO:: type
   event.preventDefault();
   const formData = new FormData(this);
   let email = formData.get('email')?.toString().trim();
   let password = formData.get('password')?.toString().trim();
-  const validData: FormValidationType = {
+  const validData = {
     email,
     password,
   };

@@ -1,5 +1,4 @@
 import { $, changeSection } from './services/main-page-service.js';
-import { ModuleMenuType, SectionType } from './models/types.js';
 
 /**
  * Функция, которая будет скроллировать блок переписки вниз
@@ -58,7 +57,7 @@ let search_request_counter = 0;
 /**
  * функция закрытия при клике вне области
  */
-export function globalClickAnimation(event: MouseEvent) {
+export function globalClickAnimation(event) {
   const targetElement = event.target; // Элемент, на который был совершен клик
   // Проверяем, является ли элемент меню или его потомком
   if (
@@ -127,7 +126,7 @@ export function closeSettingsWindow() {
  * открытие/закрытие окн регистриции/авторизации
  * @param e тип окна
  */
-export function toggleModuleWindow(e: ModuleMenuType) {
+export function toggleModuleWindow(e) {
   if (e === 'get_in') {
     $('#get_in_window').classList.contains('none')
       ? $('#get_in_window').classList.remove('none')
@@ -187,21 +186,21 @@ export function logInView() {
  * устанавливает выбранную тему
  * @param themeName название темы
  */
-function changeTheme(themeName: string) {
+function changeTheme(themeName) {
   $('#theme-link').setAttribute('href', `./src/themes/${themeName}.css`);
 }
 
 /**
  * получает выбранную пользователем тему
  */
-export function chooseTheme(this: HTMLSelectElement) {
+export function chooseTheme() {
   changeTheme(this.options[this.selectedIndex].text);
 }
 
 /**
  * функция скрытия всех секций кроме переданной
  */
-export function hideSections(selected_section: SectionType) {
+export function hideSections(selected_section) {
   const sections = [...document.getElementsByClassName('nav_selected_section')];
   sections.forEach((section) => {
     if (selected_section !== section.getAttribute('data-section')) {

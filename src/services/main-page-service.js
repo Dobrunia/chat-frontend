@@ -8,14 +8,12 @@ import {
   showAnnouncementMenu,
   showConfirmationMenu,
 } from '../animation.js';
-import { SectionType, UsersResponseResult } from '../models/types.js';
 import debounce from 'lodash/debounce';
-import { $api } from '../http/api.js';
-import socketService from '../socket/socket-service.js';
+import { $api } from '../http/api.ts';
+import socketService from '../socket/socket-service.ts';
 import { makeCats } from '../pages/cats.js';
 
-export const $ = (element: string) =>
-  document.querySelector(element) as HTMLFormElement;
+export const $ = (element) => document.querySelector(element);
 
 /**
  * проверка и авторизация пользователя
@@ -48,7 +46,7 @@ export async function isUserLoggedInCheck() {
 /**
  * рендер пользователя с которым переписка
  */
-function renderChatHeader(chatId: string, companionData) {
+function renderChatHeader(chatId, companionData) {
   const dialogue_with_wrapper = $('#dialogue_with_wrapper');
   dialogue_with_wrapper.innerHTML = '';
   dialogue_with_wrapper.innerHTML = `
@@ -65,7 +63,7 @@ function renderChatHeader(chatId: string, companionData) {
 /**
  * рендер переписки с собеседником
  */
-async function renderMessages(chatId: string, companionData) {
+async function renderMessages(chatId, companionData) {
   $api
     .get(`/getMessagesByChatId/${chatId}`)
     .then((response) =>
@@ -79,7 +77,7 @@ async function renderMessages(chatId: string, companionData) {
 /**
  * обработка клика по чату с собеседником
  */
-async function selectChatHandler(elem, chatId: string) {
+async function selectChatHandler(elem, chatId) {
   const companionData = {
     id: elem.getAttribute('data-id'),
     username: elem.getAttribute('data-username'),
@@ -145,7 +143,7 @@ async function selectChatHandler(elem, chatId: string) {
 /**
  * создает в бд новый объект chat
  */
-async function createNewChat(isPrivate: boolean) {
+async function createNewChat(isPrivate) {
   return $api
     .post('/createNewChat', { isPrivate })
     .then((response) => {
@@ -158,7 +156,7 @@ async function createNewChat(isPrivate: boolean) {
 /**
  * создает в бд новый объект chat
  */
-async function writeNewUserInChat(chatId: number, userId?: number) {
+async function writeNewUserInChat(chatId, userId) {
   return $api
     .post('/writeNewUserInChat', { chatId, userId })
     .then((response) => {
@@ -183,7 +181,7 @@ async function renderChatId(currentElement) {
 /**
  * смена выбранной секции в навигации
  */
-export function changeSection(data_section: SectionType, userId?: string) {
+export function changeSection(data_section, userId) {
   switch (data_section) {
     case 'profile_page':
       hideSections('profile_page');
@@ -210,7 +208,7 @@ export function changeSection(data_section: SectionType, userId?: string) {
 /**
  * поиск данных для страницы профиля пользователя и запуск отрисовки
  */
-async function findUserById(userId: string | null) {
+async function findUserById(userId) {
   try {
     const response = await $api.get(`/findUserById?search_value=${userId}`);
     return response.data[0];
@@ -225,7 +223,7 @@ async function findUserById(userId: string | null) {
  * @param userId id пользователя, к которому на страницу зашел
  * @param status статус запроса в друзья 'pending' | 'accepted' | 'rejected'
  */
-function getFriendStatusInfo(userId: string) {
+function getFriendStatusInfo(userId) {
   return $api
     .get(`/getFriendStatusInfo/${userId}`)
     .then((response) => response.data)
@@ -361,7 +359,7 @@ async function renderProfilePage(userDATA) {
           <div class="emoji_picker" id="emoji_picker">
             <!-- Здесь может быть панель с эмодзи для выбора -->
             <!-- Например, используя библиотеку как EmojiMart -->
-            <img src="./src/img/smile.svg" alt="" />
+            <img src="../img/smile.svg" alt="" />
             <div
               class="emoji_picker_wrapper none"
               id="emoji_picker_wrapper"
@@ -379,7 +377,7 @@ async function renderProfilePage(userDATA) {
             class="photo-icon picker"
             title="Загрузить фото"
           >
-            <img src="./src/img/Picture.svg" alt="" />
+            <img src="../img/Picture.svg" alt="" />
           </label>
           
           <input
@@ -508,7 +506,7 @@ async function renderUsersPosts(userDATA) {
 /**
  * возвращает всех друзей пользователя с бд с их данными
  */
-function getAllFriendsInfo(userId: string | null) {
+function getAllFriendsInfo(userId) {
   return $api
     .get(`/getAllFriendsInfo/${userId}`)
     .then((response) => response.data)
@@ -602,7 +600,7 @@ async function renderUsersFriends(userDATA) {
  * общий рендер страницы пользователя
  */
 
-async function renderUserProfilePage(userId: string | null) {
+async function renderUserProfilePage(userId) {
   const userDATA = await findUserById(userId);
   await renderProfilePage(userDATA);
   await renderUsersPosts(userDATA);
@@ -612,8 +610,8 @@ async function renderUserProfilePage(userId: string | null) {
 /**
  * отработка глобального клика
  */
-export function globalClickHandler(event: MouseEvent) {
-  const targetElement = event.target as HTMLElement; // Элемент, на который был совершен клик
+export function globalClickHandler(event) {
+  const targetElement = event.target; // Элемент, на который был совершен клик
 
   if (targetElement.classList.contains('openProfile')) {
     //добавлять в img класс openProfile и атрибут data-id="${element.id}" title="${userData.username}"
@@ -643,9 +641,7 @@ function renderAccount() {
   const username = localStorage.getItem('username');
   const avatar = localStorage.getItem('avatar');
   const my_name = $('#my_name');
-  my_name
-    ? (my_name.innerHTML = username as string)
-    : console.log('my_name не найден');
+  my_name ? (my_name.innerHTML = username) : console.log('my_name не найден');
   const my_avatar = $('#my_avatar');
   my_avatar
     ? (my_avatar.innerHTML = `<img class="user_avatar_img" src="${avatar}" alt="фото профиля" />
@@ -667,7 +663,7 @@ function removeAccount() {
 function renderThemes() {
   import('../jsons/themes_list.json').then((themesList) => {
     $('#themes').innerHTML = '';
-    themesList.default.forEach((theme: any) => {
+    themesList.default.forEach((theme) => {
       $(
         '#themes',
       ).innerHTML += `<option class="option" value="${theme.name}">${theme.name}</option>`;
@@ -686,7 +682,7 @@ function removeThemes() {
  * отрисовка полученных с сервера пользователей
  * @param users_response_result данные пользователя
  */
-function renderUsers(users_response_result: UsersResponseResult) {
+function renderUsers(users_response_result) {
   if ($('#search_request') && users_response_result != undefined) {
     $('#search_request').innerHTML = '';
     users_response_result.forEach((user) => {
@@ -709,9 +705,7 @@ function renderUsers(users_response_result: UsersResponseResult) {
  */
 export function searchInputHandler() {
   const debouncedFunction = debounce(() => {
-    const users_search = document.querySelector(
-      '#users_search',
-    ) as HTMLInputElement;
+    const users_search = document.querySelector('#users_search');
     const userName = escapeSql(escapeHtml(users_search.value.trim()));
     if (userName && userName !== ' ') {
       $api
@@ -754,12 +748,10 @@ async function getUsersChats() {
  */
 export async function renderChats() {
   const jsonData = await getUsersChats();
-  const chat_search = document.querySelector(
-    '#chat_search',
-  ) as HTMLInputElement;
+  const chat_search = document.querySelector('#chat_search');
   const users = $('#users');
   users.innerHTML = '';
-  jsonData.forEach((element: any) => {
+  jsonData.forEach((element) => {
     const messageDate = new Date(element.datetime);
     const now = new Date();
     const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -822,7 +814,7 @@ export function saveMessageToDb(message) {
 /**
  * обработчик события НОВОЕ СООБЩЕНИЕ
  */
-export function handlerMessageEvent(event: CustomEvent) {
+export function handlerMessageEvent(event) {
   let datetime = new Date();
   let message = {
     chatId: event.detail.message.chatId,
@@ -839,7 +831,7 @@ export function handlerMessageEvent(event: CustomEvent) {
  * @param content текст сообщения
  */
 export function renderMessage(message) {
-  const messagesWrapper = $('#messages') as HTMLFormElement;
+  const messagesWrapper = $('#messages');
   let formatter1 = new Intl.DateTimeFormat('ru', {
     month: 'long',
     day: 'numeric',
@@ -919,7 +911,7 @@ export function userOut() {
 /**
  * смена имени пользователя
  */
-export function changeUsername(event: any) {
+export function changeUsername(event) {
   event.preventDefault();
   const formData = new FormData(this);
   const username = escapeSql(
@@ -941,7 +933,7 @@ export function changeUsername(event: any) {
         localStorage.setItem('username', data);
         renderAccount();
         renderUserProfilePage(localStorage.getItem('id'));
-        ($('#changeName_input') as HTMLFormElement).value = '';
+        $('#changeName_input').value = '';
         announcementMessage('Вы успешно сменили имя');
       }
     })
@@ -970,7 +962,7 @@ export function changePhoto() {
             if (data) {
               localStorage.setItem('avatar', escapeSql(escapeHtml(photoUrl)));
               renderAccount();
-              ($('#photoUrl') as HTMLFormElement).value = '';
+              $('#photoUrl').value = '';
               announcementMessage('Вы успешно сменили аватар');
             }
           })
@@ -985,7 +977,7 @@ export function changePhoto() {
  * @param text
  * @returns
  */
-function escapeHtml(text: string) {
+function escapeHtml(text) {
   const map = {
     '&': '&amp;',
     '<': '&lt;',
@@ -997,7 +989,7 @@ function escapeHtml(text: string) {
     return map[m];
   });
 }
-function escapeSql(text: string) {
+function escapeSql(text) {
   return text.replace(/[\0\x08\x09\x1a\n\r"'\\%_]/g, function (char) {
     switch (char) {
       case '\0':
@@ -1025,7 +1017,7 @@ function escapeSql(text: string) {
 /**
  * добавление нового поста
  */
-export function addPost(event: any) {
+export function addPost(event) {
   //TODO:: photo\file ВАЛИДАЦИЯ
   event.preventDefault();
   const formData = new FormData(this);
@@ -1066,7 +1058,7 @@ export function addPost(event: any) {
  * функция запроса подтверждения у пользователя
  * @param text текст который нужно подтвердить
  */
-function askConfirmationFromUser(text: string) {
+function askConfirmationFromUser(text) {
   $('#confirmation_text').innerHTML = '';
   return new Promise((resolve, reject) => {
     $('#confirmation_text').innerHTML = text;
@@ -1101,7 +1093,7 @@ function askConfirmationFromUser(text: string) {
 /**
  * удаление поста
  */
-export function deletePost(postId: string, wallId: string) {
+export function deletePost(postId, wallId) {
   //TODO:: тут лучше только посты ререндерить и на сервере проверять права на удаление
   askConfirmationFromUser('Вы уверены, что хотите удалить пост?').then(
     (confirmed) => {
@@ -1124,7 +1116,7 @@ export function deletePost(postId: string, wallId: string) {
 /**
  * отправка сообщений по клику
  */
-export function messageHandler(event: any) {
+export function messageHandler(event) {
   event.preventDefault();
   // const chatID = 'lents@mail.ru';
   try {
@@ -1151,7 +1143,7 @@ export function showSmiles() {
 /**
  * Добавить текст в окно оповещений
  */
-export function announcementMessage(text: string) {
+export function announcementMessage(text) {
   $('#announcement_text').innerHTML = '';
   $('#announcement_text').innerHTML = `${text}`;
   showAnnouncementMenu();
@@ -1160,8 +1152,8 @@ export function announcementMessage(text: string) {
 /**
  * Добавить в друзья
  */
-export function addFriend(event: MouseEvent) {
-  let targetElement = event.target as HTMLElement;
+export function addFriend(event) {
+  let targetElement = event.target;
   let currentElement = targetElement.closest('.nav_user_add_friend');
   let friendId = currentElement?.getAttribute('data-id');
   $api
@@ -1179,8 +1171,8 @@ export function addFriend(event: MouseEvent) {
 /**
  * Удалить из друзей
  */
-export function removeFriend(event: MouseEvent) {
-  const targetElement = event.target as HTMLElement;
+export function removeFriend(event) {
+  const targetElement = event.target;
   const currentElement = targetElement.closest('.nav_user_remove_friend');
   const friendId = currentElement?.getAttribute('data-id');
   $api
@@ -1199,7 +1191,7 @@ export function removeFriend(event: MouseEvent) {
 /**
  * ответ на запрос дружбы
  */
-function responseToFriendRequest(friend_id: string, status: string) {
+function responseToFriendRequest(friend_id, status) {
   let DATA = {
     friend_id,
     status,

@@ -1,12 +1,11 @@
 import { genSaltSync, hashSync } from 'bcrypt-ts';
-import { RegistrationFormDataType, FormValidationType } from '../models/types.js';
-import { validation } from './validation.js';
+import { validation } from './validation.ts';
 import { announcementMessage, userOut } from '../services/main-page-service.js';
 
 /**
  * функция регистрации пользователей
  */
-export function registration(event: any) {
+export function registration(event) {
   //TODO:: type
   event.preventDefault();
   const formData = new FormData(this);
@@ -14,7 +13,7 @@ export function registration(event: any) {
   let email = formData.get('email')?.toString().trim();
   let password = formData.get('password')?.toString().trim();
   let password2 = formData.get('password2')?.toString().trim();
-  const data: FormValidationType = {
+  const data = {
     username,
     email,
     password,
@@ -26,10 +25,10 @@ export function registration(event: any) {
     return;
   }
   let salt = genSaltSync(10);
-  let passwordHash = hashSync(password as string, salt);
-  const DATA: RegistrationFormDataType = {
-    username: username as string,
-    email: email as string,
+  let passwordHash = hashSync(password, salt);
+  const DATA = {
+    username: username,
+    email: email,
     password: passwordHash,
   };
   const requestOptions = {
