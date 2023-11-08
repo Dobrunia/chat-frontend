@@ -353,9 +353,11 @@ async function renderProfilePage(userDATA) {
           id="postText"
           placeholder="Что у Вас нового..."
           oninput="autoResize(this)"
+          maxlength="250"
           required
         ></textarea>
         <div class="nav_user_wall_files_wrapper">
+        <p class="nav_user_wall_files_charCount">Осталось символов: <span id="charCount">250</span></p>
           <div class="emoji_picker" id="emoji_picker">
             <!-- Здесь может быть панель с эмодзи для выбора -->
             <!-- Например, используя библиотеку как EmojiMart -->

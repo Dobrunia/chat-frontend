@@ -401,6 +401,11 @@
     function autoResize(textarea) {
       textarea.style.height = 'auto';
       textarea.style.height = textarea.scrollHeight + 5 + 'px';
+      const maxLength = parseInt(textarea.getAttribute('maxlength'));
+      const currentLength = textarea.value.length;
+      const remaining = maxLength - currentLength;
+
+      charCount.textContent = remaining;
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>

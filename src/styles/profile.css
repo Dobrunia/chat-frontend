@@ -154,6 +154,11 @@
     justify-content: space-between;
 }
 
+.nav_user_wall_files_charCount {
+    margin-top: auto;
+    margin-right: 10px;
+}
+
 .nav_user_wall_postForm {
     margin-top: 15px;
     display: flex;
