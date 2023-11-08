@@ -57,7 +57,13 @@ body {
 }
 
 .element_span {
+  max-width: 121px;
+  white-space: nowrap;
   margin-left: 10px;
+  /* Запрещаем перенос слов на новую строку */
+  overflow: hidden;
+  /* Обрезаем текст, который превышает заданную ширину контейнера */
+  text-overflow: ellipsis;
 }
 
 .element:hover {
@@ -451,7 +457,7 @@ body {
   width: 100%;
   height: 94%;
   overflow: hidden;
-  /* background-image: url('./img/ChatbackG.png'); */
+  background-image: url('./img/ChatbackG.png');
 }
 
 .messages {

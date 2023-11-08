@@ -84,7 +84,7 @@ async function selectChatHandler(elem, chatId) {
     email: elem.getAttribute('data-email'),
     avatar: elem.getAttribute('data-avatar'),
   };
-  $('#messages_wrapper').style.backgroundImage = "url('src/img/ChatbackG.png')";
+  //$('#messages_wrapper').style.backgroundImage = "url('./img/ChatbackG.png')";
   $('#messages_wrapper').innerHTML = `<div class="messages" id="messages">
   <!-- <div class="message from">
     <div class="user_avatar user_avatar_small"></div>
@@ -359,7 +359,38 @@ async function renderProfilePage(userDATA) {
           <div class="emoji_picker" id="emoji_picker">
             <!-- Здесь может быть панель с эмодзи для выбора -->
             <!-- Например, используя библиотеку как EmojiMart -->
-            <img src="../img/smile.svg" alt="" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="50px" height="50px">
+  <linearGradient id="TIZHtCnMUiS3rznMpT1gYa" x1="30.5" x2="30.5" y1="35" y2="17" gradientTransform="matrix(1 0 0 -1 0 66)" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#6dc7ff" />
+    <stop offset="1" stop-color="#e6abff" />
+  </linearGradient>
+  <path fill="url(#TIZHtCnMUiS3rznMpT1gYa)" d="M40,33c0,0-3,1-7,1c-7,0-10-3-10-3s-4,2-4,7c0,7,5.625,11,12,11c6,0,11-3.75,11-10 C42,35,40,33,40,33z M31,46c-3.866,0-7-1.567-7-3.5s3.134-3.5,7-3.5s7,1.567,7,3.5S34.866,46,31,46z" />
+  <linearGradient id="TIZHtCnMUiS3rznMpT1gYb" x1="48.5" x2="48.5" y1="40" y2="32" gradientTransform="matrix(1 0 0 -1 0 66)" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#6dc7ff" />
+    <stop offset="1" stop-color="#e6abff" />
+  </linearGradient>
+  <path fill="url(#TIZHtCnMUiS3rznMpT1gYb)" d="M48.5,26c-1.381,0-2.5,1.791-2.5,4s1.119,4,2.5,4s2.5-1.791,2.5-4S49.881,26,48.5,26z M48,29 c-0.552,0-1-0.448-1-1s0.448-1,1-1s1,0.448,1,1S48.552,29,48,29z" />
+  <linearGradient id="TIZHtCnMUiS3rznMpT1gYc" x1="17" x2="17" y1="45.018" y2="35.999" gradientTransform="matrix(1 0 0 -1 0 66)" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#6dc7ff" />
+    <stop offset="1" stop-color="#e6abff" />
+  </linearGradient>
+  <path fill="url(#TIZHtCnMUiS3rznMpT1gYc)" d="M19.225,21.175c-1.111-0.718-3.008,0.632-4.237,3.016s-1.325,4.898-0.214,5.617 c1.111,0.718,3.008-0.632,4.237-3.016C20.241,24.408,20.337,21.893,19.225,21.175z M18,24c-0.552,0-1-0.448-1-1s0.448-1,1-1 s1,0.448,1,1S18.552,24,18,24z" />
+  <linearGradient id="TIZHtCnMUiS3rznMpT1gYd" x1="31.994" x2="31.994" y1="59" y2="9" gradientTransform="matrix(1 0 0 -1 0 66)" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#6dc7ff" />
+    <stop offset="1" stop-color="#e6abff" />
+  </linearGradient>
+  <path fill="url(#TIZHtCnMUiS3rznMpT1gYd)" d="M34.88,7C18,7,5.989,23,5.989,38c0,11.72,9.967,19,26.011,19c16.523,0,26-6.925,26-19 C58,28.798,49.027,7,34.88,7z M29.5,10c0.828,0,1.5,0.672,1.5,1.5S30.328,13,29.5,13S28,12.328,28,11.5S28.672,10,29.5,10z M32,54 C17.591,54,8.989,48.019,8.989,38c0-10.171,6.279-21.22,16.101-25.806C25.504,13.794,27.32,15,29.5,15c2.485,0,4.5-1.567,4.5-3.5 c0-0.524-0.158-1.016-0.423-1.462C34.008,10.014,34.442,10,34.88,10C46.504,10,55,29.648,55,38C55,51.921,40.59,54,32,54z" />
+  <linearGradient id="TIZHtCnMUiS3rznMpT1gYe" x1="30.5" x2="30.5" y1="60.25" y2="7.9" gradientTransform="matrix(1 0 0 -1 0 66)" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#1a6dff" />
+    <stop offset="1" stop-color="#c822ff" />
+  </linearGradient>
+  <path fill="url(#TIZHtCnMUiS3rznMpT1gYe)" d="M31,50c-6.46,0-13-4.122-13-12c0-5.554,4.367-7.802,4.553-7.895 c0.383-0.193,0.846-0.118,1.15,0.184C23.768,30.351,26.607,33,33,33c3.794,0,6.655-0.939,6.684-0.948 c0.359-0.122,0.756-0.026,1.023,0.241C40.801,32.387,43,34.636,43,39C43,45.374,37.953,50,31,50z M22.92,32.226 C21.948,32.915,20,34.709,20,38c0,6.871,5.702,10,11,10c5.888,0,10-3.701,10-9c0-2.523-0.858-4.13-1.36-4.854 C38.501,34.452,36.034,35,33,35C27.398,35,24.185,33.155,22.92,32.226z" />
+  <linearGradient id="TIZHtCnMUiS3rznMpT1gYf" x1="32" x2="32" y1="60.25" y2="7.9" gradientTransform="matrix(1 0 0 -1 0 66)" gradientUnits="userSpaceOnUse">
+    <stop offset="0" stop-color="#1a6dff" />
+    <stop offset="1" stop-color="#c822ff" />
+  </linearGradient>
+  <path fill="url(#TIZHtCnMUiS3rznMpT1gYf)" d="M32,58C15.339,58,5,50.337,5,38C5,22.864,17.264,6,34.88,6C49.639,6,59,28.501,59,38 C59,50.71,49.159,58,32,58z M34.88,8C18.443,8,7,23.811,7,38c0,11.103,9.573,18,25,18c15.888,0,25-6.561,25-18 C57,29.348,48.185,8,34.88,8z" />
+</svg>
             <div
               class="emoji_picker_wrapper none"
               id="emoji_picker_wrapper"
@@ -377,7 +408,9 @@ async function renderProfilePage(userDATA) {
             class="photo-icon picker"
             title="Загрузить фото"
           >
-            <img src="../img/Picture.svg" alt="" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="50px" height="50px">
+          <path d="M 11.5 6 C 8.4802259 6 6 8.4802259 6 11.5 L 6 36.5 C 6 39.519774 8.4802259 42 11.5 42 L 36.5 42 C 39.519774 42 42 39.519774 42 36.5 L 42 11.5 C 42 8.4802259 39.519774 6 36.5 6 L 11.5 6 z M 11.5 9 L 36.5 9 C 37.898226 9 39 10.101774 39 11.5 L 39 36.5 C 39 36.632609 38.980071 36.76013 38.960938 36.886719 L 26.814453 25.134766 C 26.035864 24.38142 25.017476 24.005859 24 24.005859 C 22.982524 24.005859 21.966089 24.38142 21.1875 25.134766 L 9.0390625 36.886719 C 9.0199291 36.76013 9 36.632609 9 36.5 L 9 11.5 C 9 10.101774 10.101774 9 11.5 9 z M 30.5 13 C 29.125 13 27.903815 13.569633 27.128906 14.441406 C 26.353997 15.313179 26 16.416667 26 17.5 C 26 18.583333 26.353997 19.686821 27.128906 20.558594 C 27.903815 21.430367 29.125 22 30.5 22 C 31.875 22 33.096185 21.430367 33.871094 20.558594 C 34.646003 19.686821 35 18.583333 35 17.5 C 35 16.416667 34.646003 15.313179 33.871094 14.441406 C 33.096185 13.569633 31.875 13 30.5 13 z M 30.5 16 C 31.124999 16 31.403816 16.180367 31.628906 16.433594 C 31.853997 16.686821 32 17.083333 32 17.5 C 32 17.916667 31.853997 18.313179 31.628906 18.566406 C 31.403816 18.819633 31.124999 19 30.5 19 C 29.875001 19 29.596184 18.819633 29.371094 18.566406 C 29.146003 18.313179 29 17.916667 29 17.5 C 29 17.083333 29.146003 16.686821 29.371094 16.433594 C 29.596184 16.180367 29.875001 16 30.5 16 z M 24.001953 26.988281 C 24.261517 26.988281 24.520104 27.089361 24.728516 27.291016 L 36.800781 38.970703 C 36.701225 38.982362 36.603103 39 36.5 39 L 11.5 39 C 11.396897 39 11.298775 38.982362 11.199219 38.970703 L 23.273438 27.291016 C 23.481848 27.089361 23.742389 26.988281 24.001953 26.988281 z" fill="#FFF" />
+        </svg>
           </label>
           
           <input
@@ -751,6 +784,11 @@ export async function renderChats() {
   const chat_search = document.querySelector('#chat_search');
   const users = $('#users');
   users.innerHTML = '';
+  jsonData.sort((a, b) => {
+    const dateA = new Date(a.datetime);
+    const dateB = new Date(b.datetime);
+    return dateB - dateA;
+  });
   jsonData.forEach((element) => {
     const messageDate = new Date(element.datetime);
     const now = new Date();
