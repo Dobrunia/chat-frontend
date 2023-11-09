@@ -1522,11 +1522,11 @@ function responseToFriendRequest(friend_id, status) {
   };
   $api
     .post('/responseToFriendRequest', DATA)
-    .then((response) => {
+    .then(async (response) => {
       const data = response.data;
       if (data) {
-        renderNotifications();
-        renderUserProfilePage(localStorage.getItem('id'));
+        await renderNotifications();
+        await renderUserProfilePage(localStorage.getItem('id'));
       }
     })
     .catch((error) => console.log('Ошибка:', error));
