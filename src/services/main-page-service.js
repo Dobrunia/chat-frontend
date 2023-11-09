@@ -56,7 +56,7 @@ function renderChatHeader(chatId, companionData) {
           <div class="last_entrance">был в сети час назад</div>
         </div>
         <div class="user_avatar user_avatar_small">
-          <img class="user_avatar_img openProfile" src="${companionData.avatar}" alt="" data-id="${companionData.id}" title="${companionData.username}"/>
+          <img id="user_header" class="user_avatar_img openProfile" src="${companionData.avatar}" alt="" data-id="${companionData.id}" data-username="${companionData.username}" title="${companionData.username}"/>
           <div class="status"></div>
         </div>`;
 }
@@ -1119,6 +1119,7 @@ export async function handlerMessageEvent(event) {
  * @param content текст сообщения
  */
 export function renderMessage(message) {
+  const isMyMessage = message.sendBy.toString() === localStorage.getItem('id');
   const messagesWrapper = $('#messages');
   let formatter1 = new Intl.DateTimeFormat('ru', {
     month: 'long',
@@ -1130,20 +1131,22 @@ export function renderMessage(message) {
   });
   let user = `
   <div class="user_avatar user_avatar_small" title="${
-    message.username ? message.username : localStorage.getItem('usename')
+    isMyMessage
+      ? localStorage.getItem('username')
+      : document.getElementById('user_header').getAttribute('data-username')
   }">
     <img class="user_avatar_img openProfile" src="${
-      message.avatar ? message.avatar : localStorage.getItem('avatar')
+      isMyMessage
+        ? localStorage.getItem('avatar')
+        : document.getElementById('user_header').src
     }" data-id="${
-    message.id ? message.id : localStorage.getItem('id')
+    isMyMessage ? localStorage.getItem('id') : message.sendBy
   }" alt=""/>
     <div class="status"></div>
   </div>`;
   messagesWrapper.innerHTML += `
-    <div class="message ${
-      message.sendBy.toString() === localStorage.getItem('id') ? 'my' : 'from'
-    }">
-    ${message.sendBy.toString() === localStorage.getItem('id') ? '' : user}
+    <div class="message ${isMyMessage ? 'my' : 'from'}">
+    ${isMyMessage ? '' : user}
       <div class="message_metric">${formatter2.format(
         new Date(message.datetime),
       )}<br />${formatter1.format(new Date(message.datetime))}</div>
@@ -1151,7 +1154,7 @@ export function renderMessage(message) {
         ${message.content}
       </div>
       <div class="user_avatar user_avatar_small"></div>
-      ${message.sendBy.toString() === localStorage.getItem('id') ? user : ''}
+      ${isMyMessage ? user : ''}
     </div>`;
   scrollChatToBottom();
 }
