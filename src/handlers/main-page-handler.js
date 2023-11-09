@@ -5,6 +5,7 @@ import {
   handlerMessageEvent,
   renderChats,
   changeSection,
+  changeUserInfo,
 } from '../services/main-page-service.js';
 
 /**
@@ -46,3 +47,11 @@ $('#announcement_exit').addEventListener('click', hideAnnouncementMenu);
  * закрытие окна изменений пользовательской инфы
  */
 $('#nav_user_info_edit_window_exit').addEventListener('click', hideUserInfoEditWindow);
+
+/**
+ * изменение личной инф-ии
+ */
+$('#scrollingText_button').addEventListener('click', () => changeUserInfo('scrollingText'));
+$('#telegramLink_button').addEventListener('click', () => changeUserInfo('telegramLink'));
+$('#steamLink_button').addEventListener('click', () => changeUserInfo('steamLink'));
+$('#shikimoriLink_button').addEventListener('click', () => changeUserInfo('shikimoriLink'));

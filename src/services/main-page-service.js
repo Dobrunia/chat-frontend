@@ -1251,6 +1251,50 @@ export function changePhoto() {
   );
 }
 
+export function changeUserInfo(type) {
+  let value = '';
+  let infoType = '';
+  switch (type) {
+    case 'scrollingText':
+      value = $('#scrollingText_input').value.toString().trim();
+      infoType = 'scrollingText';
+      break;
+    case 'telegramLink':
+      value = $('#telegramLink_input').value.toString().trim();
+      infoType = 'telegramLink';
+      break;
+    case 'steamLink':
+      value = $('#steamLink_input').value.toString().trim();
+      infoType = 'steamLink';
+      break;
+    case 'shikimoriLink':
+      value = $('#shikimoriLink_input').value.toString().trim();
+      infoType = 'shikimoriLink';
+      break;
+    default:
+      break;
+  }
+
+  if (!value) {
+    alert('Введите данные');
+    return;
+  } else {
+    $api
+      .post('/changeUserInfo', {
+        value: escapeSql(escapeHtml(value)),
+        infoType,
+      })
+      .then((response) => {
+        const data = response.data;
+        if (data) {
+          renderUserProfilePage(localStorage.getItem('id'));
+          announcementMessage('Вы успешно изменили данные');
+        }
+      })
+      .catch((error) => console.log('Ошибка:', error));
+  }
+}
+
 /**
  * экранирование текста
  * @param text
