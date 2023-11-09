@@ -1282,7 +1282,7 @@ export function changeUserInfo(type) {
     $api
       .post('/changeUserInfo', {
         value: escapeSql(escapeHtml(value)),
-        infoType,
+        infoType: infoType,
       })
       .then((response) => {
         const data = response.data;
