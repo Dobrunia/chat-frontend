@@ -1526,6 +1526,7 @@ function responseToFriendRequest(friend_id, status) {
       const data = response.data;
       if (data) {
         renderNotifications();
+        renderUserProfilePage(localStorage.getItem('id'));
       }
     })
     .catch((error) => console.log('Ошибка:', error));
