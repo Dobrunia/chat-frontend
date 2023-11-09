@@ -119,7 +119,7 @@
 
 .edit_window_element {
     width: 100%;
-    height: 60px;
+    height: 70px;
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
