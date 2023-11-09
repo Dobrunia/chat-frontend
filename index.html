@@ -275,7 +275,7 @@
             назад
           </button>
         </section>
-        <div class="nav_content" id="nav_content">
+        <div class="nav_content fallback" id="nav_content">
           <div class="nav_list none" id="nav_list">
             <div class="nav_ul">
               <div
@@ -416,6 +416,7 @@
               <button id="scrollingText_button">Применить</button>
             </div>
           </div>
+          <h2>Добавление ссылок на соц сети:</h2>
           <div class="edit_window_element">
             <h3>Изменить ссылку на Telegram</h3>
             <div>
@@ -452,6 +453,7 @@
               <button id="shikimoriLink_button">Применить</button>
             </div>
           </div>
+          <h2>Смена настроек фона:</h2>
           <div class="edit_window_element">
             <h3>Поставить на фон динамический градиент</h3>
             <div>
@@ -465,7 +467,20 @@
             </div>
           </div>
           <div class="edit_window_element">
-            <button id="button_remove">Сбросить</button>
+            <h3>Поставить на фон фотографию, которая уплывает вниз</h3>
+            <div>
+              <input
+                id="fallback_input"
+                type="text"
+                placeholder="Ссылка на картинку... (некоторые картинки не работают)"
+              />
+              <button id="fallback_button">Применить</button>
+            </div>
+          </div>
+          <div class="edit_window_element">
+            <div>
+              <button id="button_remove">Сбросить все настройки фона</button>
+            </div>
           </div>
         </div>
         <button

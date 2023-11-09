@@ -669,7 +669,6 @@ async function renderProfilePage(userDATA) {
  * поиск и отрисовка постов на странице пользователя
  */
 async function renderUsersPosts(userDATA) {
-  //TODO:: переделать SQL
   $api
     .get(`/getUserPosts?search_value=${userDATA.id}`)
     .then(async (response) => {

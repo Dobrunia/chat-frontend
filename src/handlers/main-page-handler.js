@@ -10,6 +10,7 @@ import {
 import {
   removeBackgrounds,
   linearGradientV1,
+  fallback,
 } from '../themes/themesAnimation.js';
 
 /**
@@ -76,3 +77,4 @@ $('#shikimoriLink_button').addEventListener('click', () =>
  */
 $('#button_remove').addEventListener('click', removeBackgrounds);
 $('#linear_gradient_v1_button').addEventListener('click', linearGradientV1);
+$('#fallback_button').addEventListener('click', fallback);

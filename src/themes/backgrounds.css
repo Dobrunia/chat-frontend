@@ -14,3 +14,19 @@
 }
 
 /* linear_gradient_v1 */
+
+/* fallback */
+@keyframes scroll {
+    100% {
+        background-position: 0px -400%;
+    }
+}
+
+/* Fallback if the operatring system prefers reduced motion*/
+@media (prefers-reduced-motion) {
+    .fallback {
+        animation: scroll 800s linear infinite;
+    }
+}
+
+/* fallback */
