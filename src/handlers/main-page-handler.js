@@ -1,4 +1,4 @@
-import { hideAnnouncementMenu } from '../animation.js';
+import { hideAnnouncementMenu, hideUserInfoEditWindow } from '../animation.js';
 import { removeCats } from '../pages/cats.js';
 import {
   $,
@@ -41,3 +41,8 @@ $('#cats_refresh').addEventListener('click', removeCats);
  * закрытие окна уведомлений
  */
 $('#announcement_exit').addEventListener('click', hideAnnouncementMenu);
+
+/**
+ * закрытие окна изменений пользовательской инфы
+ */
+$('#nav_user_info_edit_window_exit').addEventListener('click', hideUserInfoEditWindow);

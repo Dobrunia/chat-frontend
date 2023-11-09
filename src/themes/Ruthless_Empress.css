@@ -1,9 +1,17 @@
 :root {
     --white: #FFF;
-    --backG: #543896;
-    --message: #662672;/* #007968 #006366*/
-    --split: #661a51;
-    --attention: #4b1723;
+    --attention: #ffc107;
+    --backG: #0B0E17;
+    --message: #1a2136;
+    /* --message: #005C4B; */
+    /* #1d3844 */
+    /* #007968 #006366*/
+    --split: #212529;
     --grey: #939393;
     --exit: rgb(255, 0, 0);
+    --borderVk: #424242;
+    --navDarkBg: #141414;
+    --navLightBg: #222222;
+    --notificationBg: #4D4D4D;
+    --borderRadius: 15px;
 }

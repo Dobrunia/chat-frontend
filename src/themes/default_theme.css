@@ -14,4 +14,7 @@
     --navLightBg: #222222;
     --notificationBg: #4D4D4D;
     --borderRadius: 15px;
+    --borderRadiusRem: 0.5rem;
+    --announcement: #5D4BA6;
+    --confirmation: #361c9e;
 }

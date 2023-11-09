@@ -83,7 +83,7 @@ body {
 }
 
 .line {
-  border-bottom: 1px dashed var(--attention);
+  border-bottom: 1px dashed #5DB0D7;
 }
 
 .module_container .text-imput {
@@ -110,7 +110,7 @@ body {
 .user:hover {
   opacity: 0.6;
   border: 1px solid var(--white);
-  border-radius: 0.5rem;
+  border-radius: var(--borderRadiusRem);
   /* background-color: var(--split); */
 }
 
@@ -275,7 +275,7 @@ body {
   transform: translate(0, 50%);
   text-align: center;
   padding: 15px;
-  border-radius: 0.5rem;
+  border-radius: var(--borderRadiusRem);
   cursor: default;
   z-index: 10;
 }
@@ -312,7 +312,7 @@ body {
   height: 100%;
   border-right: 1px solid var(--borderVk);
   /* transition: 0.2s; */
-  /* border-radius: 0.5rem; */
+  /* border-radius:var(--borderRadiusRem); */
   /* z-index: 3; */
 }
 
@@ -493,7 +493,7 @@ body {
 .message_text {
   max-width: calc(100% - 120px);
   padding: 8px;
-  border-radius: 0.5rem;
+  border-radius: var(--borderRadiusRem);
 }
 
 .message_metric {
@@ -616,7 +616,7 @@ body {
   position: absolute;
   text-align: center;
   padding: 15px;
-  border-radius: 0.5rem;
+  border-radius: var(--borderRadiusRem);
   color: var(--white);
   background-color: var(--notificationBg);
   z-index: 10;
@@ -635,7 +635,7 @@ body {
   max-height: 100px;
   padding: 5px;
   margin: 15px 0;
-  border-radius: 0.5rem;
+  border-radius: var(--borderRadiusRem);
   background-color: #747474;
   text-align: start;
 }
@@ -650,7 +650,7 @@ body {
   height: max-content;
   font-size: 12px;
   padding: 5px;
-  border-radius: 0.5rem;
+  border-radius: var(--borderRadiusRem);
   background-color: var(--navDarkBg);
   cursor: pointer;
 }
@@ -676,9 +676,9 @@ body {
   transform: translate(50%, -50%);
   width: 400px;
   height: 150px;
-  background-color: #5D4BA6;
+  background-color: var(--announcement);
   z-index: 100;
-  border-radius: 0.5rem;
+  border-radius: var(--borderRadiusRem);
 }
 
 .announcement_text {
@@ -696,7 +696,7 @@ body {
   justify-content: center;
   position: absolute;
   right: 0;
-  top: 0;
+  top: 2px;
   width: 25px;
   height: 20px;
   font-size: 30px;
@@ -705,7 +705,8 @@ body {
   outline: none;
   background-color: inherit;
   color: red;
-  border-radius: 0.5rem;
+  border-radius: var(--borderRadiusRem);
+  cursor: pointer;
 }
 
 .confirmation {
@@ -715,9 +716,9 @@ body {
   transform: translate(50%, -50%);
   width: 400px;
   height: 150px;
-  background-color: #361c9e;
+  background-color: var(--confirmation);
   z-index: 100;
-  border-radius: 0.5rem;
+  border-radius: var(--borderRadiusRem);
 }
 
 .confirmation_text {

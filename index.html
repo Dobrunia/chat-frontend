@@ -257,7 +257,7 @@
             <form enctype="multipart/form-data" role="form" id="changeName">
               <p>Сменить имя</p>
               <p>
-                <input type="text" name="username" id="changeName_input" />
+                <input type="text" name="username" id="changeName_input" maxlength="25"/>
                 <input
                   class="btn btn-outline-light me-2"
                   type="submit"
@@ -400,6 +400,59 @@
             нет
           </button>
         </div>
+      </div>
+      <div class="nav_user_info_edit_window none" id="nav_user_info_edit_window">
+        <div class="nav_user_info_edit_window_elements">
+          <div class="edit_window_element">
+            <h3>Изменить бегущую строку</h3>
+            <div>
+              <input id="scrollingText_input" type="text" maxlength="100" />
+              <button id="scrollingText_button">Применить</button>
+            </div>
+          </div>
+          <div class="edit_window_element">
+            <h3>Изменить ссылку на Telegram</h3>
+            <div>
+              <input
+                id="telegramLink_input"
+                type="text"
+                maxlength="25"
+                placeholder="Напишите Ваш логин от ТГ без '@'"
+              />
+              <button id="telegramLink_button">Применить</button>
+            </div>
+          </div>
+          <div class="edit_window_element">
+            <h3>Изменить ссылку на Steam</h3>
+            <div>
+              <input
+                id="steamLink_input"
+                type="text"
+                maxlength="25"
+                placeholder="Напишите Ваш логин от steam"
+              />
+              <button id="steamLink_button">Применить</button>
+            </div>
+          </div>
+          <div class="edit_window_element">
+            <h3>Изменить ссылку на Shikimori</h3>
+            <div>
+              <input
+                id="shikimoriLink_input"
+                type="text"
+                maxlength="25"
+                placeholder="Напишите Ваш логин от shikimori"
+              />
+              <button id="shikimoriLink_button">Применить</button>
+            </div>
+          </div>
+        </div>
+        <button
+          class="nav_user_info_edit_window_exit"
+          id="nav_user_info_edit_window_exit"
+        >
+          x
+        </button>
       </div>
     </div>
   </body>

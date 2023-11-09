@@ -27,11 +27,10 @@ export function showNotificationsMenu() {
  */
 export function hideAnnouncementMenu() {
   $('#announcement').classList.add('none');
-  $('#nav_elements').classList.remove('blur');
 }
 
 /**
- * показать окно оповещений
+ * открыть окно оповещений
  */
 export function showAnnouncementMenu() {
   $('#announcement').classList.remove('none');
@@ -39,7 +38,7 @@ export function showAnnouncementMenu() {
 }
 
 /**
- * открыть окно оповещений
+ * открыть окно подтверждений
  */
 export function showConfirmationMenu() {
   $('#confirmation').classList.remove('none');
@@ -51,8 +50,23 @@ export function showConfirmationMenu() {
  */
 export function hideConfirmationMenu() {
   $('#confirmation').classList.add('none');
-  $('#nav_elements').classList.remove('blur');
 }
+
+/**
+ * открыть окно UserInfoEditWindow
+ */
+export function showUserInfoEditWindow() {
+  $('#nav_user_info_edit_window').classList.remove('none');
+  $('#nav_elements').classList.add('blur');
+}
+
+/**
+ * закрыть окно UserInfoEditWindow
+ */
+export function hideUserInfoEditWindow() {
+  $('#nav_user_info_edit_window').classList.add('none');
+}
+
 let search_request_counter = 0;
 /**
  * функция закрытия при клике вне области
@@ -106,6 +120,25 @@ export function globalClickAnimation(event) {
     hideAnnouncementMenu();
   }
   //скрыть оконо оповещений
+
+  //скрыть окно UserInfoEditWindow
+  if (
+    !$('#nav_user_info_edit_window')?.contains(targetElement) &&
+    !$('#nav_user_info_edit')?.contains(targetElement)
+  ) {
+    hideUserInfoEditWindow();
+  }
+  //скрыть окно UserInfoEditWindow
+
+  //blur
+  if (
+    $('#announcement').classList.contains('none') &&
+    $('#nav_user_info_edit_window').classList.contains('none') &&
+    $('#confirmation').classList.contains('none')
+  ) {
+    $('#nav_elements').classList.remove('blur');
+  }
+  //blur
 }
 
 /**
