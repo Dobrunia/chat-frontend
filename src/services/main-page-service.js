@@ -1081,7 +1081,7 @@ function removeChats() {
 /**
  * сохраняет сообщение в БД
  */
-export function saveMessageToDb(message) {
+export async function saveMessageToDb(message) {
   $api
     .post('/saveMessage', { message })
     .then((response) => {
@@ -1093,7 +1093,7 @@ export function saveMessageToDb(message) {
 /**
  * обработчик события НОВОЕ СООБЩЕНИЕ
  */
-export function handlerMessageEvent(event) {
+export async function handlerMessageEvent(event) {
   let datetime = new Date();
   let message = {
     chatId: event.detail.message.chatId,
@@ -1101,8 +1101,9 @@ export function handlerMessageEvent(event) {
     datetime,
     content: escapeSql(escapeHtml(event.detail.message.content)),
   };
-  saveMessageToDb(message);
+  await saveMessageToDb(message);
   renderMessage(message);
+  await renderChats();
 }
 
 /**
