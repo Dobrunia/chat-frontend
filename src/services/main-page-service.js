@@ -489,6 +489,8 @@ async function renderProfilePage(userDATA) {
   if (userDATA.scrollingText) {
     scrollingText = `<div class="nav_user_marquee fade_in_out"><span>${userDATA.scrollingText}</span></div>`;
     $('#scrollingText_input').value = userDATA.scrollingText;
+  } else {
+    $('#scrollingText_input').value = '';
   }
   if (userDATA.telegramLink) {
     telegramLink = `<a
@@ -503,6 +505,8 @@ async function renderProfilePage(userDATA) {
   </svg>
   </a>`;
     $('#telegramLink_input').value = userDATA.telegramLink;
+  } else {
+    $('#telegramLink_input').value = '';
   }
   if (userDATA.steamLink) {
     steamLink = `<a
@@ -524,6 +528,8 @@ async function renderProfilePage(userDATA) {
   </svg>
   </a>`;
     $('#steamLink_input').value = userDATA.steamLink;
+  } else {
+    $('#steamLink_input').value = '';
   }
   if (userDATA.shikimoriLink) {
     shikimoriLink = `<a
@@ -533,6 +539,8 @@ async function renderProfilePage(userDATA) {
     ><img src="https://shikimori.one/favicon.ico" alt=""
   /></a>`;
     $('#shikimoriLink_input').value = userDATA.shikimoriLink;
+  } else {
+    $('#shikimoriLink_input').value = '';
   }
   $('#profile_page').innerHTML = `
 <div class="nav_profile_header">
