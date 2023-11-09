@@ -7,6 +7,10 @@ import {
   changeSection,
   changeUserInfo,
 } from '../services/main-page-service.js';
+import {
+  removeBackgrounds,
+  linearGradientV1,
+} from '../themes/themesAnimation.js';
 
 /**
  * открыть/закрыть окно с чатами
@@ -46,12 +50,29 @@ $('#announcement_exit').addEventListener('click', hideAnnouncementMenu);
 /**
  * закрытие окна изменений пользовательской инфы
  */
-$('#nav_user_info_edit_window_exit').addEventListener('click', hideUserInfoEditWindow);
+$('#nav_user_info_edit_window_exit').addEventListener(
+  'click',
+  hideUserInfoEditWindow,
+);
 
 /**
  * изменение личной инф-ии
  */
-$('#scrollingText_button').addEventListener('click', () => changeUserInfo('scrollingText'));
-$('#telegramLink_button').addEventListener('click', () => changeUserInfo('telegramLink'));
-$('#steamLink_button').addEventListener('click', () => changeUserInfo('steamLink'));
-$('#shikimoriLink_button').addEventListener('click', () => changeUserInfo('shikimoriLink'));
+$('#scrollingText_button').addEventListener('click', () =>
+  changeUserInfo('scrollingText'),
+);
+$('#telegramLink_button').addEventListener('click', () =>
+  changeUserInfo('telegramLink'),
+);
+$('#steamLink_button').addEventListener('click', () =>
+  changeUserInfo('steamLink'),
+);
+$('#shikimoriLink_button').addEventListener('click', () =>
+  changeUserInfo('shikimoriLink'),
+);
+
+/**
+ * кастомизация заднего фона
+ */
+$('#button_remove').addEventListener('click', removeBackgrounds);
+$('#linear_gradient_v1_button').addEventListener('click', linearGradientV1);
