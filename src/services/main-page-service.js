@@ -486,12 +486,12 @@ async function renderProfilePage(userDATA) {
     </svg>
   </div>`;
   }
-  if (true) {
-    scrollingText = `<div class="nav_user_marquee fade_in_out"><span>${'dd'}</span></div>`;
+  if (userDATA.scrollingText) {
+    scrollingText = `<div class="nav_user_marquee fade_in_out"><span>${userDATA.scrollingText}</span></div>`;
   }
-  if (true) {
+  if (userDATA.telegramLink) {
     telegramLink = `<a
-    href="https://t.me/SentryEz"
+    href="${userDATA.telegramLink}"
     target="_blank"
     title="Ссылка на телеграм ${userDATA.username}"
     ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="50px" height="50px">
@@ -502,9 +502,9 @@ async function renderProfilePage(userDATA) {
   </svg>
   </a>`;
   }
-  if (true) {
+  if (userDATA.steamLink) {
     steamLink = `<a
-    href="https://store.steampowered.com/?l=russian"
+    href="${userDATA.steamLink}"
     target="_blank"
     title="Ссылка на steam ${userDATA.username}"
     ><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="50px" height="50px">
@@ -522,9 +522,9 @@ async function renderProfilePage(userDATA) {
   </svg>
   </a>`;
   }
-  if (true) {
+  if (userDATA.shikimoriLink) {
     shikimoriLink = `<a
-    href="https://shikimori.one/SentrYez"
+    href="${userDATA.shikimoriLink}"
     target="_blank"
     title="Ссылка на шикимори ${userDATA.username}"
     ><img src="https://shikimori.one/favicon.ico" alt=""
