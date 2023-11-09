@@ -35,16 +35,6 @@ export async function isUserLoggedInCheck() {
 }
 
 /**
- * функция генерации chatID
- */
-// function generateChatID(companionEmail: string) {
-//   const myEmail = localStorage.getItem('email');
-//   const emails = [myEmail, companionEmail];
-//   const sortedEmails = emails.sort();
-//   return sortedEmails[0] + sortedEmails[1] + '';
-// }
-
-/**
  * рендер пользователя с которым переписка
  */
 function renderChatHeader(chatId, companionData) {
@@ -881,12 +871,12 @@ async function renderUsersFriends(userDATA) {
 /**
  * общий рендер страницы пользователя
  */
-
 async function renderUserProfilePage(userId) {
   const userDATA = await findUserById(userId);
   await renderProfilePage(userDATA);
   await renderUsersPosts(userDATA);
   await renderUsersFriends(userDATA);
+  await renderNotifications();
 }
 
 /**
@@ -1269,19 +1259,19 @@ export function changeUserInfo(type) {
   let infoType = '';
   switch (type) {
     case 'scrollingText':
-      value = $('#scrollingText_input').value.toString().trim();
+      value = $('#scrollingText_input').value.toString();
       infoType = 'scrollingText';
       break;
     case 'telegramLink':
-      value = $('#telegramLink_input').value.toString().trim();
+      value = $('#telegramLink_input').value.toString();
       infoType = 'telegramLink';
       break;
     case 'steamLink':
-      value = $('#steamLink_input').value.toString().trim();
+      value = $('#steamLink_input').value.toString();
       infoType = 'steamLink';
       break;
     case 'shikimoriLink':
-      value = $('#shikimoriLink_input').value.toString().trim();
+      value = $('#shikimoriLink_input').value.toString();
       infoType = 'shikimoriLink';
       break;
     default:
@@ -1537,7 +1527,6 @@ function responseToFriendRequest(friend_id, status) {
     .then(async (response) => {
       const data = response.data;
       if (data) {
-        await renderNotifications();
         await renderUserProfilePage(localStorage.getItem('id'));
       }
     })

@@ -13,6 +13,7 @@ import {
   changeUsername,
   searchInputHandler,
   userOut,
+  changeSection,
 } from '../services/main-page-service.js';
 import { authorization } from '../registration-authorization/authorization.js';
 import { registration } from '../registration-authorization/registration.js';
@@ -28,9 +29,12 @@ $('#authorizationForm').addEventListener('submit', authorization);
 $('#registrationForm').addEventListener('submit', registration);
 
 /**
- * открытие меню профиля
+ * открытие меню профиля и переход к себе на страницу
  */
 $('#my_avatar').addEventListener('click', showSmallMenu);
+$('#my_avatar').addEventListener('dblclick', () =>
+  changeSection('profile_page', false),
+);
 
 /**
  * открытие уведомлений
@@ -73,7 +77,6 @@ $('#registration_exit').addEventListener('click', () =>
   toggleModuleWindow('exit'),
 );
 
-
 /**
  * функция закрытия при клике вне области, а также обработчик некоторых глобальных вещей
  */
@@ -82,10 +85,9 @@ document.addEventListener('click', globalClickHandler);
 /**
  * раз в 500мл проверка, что ввел пользователь и запрос на сервер
  */
-(document.querySelector('#users_search')).addEventListener(
-  'input',
-  searchInputHandler,
-);
+document
+  .querySelector('#users_search')
+  .addEventListener('input', searchInputHandler);
 
 /**
  * смена имени в настройках
