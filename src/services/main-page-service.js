@@ -182,13 +182,13 @@ async function renderChatId(currentElement) {
 /**
  * смена выбранной секции в навигации
  */
-export function changeSection(data_section, userId) {
+export async function changeSection(data_section, userId) {
   switch (data_section) {
     case 'profile_page':
       hideSections('profile_page');
       userId
-        ? renderUserProfilePage(userId)
-        : renderUserProfilePage(localStorage.getItem('id'));
+        ? await renderUserProfilePage(userId)
+        : await renderUserProfilePage(localStorage.getItem('id'));
       break;
     case 'messenger':
       hideSections('messenger');
@@ -1207,14 +1207,14 @@ export function changeUsername(event) {
   }
   $api
     .post('/changeUsername', { username: username })
-    .then((response) => {
+    .then(async (response) => {
       const data = response.data;
       if (data) {
         localStorage.setItem('username', data);
-        renderAccount();
-        renderUserProfilePage(localStorage.getItem('id'));
-        $('#changeName_input').value = '';
         announcementMessage('Вы успешно сменили имя');
+        renderAccount();
+        $('#changeName_input').value = '';
+        await renderUserProfilePage(localStorage.getItem('id'));
       }
     })
     .catch((error) => console.log('Ошибка:', error));
@@ -1285,11 +1285,11 @@ export function changeUserInfo(type) {
         value: escapeSql(escapeHtml(value)),
         infoType: infoType,
       })
-      .then((response) => {
+      .then(async (response) => {
         const data = response.data;
         if (data) {
-          renderUserProfilePage(localStorage.getItem('id'));
           announcementMessage('Вы успешно изменили данные');
+          await renderUserProfilePage(localStorage.getItem('id'));
         }
       })
       .catch((error) => console.log('Ошибка:', error));
@@ -1368,10 +1368,10 @@ export function addPost(event) {
         'Content-Type': 'multipart/form-data',
       },
     })
-    .then((response) => {
+    .then(async (response) => {
       const data = response.data;
       if (data) {
-        renderUserProfilePage(wallId);
+        await renderUserProfilePage(wallId);
       }
     })
     .catch((error) => console.log('Ошибка:', error));
@@ -1424,11 +1424,11 @@ export function deletePost(postId, wallId) {
       if (confirmed) {
         $api
           .post('/deletePost', { postId })
-          .then((response) => {
+          .then(async (response) => {
             const data = response.data;
             if (data) {
-              renderUserProfilePage(wallId);
               announcementMessage('Вы успешно удалили пост');
+              await renderUserProfilePage(wallId);
             }
           })
           .catch((error) => console.log('Ошибка:', error));
@@ -1482,11 +1482,11 @@ export function addFriend(event) {
   let friendId = currentElement?.getAttribute('data-id');
   $api
     .post('/addFriend', { friendId })
-    .then((response) => {
+    .then(async (response) => {
       const data = response.data;
       if (data) {
         announcementMessage('Запрос на добавления в друзья отправлен');
-        renderUserProfilePage(friendId);
+        await renderUserProfilePage(friendId);
       }
     })
     .catch((error) => console.log('Ошибка:', error));
@@ -1501,12 +1501,12 @@ export function removeFriend(event) {
   const friendId = currentElement?.getAttribute('data-id');
   $api
     .post('/removeFriend', { friendId })
-    .then((response) => {
+    .then(async (response) => {
       const data = response.data;
       console.log(data);
       if (data) {
         announcementMessage('Пользователь удален из друзей');
-        renderUserProfilePage(friendId);
+        await renderUserProfilePage(friendId);
       }
     })
     .catch((error) => console.log('Ошибка:', error));
