@@ -143,6 +143,7 @@
     background-color: inherit;
     border: 1px solid var(--white);
     border-radius: 5px;
+    color: var(--white);
 }
 
 .edit_window_element div input:focus {
