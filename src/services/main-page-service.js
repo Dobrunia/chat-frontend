@@ -1237,13 +1237,14 @@ export function changePhoto() {
           .post('/changePhoto', {
             photoUrl: escapeSql(escapeHtml(photoUrl)),
           })
-          .then((response) => {
+          .then(async (response) => {
             const data = response.data;
             if (data) {
               localStorage.setItem('avatar', escapeSql(escapeHtml(photoUrl)));
               renderAccount();
               $('#photoUrl').value = '';
               announcementMessage('Вы успешно сменили аватар');
+              await renderUserProfilePage(localStorage.getItem('id'));
             }
           })
           .catch((error) => console.log('Ошибка:', error));
