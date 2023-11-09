@@ -8,9 +8,7 @@ import {
 } from '../animation.js';
 import {
   $,
-  changePhoto,
   globalClickHandler,
-  changeUsername,
   searchInputHandler,
   userOut,
   changeSection,
@@ -49,17 +47,17 @@ $('#account_exit').addEventListener('click', userOut);
 /**
  * открыть меню с настройками
  */
-$('#settings').addEventListener('click', openSettingsWindow);
+// $('#settings').addEventListener('click', openSettingsWindow);
 
 /**
  * закрыть меню с настройками
  */
-$('#settings_exit').addEventListener('click', closeSettingsWindow);
+// $('#settings_exit').addEventListener('click', closeSettingsWindow);
 
 /**
  * смена темы
  */
-$('#themes').addEventListener('change', chooseTheme);
+// $('#themes').addEventListener('change', chooseTheme);
 
 /**
  * открытие/закрытие окн регистриции/авторизации
@@ -88,13 +86,3 @@ document.addEventListener('click', globalClickHandler);
 document
   .querySelector('#users_search')
   .addEventListener('input', searchInputHandler);
-
-/**
- * смена имени в настройках
- */
-$('#changeName').addEventListener('submit', changeUsername);
-
-/**
- * смена аватара профиля
- */
-$('#change_photoUrl').addEventListener('click', changePhoto);

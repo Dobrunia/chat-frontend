@@ -243,7 +243,7 @@
             <button class="exit" id="registration_exit">x</button>
           </div>
         </section>
-        <section class="settings_wrapper none" id="settings_window">
+        <!-- <section class="settings_wrapper none" id="settings_window">
           <div class="settings_window">
             <div class="change_photo" id="change_photo">
               <p>Сменить аватар</p>
@@ -274,7 +274,7 @@
           <button class="return btn btn-outline-light me-2" id="settings_exit">
             назад
           </button>
-        </section>
+        </section> -->
         <div class="nav_content fallback" id="nav_content">
           <div class="nav_list none" id="nav_list">
             <div class="nav_ul">
@@ -409,6 +409,30 @@
         id="nav_user_info_edit_window"
       >
         <div class="nav_user_info_edit_window_elements">
+          <h2>Общие настройки:</h2>
+          <div class="edit_window_element">
+            <h3>Сменить никнейм</h3>
+            <div>
+              <input
+                type="text"
+                name="username"
+                id="changeName_input"
+                maxlength="25"
+              />
+              <button id="changeName_button">Применить</button>
+            </div>
+          </div>
+          <div class="edit_window_element">
+            <h3>Сменить аватар</h3>
+            <div>
+              <input
+                type="text"
+                id="photoUrl"
+                placeholder="Вставьте URL картинки (не все картинки работают)"
+              />
+              <button id="change_photoUrl">Применить</button>
+            </div>
+          </div>
           <div class="edit_window_element">
             <h3>Изменить бегущую строку</h3>
             <div>
@@ -460,8 +484,8 @@
               <input
                 id="linear_gradient_v1_input"
                 type="text"
-                maxlength="3"
-                placeholder="Напишите в градусах, желаемый угол наклона градиента"
+                maxlength="4"
+                placeholder="Желаемый угол наклона градиента (в градусах)"
               />
               <button id="linear_gradient_v1_button">Применить</button>
             </div>

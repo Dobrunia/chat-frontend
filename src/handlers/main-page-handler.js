@@ -6,6 +6,8 @@ import {
   renderChats,
   changeSection,
   changeUserInfo,
+  changeUsername,
+  changePhoto,
 } from '../services/main-page-service.js';
 import {
   removeBackgrounds,
@@ -55,6 +57,16 @@ $('#nav_user_info_edit_window_exit').addEventListener(
   'click',
   hideUserInfoEditWindow,
 );
+
+/**
+ * смена имени в настройках
+ */
+$('#changeName_button').addEventListener('click', changeUsername);
+
+/**
+ * смена аватара профиля
+ */
+$('#change_photoUrl').addEventListener('click', changePhoto);
 
 /**
  * изменение личной инф-ии

@@ -1191,11 +1191,9 @@ export function userOut() {
 /**
  * смена имени пользователя
  */
-export function changeUsername(event) {
-  event.preventDefault();
-  const formData = new FormData(this);
+export function changeUsername() {
   const username = escapeSql(
-    escapeHtml(formData.get('username')?.toString().trim()),
+    escapeHtml($('#changeName_input').value.toString().trim()),
   );
   if (!localStorage.getItem('email')) {
     announcementMessage('Прежде всего войдите в аккаунт');
@@ -1218,7 +1216,6 @@ export function changeUsername(event) {
       }
     })
     .catch((error) => console.log('Ошибка:', error));
-  return false;
 }
 
 /**
@@ -1278,23 +1275,21 @@ export function changeUserInfo(type) {
   }
 
   if (!value) {
-    alert('Введите данные');
-    return;
-  } else {
-    $api
-      .post('/changeUserInfo', {
-        value: escapeSql(escapeHtml(value)),
-        infoType: infoType,
-      })
-      .then(async (response) => {
-        const data = response.data;
-        if (data) {
-          announcementMessage('Вы успешно изменили данные');
-          await renderUserProfilePage(localStorage.getItem('id'));
-        }
-      })
-      .catch((error) => console.log('Ошибка:', error));
+    value = '';
   }
+  $api
+    .post('/changeUserInfo', {
+      value: escapeSql(escapeHtml(value)),
+      infoType: infoType,
+    })
+    .then(async (response) => {
+      const data = response.data;
+      if (data) {
+        announcementMessage('Вы успешно изменили данные');
+        await renderUserProfilePage(localStorage.getItem('id'));
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
 }
 
 /**
