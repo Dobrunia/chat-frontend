@@ -21,6 +21,7 @@
     position: relative;
     border-radius: 15px;
     overflow: hidden;
+    color: #ffffff;
 }
 
 .module_container {

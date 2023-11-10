@@ -1098,8 +1098,8 @@ export async function renderChats() {
     } else {
       formattedTime = messageDate.toLocaleDateString(); // Формат день, месяц, год
     }
-    const content = `<div class="line"></div>
-      <div class="user openDialog" title="${element.name}" data-id="${element.userId}" data-username="${element.name}" data-email="${element.userEmail}" data-avatar="${element.avatar}" data-chatId="${element.chatId}">
+    //<div class="line"></div>
+    const content = `<div class="user openDialog" title="${element.name}" data-id="${element.userId}" data-username="${element.name}" data-email="${element.userEmail}" data-avatar="${element.avatar}" data-chatId="${element.chatId}">
         <div class="user_avatar user_avatar_small">
           <img class="user_avatar_img" src="${element.avatar}" alt=""/>
           <div class="status"></div>
@@ -1191,7 +1191,7 @@ export async function saveColorsToDb(
  */
 export async function saveFontToDb(fontName) {
   $api
-    .post('/saveFontToDb', {fontName})
+    .post('/saveFontToDb', { fontName })
     .then(async (response) => {
       const data = response.data;
       if (data) {
