@@ -325,6 +325,11 @@
     overflow-y: scroll;
 }
 
+.photo-info {
+    max-width: 170px;
+    word-wrap: break-word;
+}
+
 .nav_users_friends {
     width: 30%;
     max-height: 300px;
