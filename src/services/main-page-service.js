@@ -1526,7 +1526,7 @@ export function addPost(event) {
     photo: photo,
     //file: file,
   };
-  if ((postText === '') && (photo.size === 0)) {
+  if (postText === '' && photo.size === 0) {
     announcementMessage('Не отправляйте пустой пост');
     return;
   }
