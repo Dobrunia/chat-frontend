@@ -977,7 +977,7 @@ async function renderUserProfilePage(userId) {
   await renderProfilePage(userDATA);
   await renderUsersPosts(userDATA);
   await renderUsersFriends(userDATA);
-  await renderNotifications();
+  renderNotifications();
 
   if (userDATA.backgroundStyle) {
     document.getElementById('nav_content').style = userDATA.backgroundStyle;
@@ -1373,7 +1373,7 @@ export function renderMessage(message) {
  */
 async function setInfo() {
   renderAccount();
-  await renderNotifications();
+  renderNotifications();
 }
 
 /**
