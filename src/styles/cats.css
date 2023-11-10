@@ -15,6 +15,7 @@
 
 .cats_place {
     height: calc(100% - 60px);
+    background-color: var(--navLightBg);
 }
 
 .cats_place img {
