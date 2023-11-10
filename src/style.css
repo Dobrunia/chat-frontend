@@ -264,13 +264,13 @@ body {
 
 .avatar_hover {
   width: 200px;
-  height: 150px;
+  height: max-content;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: space-between;
   position: absolute;
-  top: -20px;
+  top: 25px;
   right: 0;
   transform: translate(0, 50%);
   text-align: center;
