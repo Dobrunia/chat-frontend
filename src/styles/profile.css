@@ -195,8 +195,8 @@
     position: relative;
     height: 200px;
     background-color: var(--navLightBg);
-    border-top-right-radius: 0px !important;
-    border-top-left-radius: 0px !important;
+    /* border-top-right-radius: 0px !important;
+    border-top-left-radius: 0px !important; */
     z-index: 1;
 }
 
