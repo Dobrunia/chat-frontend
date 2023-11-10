@@ -432,6 +432,12 @@
     overflow: hidden;
 }
 
+.nav_user_wall_post_div {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
 .nav_user_wall_post_imgWrapper {
     display: flex;
     align-items: center;
@@ -452,10 +458,12 @@
 }
 
 .post_author_name {
-    position: absolute;
-    width: max-content;
+    /* position: absolute;
     top: 10px;
-    left: 55px;
+    left: 55px; */
+    width: max-content;
+    margin-right: 25px;
+    margin-left: 10px;
 }
 
 .delete_post {

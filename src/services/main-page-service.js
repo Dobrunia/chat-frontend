@@ -717,6 +717,7 @@ async function renderUsersPosts(userDATA) {
         $('#nav_user_wall_wrapper_posts').insertAdjacentHTML(
           'afterbegin',
           `<div class="nav_user_wall_post">
+            <div class="nav_user_wall_post_div">
             <div class="user_avatar user_avatar_small" title="${element.username}">
                 <img
                   class="user_avatar_img openProfile"
@@ -725,7 +726,8 @@ async function renderUsersPosts(userDATA) {
                   alt=""
                 />
                 <div class="status"></div>
-                <div class="post_author_name">${element.username}</div>
+            </div>
+            <div class="post_author_name">${element.username}</div>
             </div>
             ${content}
           </div>`,
