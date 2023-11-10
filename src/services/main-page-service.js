@@ -889,15 +889,19 @@ async function renderUserProfilePage(userId) {
   // Установка значения переменной CSS
   document.documentElement.style.setProperty(
     '--white',
-    `${userDATA.colorInputWhite}`,
+    `${userDATA.colorInputWhite ? userDATA.colorInputWhite : '#FFF'}`,
   );
   document.documentElement.style.setProperty(
     '--attention',
-    `${userDATA.colorInputAttention}`,
+    `${
+      userDATA.colorInputAttention ? userDATA.colorInputAttention : '#ffc107'
+    }`,
   );
   document.documentElement.style.setProperty(
     '--navLightBg',
-    `${userDATA.colorInputNavLightBg}`,
+    `${
+      userDATA.colorInputNavLightBg ? userDATA.colorInputNavLightBg : '#222222'
+    }`,
   );
 
   $('#colorInputWhite').value = getComputedStyle(
