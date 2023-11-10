@@ -880,8 +880,10 @@ async function renderUserProfilePage(userId) {
 
   if (userDATA.backgroundStyle) {
     document.getElementById('nav_content').style = userDATA.backgroundStyle;
+    $('#nav_sections').style = 'border: none; background: none;';
   } else {
     document.getElementById('nav_content').style = '';
+    $('#nav_sections').style = '';
   }
 }
 
