@@ -1182,7 +1182,7 @@ function setInfo() {
   // }
   renderNotifications();
   renderAccount();
-  renderThemes();
+  //renderThemes();
   renderChats();
 }
 
@@ -1192,7 +1192,7 @@ function setInfo() {
 function removeUserData() {
   localStorage.clear();
   removeAccount();
-  removeThemes();
+  //removeThemes();
   removeChats();
 }
 
