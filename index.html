@@ -499,7 +499,7 @@
             </div>
           </div>
           <div class="edit_window_element">
-            <h3>Поставить на фон фотографию, которая уплывает вниз</h3>
+            <h3>Поставить на фон картинку, которая уплывает вниз</h3>
             <div>
               <input
                 id="fallback_input"
@@ -510,8 +510,33 @@
             </div>
           </div>
           <div class="edit_window_element">
+            <h3>Поставить на фон статичную картинку</h3>
+            <div>
+              <input
+                id="staticImg_input"
+                type="text"
+                placeholder="Ссылка на картинку... (некоторые картинки не работают)"
+              />
+              <button id="staticImg_button">Применить</button>
+            </div>
+          </div>
+          <div class="edit_window_element">
             <div>
               <button id="button_remove">Сбросить все настройки фона</button>
+            </div>
+          </div>
+          <h2>Смена настроек цвета:</h2>
+          <div class="edit_window_element">
+            <div class="element_input_colors">
+              <span>Основной цвет:</span>
+              <input type="color" id="colorInputWhite" />
+              <span>Цвет выделяющий:</span>
+              <input type="color" id="colorInputAttention" />
+              <span>Основной цвет задних фонов:</span>
+              <input type="color" id="colorInputNavLightBg" />
+            </div>
+            <div>
+              <button id="changeColors_button">Применить</button>
             </div>
           </div>
         </div>

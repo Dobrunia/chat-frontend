@@ -165,6 +165,10 @@
     margin-bottom: 10px;
 }
 
+.element_input_colors span {
+    text-align: right;
+}
+
 .element_input_colors input {
     width: 30px !important;
     height: 30px !important;

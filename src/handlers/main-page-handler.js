@@ -13,6 +13,8 @@ import {
   removeBackgrounds,
   linearGradientV1,
   fallback,
+  staticImg,
+  changeColors,
 } from '../themes/themesAnimation.js';
 
 /**
@@ -90,3 +92,9 @@ $('#shikimoriLink_button').addEventListener('click', () =>
 $('#button_remove').addEventListener('click', removeBackgrounds);
 $('#linear_gradient_v1_button').addEventListener('click', linearGradientV1);
 $('#fallback_button').addEventListener('click', fallback);
+$('#staticImg_button').addEventListener('click', staticImg);
+
+/**
+ * кастомизация цветов
+ */
+$('#changeColors_button').addEventListener('click', changeColors);

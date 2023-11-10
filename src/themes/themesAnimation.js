@@ -1,4 +1,8 @@
-import { $, saveBackgroundStyleToDb } from '../services/main-page-service.js';
+import {
+  $,
+  saveBackgroundStyleToDb,
+  saveColorsToDb,
+} from '../services/main-page-service.js';
 /* removeBackgrounds */
 export function removeBackgrounds() {
   let style = '';
@@ -30,3 +34,24 @@ export function fallback() {
 }
 //background-size: cover;
 /* fallback */
+
+/* staticImg */
+export function staticImg() {
+  let url = $('#staticImg_input').value.toString().trim();
+  if (url === ' ' || url === '') {
+    url =
+      'https://cdn.photoroom.com/v1/assets-cached.jpg?path=backgrounds_v3/black/Photoroom_black_background_extremely_fine_texture_only_black_co_bc8c725e-7ec8-4d6b-b024-98be7544d757.jpg';
+  }
+  let style = `background: url(${url});background-size: cover;`;
+  saveBackgroundStyleToDb(style);
+}
+/* staticImg */
+
+/* changeColors */
+export function changeColors() {
+  let colorInputWhite = $('#colorInputWhite').value;
+  let colorInputAttention = $('#colorInputAttention').value;
+  let colorInputNavLightBg = $('#colorInputNavLightBg').value;
+  saveColorsToDb(colorInputWhite, colorInputAttention, colorInputNavLightBg);
+}
+/* changeColors */

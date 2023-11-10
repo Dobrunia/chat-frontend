@@ -885,6 +885,30 @@ async function renderUserProfilePage(userId) {
     document.getElementById('nav_content').style = '';
     $('#nav_sections').style = '';
   }
+
+  // Установка значения переменной CSS
+  document.documentElement.style.setProperty(
+    '--white',
+    `${userDATA.colorInputWhite}`,
+  );
+  document.documentElement.style.setProperty(
+    '--attention',
+    `${userDATA.colorInputAttention}`,
+  );
+  document.documentElement.style.setProperty(
+    '--navLightBg',
+    `${userDATA.colorInputNavLightBg}`,
+  );
+
+  $('#colorInputWhite').value = getComputedStyle(
+    document.documentElement,
+  ).getPropertyValue('--white');
+  $('#colorInputAttention').value = getComputedStyle(
+    document.documentElement,
+  ).getPropertyValue('--attention');
+  $('#colorInputNavLightBg').value = getComputedStyle(
+    document.documentElement,
+  ).getPropertyValue('--navLightBg');
 }
 
 /**
@@ -1106,6 +1130,31 @@ export async function saveBackgroundStyleToDb(style) {
       const data = response.data;
       if (data) {
         announcementMessage('Вы успешно сменили настройки фона');
+        renderAccount();
+        await renderUserProfilePage(localStorage.getItem('id'));
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * сохраняет цвета в БД
+ */
+export async function saveColorsToDb(
+  colorInputWhite,
+  colorInputAttention,
+  colorInputNavLightBg,
+) {
+  $api
+    .post('/saveColorsToDb', {
+      colorInputWhite,
+      colorInputAttention,
+      colorInputNavLightBg,
+    })
+    .then(async (response) => {
+      const data = response.data;
+      if (data) {
+        announcementMessage('Вы успешно сменили настройки цветов');
         renderAccount();
         await renderUserProfilePage(localStorage.getItem('id'));
       }
