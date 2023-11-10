@@ -9,9 +9,11 @@ export function removeBackgrounds() {
 /* linear_gradient_v1 */
 export function linearGradientV1() {
   const deg = $('#linear_gradient_v1_input').value.toString().trim();
-  let style = `background: linear-gradient(${
-    deg ? deg : 45
-  }deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);background-size: 400% 400%;animation: gradient 15s ease infinite;`;
+  let style = `background: linear-gradient(${deg ? deg : 45}deg, ${
+    $('#colorInput1').value
+  }, ${$('#colorInput2').value}, ${$('#colorInput3').value}, ${
+    $('#colorInput4').value
+  });background-size: 400% 400%;animation: gradient 15s ease infinite;`;
   saveBackgroundStyleToDb(style);
 }
 /* linear_gradient_v1 */
