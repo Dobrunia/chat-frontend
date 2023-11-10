@@ -227,6 +227,9 @@ export async function changeSection(data_section, userId) {
       await renderChats();
       hideSections('messenger');
       break;
+    case 'friends_people':
+      hideSections('friends_people');
+      break;
     case 'cats':
       hideSections('cats');
       makeCats();

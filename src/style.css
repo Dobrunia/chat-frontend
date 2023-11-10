@@ -214,7 +214,7 @@ body {
 }
 
 .wrapper {
-  background-color: var(--backG);
+  background-color: var(--navLightBg);
 }
 
 .user_name {

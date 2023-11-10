@@ -10,7 +10,7 @@
 }
 
 .nav_content {
-    height: calc(100vh - 95px);
+    height: calc(100vh - 72px);
     display: flex;
     flex-flow: row nowrap;
     align-content: center;
