@@ -484,6 +484,15 @@
     text-overflow: ellipsis;
 }
 
+.post_postTime {
+    width: 98%;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
 .delete_post {
     position: absolute;
     width: 10px;

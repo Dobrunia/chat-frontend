@@ -80,6 +80,34 @@ async function renderMessages(chatId, companionData) {
 }
 
 /**
+ * получить текцщую дату в формате "3 апр 2015"
+ */
+function getCurrentDate() {
+  var months = [
+    'янв',
+    'фев',
+    'мар',
+    'апр',
+    'май',
+    'июн',
+    'июл',
+    'авг',
+    'сен',
+    'окт',
+    'ноя',
+    'дек',
+  ];
+
+  var currentDate = new Date();
+  var day = currentDate.getDate();
+  var month = months[currentDate.getMonth()];
+  var year = currentDate.getFullYear();
+
+  var formattedDate = day + ' ' + month + ' ' + year;
+  return formattedDate;
+}
+
+/**
  * обработка клика по чату с собеседником
  */
 async function selectChatHandler(elem, chatId) {
@@ -759,6 +787,7 @@ async function renderUsersPosts(userDATA) {
             <div class="post_author_name">${element.username}</div>
             </div>
             ${content}
+            <div class="post_postTime">${element.postTime}</div>
           </div>`,
         );
         // if (userDATA.id === element.authorId) {
@@ -1526,7 +1555,7 @@ export function addPost(event) {
   event.preventDefault();
   const formData = new FormData(this);
   const wallId = formData.get('wallId')?.toString().trim();
-  const postText = formData.get('postText')?.toString();
+  const postText = formData.get('postText')?.toString().trim();
   const photo = formData.get('photo');
   const file = formData.get('file');
   const email = localStorage.getItem('email');
@@ -1535,9 +1564,10 @@ export function addPost(event) {
   }
   const DATA = {
     wallId,
-    postText: postText ? postText : '',
+    postText: postText ? escapeSql(escapeHtml(postText)) : '',
     photo: photo,
     //file: file,
+    postTime: getCurrentDate(),
   };
   if (postText === '' && photo.size === 0) {
     announcementMessage('Не отправляйте пустой пост');
