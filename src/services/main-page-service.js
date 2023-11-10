@@ -1049,14 +1049,22 @@ export async function renderChats() {
       formattedTime = messageDate.toLocaleDateString(); // Формат день, месяц, год
     }
     const content = `<div class="line"></div>
-      <div class="user openDialog" title="${element.name}" data-id="${element.userId}" data-username="${element.name}" data-email="${element.userEmail}" data-avatar="${element.avatar}" data-chatId="${element.chatId}">
+      <div class="user openDialog" title="${element.name}" data-id="${
+      element.userId
+    }" data-username="${element.name}" data-email="${
+      element.userEmail
+    }" data-avatar="${element.avatar}" data-chatId="${element.chatId}">
         <div class="user_avatar user_avatar_small">
           <img class="user_avatar_img" src="${element.avatar}" alt=""/>
           <div class="status"></div>
         </div>
         <div class="user_info">
           <div class="user_name"><strong>${element.name}</strong></div>
-          <div class="user_last_message" title="${element.last_message}">${element.last_message}</div>
+          <div class="user_last_message" title="${element.last_message}">${
+      element.name == localStorage.getItem('username')
+        ? 'Вы: ' + element.last_message
+        : element.last_message
+    }</div>
         </div>
         <div class="user_metric">
           <span>${element.notifications}</span>
