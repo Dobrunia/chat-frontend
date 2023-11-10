@@ -876,6 +876,12 @@ async function renderUserProfilePage(userId) {
   await renderUsersPosts(userDATA);
   await renderUsersFriends(userDATA);
   await renderNotifications();
+
+  if (userDATA.backgroundStyle) {
+    document.getElementById('nav_content').style = userDATA.backgroundStyle;
+  } else {
+    document.getElementById('nav_content').style = '';
+  }
 }
 
 /**
@@ -1083,6 +1089,23 @@ export async function saveMessageToDb(message) {
     .post('/saveMessage', { message })
     .then((response) => {
       const data = response.data;
+    })
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * сохраняет свойства background в БД
+ */
+export async function saveBackgroundStyleToDb(style) {
+  $api
+    .post('/saveBackgroundStyleToDb', { style })
+    .then(async (response) => {
+      const data = response.data;
+      if (data) {
+        announcementMessage('Вы успешно сменили настройки фона');
+        renderAccount();
+        await renderUserProfilePage(localStorage.getItem('id'));
+      }
     })
     .catch((error) => console.log('Ошибка:', error));
 }
