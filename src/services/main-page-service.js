@@ -203,6 +203,9 @@ export async function changeSection(data_section, userId) {
       hideSections('cats');
       makeCats();
       break;
+    case 'donate':
+      hideSections('donate');
+      break;
     case 'aboutUs':
       hideSections('aboutUs');
       break;
