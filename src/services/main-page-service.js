@@ -542,13 +542,14 @@ async function renderProfilePage(userDATA) {
         alt=""
       />
       <div class="nav_status"></div>
+      ${canEditInfo}
     </div>
     <div class="nav_profile_name" style="${
       userDATA.usernameFont
         ? `font-family: ${userDATA.usernameFont}, sans-serif;`
         : ''
     }">${userDATA.username}</div>
-    ${canEditInfo}
+    
   </div>
   <div class="nav_user_info">
   <div class="nav_user_info_text"></div>
@@ -928,8 +929,8 @@ async function renderUserProfilePage(userId) {
 
   // Установка значения переменной CSS
   document.documentElement.style.setProperty(
-    '--white',
-    `${userDATA.colorInputWhite ? userDATA.colorInputWhite : '#ffffff'}`,
+    '--navColor',
+    `${userDATA.colorInputNav ? userDATA.colorInputNav : '#ffffff'}`,
   );
   document.documentElement.style.setProperty(
     '--attention',
@@ -944,8 +945,8 @@ async function renderUserProfilePage(userId) {
     }`,
   );
 
-  $('#colorInputWhite').value = userDATA.colorInputWhite
-    ? userDATA.colorInputWhite
+  $('#colorInputNav').value = userDATA.colorInputNav
+    ? userDATA.colorInputNav
     : '#ffffff';
   $('#colorInputAttention').value = userDATA.colorInputAttention
     ? userDATA.colorInputAttention
@@ -1185,13 +1186,13 @@ export async function saveBackgroundStyleToDb(style) {
  * сохраняет цвета в БД
  */
 export async function saveColorsToDb(
-  colorInputWhite,
+  colorInputNav,
   colorInputAttention,
   colorInputNavLightBg,
 ) {
   $api
     .post('/saveColorsToDb', {
-      colorInputWhite,
+      colorInputNav,
       colorInputAttention,
       colorInputNavLightBg,
     })

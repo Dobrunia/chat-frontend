@@ -42,6 +42,7 @@
     border-radius: 8px;
     cursor: pointer;
     transition: 1s;
+    color: var(--navColor);
 }
 
 .nav_li span {
@@ -59,7 +60,7 @@
 }
 
 .nav_li:hover {
-    background-color: #414141;
+    background-color: var(--navLightBg);
 }
 
 .nav_sections {

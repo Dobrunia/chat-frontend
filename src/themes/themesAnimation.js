@@ -56,10 +56,10 @@ export function resetColors() {
 
 /* changeColors */
 export function changeColors() {
-  let colorInputWhite = $('#colorInputWhite').value;
+  let colorInputNav = $('#colorInputNav').value;
   let colorInputAttention = $('#colorInputAttention').value;
   let colorInputNavLightBg = $('#colorInputNavLightBg').value;
-  saveColorsToDb(colorInputWhite, colorInputAttention, colorInputNavLightBg);
+  saveColorsToDb(colorInputNav, colorInputAttention, colorInputNavLightBg);
 }
 /* changeColors */
 
