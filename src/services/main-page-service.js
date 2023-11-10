@@ -905,7 +905,7 @@ async function renderUserProfilePage(userId) {
   // Установка значения переменной CSS
   document.documentElement.style.setProperty(
     '--white',
-    `${userDATA.colorInputWhite ? userDATA.colorInputWhite : '#FFF'}`,
+    `${userDATA.colorInputWhite ? userDATA.colorInputWhite : '#ffffff'}`,
   );
   document.documentElement.style.setProperty(
     '--attention',
@@ -922,7 +922,7 @@ async function renderUserProfilePage(userId) {
 
   $('#colorInputWhite').value = userDATA.colorInputWhite
     ? userDATA.colorInputWhite
-    : '#FFF';
+    : '#ffffff';
   $('#colorInputAttention').value = userDATA.colorInputAttention
     ? userDATA.colorInputAttention
     : '#ffc107';

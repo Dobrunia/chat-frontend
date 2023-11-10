@@ -49,7 +49,7 @@ export function staticImg() {
 
 /* resetColors */
 export function resetColors() {
-  saveColorsToDb('#FFF', '#ffc107', '#222222');
+  saveColorsToDb('#ffffff', '#ffc107', '#222222');
 }
 /* resetColors */
 
