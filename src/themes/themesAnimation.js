@@ -2,6 +2,7 @@ import {
   $,
   saveBackgroundStyleToDb,
   saveColorsToDb,
+  saveFontToDb,
 } from '../services/main-page-service.js';
 /* removeBackgrounds */
 export function removeBackgrounds() {
@@ -62,7 +63,19 @@ export function changeColors() {
 }
 /* changeColors */
 
+/* setFont */
+export function setFont(fontName) {
+  saveFontToDb(fontName);
+}
+/* setFont */
 // font-family: 'Comfortaa', sans-serif;
 // font-family: 'Lobster', sans-serif;
 // font-family: 'Overpass', sans-serif;
-// font-family: 'Pacifico', cursive; с ру
+
+// font-family: 'Pacifico', cursive;
+
+//font-family: 'Anton', sans-serif;
+//font-family: 'Bangers', sans-serif;
+//font-family: 'Baloo Bhai 2', sans-serif;
+
+//font-family: 'Dancing Script', cursive;

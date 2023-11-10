@@ -16,6 +16,7 @@ import {
   staticImg,
   changeColors,
   resetColors,
+  setFont,
 } from '../themes/themesAnimation.js';
 
 /**
@@ -100,3 +101,15 @@ $('#staticImg_button').addEventListener('click', staticImg);
  */
 $('#changeColors_button').addEventListener('click', changeColors);
 $('#resetColors_button').addEventListener('click', resetColors);
+
+/**
+ * кастомизация шрифта для имени пользователя
+ */
+$('#comfortaa_button').addEventListener('click', () => setFont('Comfortaa'));
+$('#lobster_button').addEventListener('click', () => setFont('Lobster'));
+$('#overpass_button').addEventListener('click', () => setFont('Overpass'));
+
+$('#anton_button').addEventListener('click', () => setFont('Anton'));
+$('#bangers_button').addEventListener('click', () => setFont('Bangers'));
+$('#baloo_button').addEventListener('click', () => setFont('Baloo Bhai 2'));
+

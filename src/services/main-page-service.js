@@ -543,7 +543,11 @@ async function renderProfilePage(userDATA) {
       />
       <div class="nav_status"></div>
     </div>
-    <div class="nav_profile_name">${userDATA.username}</div>
+    <div class="nav_profile_name" style="${
+      userDATA.usernameFont
+        ? `font-family: ${userDATA.usernameFont}, sans-serif;`
+        : ''
+    }">${userDATA.username}</div>
     ${canEditInfo}
   </div>
   <div class="nav_user_info">
@@ -1175,6 +1179,23 @@ export async function saveColorsToDb(
       const data = response.data;
       if (data) {
         announcementMessage('Вы успешно сменили настройки цветов');
+        renderAccount();
+        await renderUserProfilePage(localStorage.getItem('id'));
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * сохраняет шрифт в БД
+ */
+export async function saveFontToDb(fontName) {
+  $api
+    .post('/saveFontToDb', {fontName})
+    .then(async (response) => {
+      const data = response.data;
+      if (data) {
+        announcementMessage('Вы успешно сменили настройки шрифта');
         renderAccount();
         await renderUserProfilePage(localStorage.getItem('id'));
       }
