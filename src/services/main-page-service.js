@@ -113,6 +113,7 @@ async function selectChatHandler(elem, chatId) {
     name="message"
     placeholder="Ваше сообщение..."
     required="true"
+    autocomplete="off"
   />
   <input
     class="message_submit btn btn-warning"
