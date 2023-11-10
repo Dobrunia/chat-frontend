@@ -114,6 +114,7 @@
     border-top: 1px dashed;
     margin-bottom: 0;
     color: var(--attention);
+    text-align: center;
 }
 
 .nav_user_info_edit_window_elements {
