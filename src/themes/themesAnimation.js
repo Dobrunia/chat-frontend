@@ -47,6 +47,12 @@ export function staticImg() {
 }
 /* staticImg */
 
+/* resetColors */
+export function resetColors() {
+  saveColorsToDb('#FFF', '#ffc107', '#222222');
+}
+/* resetColors */
+
 /* changeColors */
 export function changeColors() {
   let colorInputWhite = $('#colorInputWhite').value;

@@ -15,6 +15,7 @@ import {
   fallback,
   staticImg,
   changeColors,
+  resetColors,
 } from '../themes/themesAnimation.js';
 
 /**
@@ -98,3 +99,4 @@ $('#staticImg_button').addEventListener('click', staticImg);
  * кастомизация цветов
  */
 $('#changeColors_button').addEventListener('click', changeColors);
+$('#resetColors_button').addEventListener('click', resetColors);
