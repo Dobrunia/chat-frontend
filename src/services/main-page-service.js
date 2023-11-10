@@ -1526,8 +1526,9 @@ export function addPost(event) {
     photo: photo,
     //file: file,
   };
-  if (DATA.photo.size === 0) {
-    DATA.photo = '';
+  if ((postText === '') && (photo.size === 0)) {
+    announcementMessage('Не отправляйте пустой пост');
+    return;
   }
   $api
     .post('/addPost', DATA, {
