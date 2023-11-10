@@ -920,15 +920,15 @@ async function renderUserProfilePage(userId) {
     }`,
   );
 
-  $('#colorInputWhite').value = hexToRgb(
-    getComputedStyle(document.documentElement).getPropertyValue('--white'),
-  );
-  $('#colorInputAttention').value = hexToRgb(
-    getComputedStyle(document.documentElement).getPropertyValue('--attention'),
-  );
-  $('#colorInputNavLightBg').value = hexToRgb(
-    getComputedStyle(document.documentElement).getPropertyValue('--navLightBg'),
-  );
+  $('#colorInputWhite').value = userDATA.colorInputWhite
+    ? userDATA.colorInputWhite
+    : '#FFF';
+  $('#colorInputAttention').value = userDATA.colorInputAttention
+    ? userDATA.colorInputAttention
+    : '#ffc107';
+  $('#colorInputNavLightBg').value = userDATA.colorInputNavLightBg
+    ? userDATA.colorInputNavLightBg
+    : '#222222';
 }
 
 /**
