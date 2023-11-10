@@ -869,6 +869,22 @@ async function renderUsersFriends(userDATA) {
 }
 
 /**
+ * hexToRgb
+ */
+function hexToRgb(hexColor) {
+  // Удаление символа "#" из строки HEX
+  hexColor = hexColor.replace('#', '');
+
+  // Разделение HEX значения на отдельные компоненты (красный, зеленый, синий)
+  var r = parseInt(hexColor.substring(0, 2), 16);
+  var g = parseInt(hexColor.substring(2, 4), 16);
+  var b = parseInt(hexColor.substring(4, 6), 16);
+
+  // Возвращение значения в формате RGB
+  return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+}
+
+/**
  * общий рендер страницы пользователя
  */
 async function renderUserProfilePage(userId) {
@@ -904,15 +920,15 @@ async function renderUserProfilePage(userId) {
     }`,
   );
 
-  $('#colorInputWhite').value = getComputedStyle(
-    document.documentElement,
-  ).getPropertyValue('--white');
-  $('#colorInputAttention').value = getComputedStyle(
-    document.documentElement,
-  ).getPropertyValue('--attention');
-  $('#colorInputNavLightBg').value = getComputedStyle(
-    document.documentElement,
-  ).getPropertyValue('--navLightBg');
+  $('#colorInputWhite').value = hexToRgb(
+    getComputedStyle(document.documentElement).getPropertyValue('--white'),
+  );
+  $('#colorInputAttention').value = hexToRgb(
+    getComputedStyle(document.documentElement).getPropertyValue('--attention'),
+  );
+  $('#colorInputNavLightBg').value = hexToRgb(
+    getComputedStyle(document.documentElement).getPropertyValue('--navLightBg'),
+  );
 }
 
 /**
