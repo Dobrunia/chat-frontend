@@ -32,8 +32,22 @@
         <header class="p-3 text-bg-dark header">
           <div class="container">
             <div
-              class="d-flex flex-wrap align-items-center justify-content-end"
+              class="d-flex flex-wrap align-items-center justify-content-between"
             >
+            <svg id="logo" width="153" height="27" xmlns="http://www.w3.org/2000/svg">
+              <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+              <g>
+               <title>background</title>
+               <rect fill="var(--navLightBg)" id="canvas_background" height="29" width="155" y="-1" x="-1"/>
+               <g display="none" overflow="visible" y="0" x="0" height="100%" width="100%" id="canvasGrid">
+                <rect fill="url(#gridpattern)" stroke-width="0" y="0" x="0" height="100%" width="100%"/>
+               </g>
+              </g>
+              <g>
+               <title>Layer 1</title>
+               <text xml:space="preserve" text-anchor="start" font-family="Euphoria, sans-serif" font-size="24" id="svg_1" y="22" x="0" stroke-width="0" stroke="#000" fill="var(--attention)">Memessenger</text>
+              </g>
+             </svg>
               <form
                 class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3"
                 role="search"
@@ -282,7 +296,12 @@
             назад
           </button>
         </section> -->
-        <div class="nav_content fallback" id="nav_content">
+        <div
+          class="nav_content fallback back-row-toggle splat-toggle"
+          id="nav_content"
+        >
+          <div class="rain front-row"></div>
+          <div class="rain back-row"></div>
           <div class="nav_list none" id="nav_list">
             <div class="nav_ul">
               <div
@@ -445,6 +464,13 @@
             <div>
               <input id="scrollingText_input" type="text" maxlength="100" />
               <button id="scrollingText_button">Применить</button>
+            </div>
+          </div>
+          <div class="edit_window_element">
+            <h3>Дождь:</h3>
+            <div>
+              <button id="rain_on">Вкл</button>
+              <button id="rain_off">Выкл</button>
             </div>
           </div>
           <h2>Добавление ссылок на соц сети:</h2>

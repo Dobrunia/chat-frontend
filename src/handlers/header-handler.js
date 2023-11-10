@@ -33,7 +33,9 @@ $('#my_avatar').addEventListener('click', showSmallMenu);
 $('#my_avatar').addEventListener('dblclick', () =>
   changeSection('profile_page', false),
 );
-
+$('#logo').addEventListener('click', () =>
+  changeSection('profile_page', false),
+);
 /**
  * открытие уведомлений
  */

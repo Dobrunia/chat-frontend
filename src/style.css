@@ -28,6 +28,10 @@ body {
   border-radius: var(--borderRadius);
 }
 
+#logo {
+  cursor: pointer;
+}
+
 .header {
   background-color: var(--navLightBg) !important;
 }

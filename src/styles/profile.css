@@ -404,6 +404,7 @@
     border-radius: var(--borderRadius);
     border: 2px solid var(--navDarkBg);
     outline: none;
+    word-wrap: break-word;
 }
 
 .picker {

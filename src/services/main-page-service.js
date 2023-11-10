@@ -13,6 +13,7 @@ import debounce from 'lodash/debounce';
 import { $api } from '../http/api.ts';
 import socketService from '../socket/socket-service.ts';
 import { makeCats } from '../pages/cats.js';
+import { makeItRain } from '../themes/themesAnimation.js';
 
 export const $ = (element) => document.querySelector(element);
 
@@ -964,6 +965,12 @@ async function renderUserProfilePage(userId) {
   $('#colorInputNavLightBg').value = userDATA.colorInputNavLightBg
     ? userDATA.colorInputNavLightBg
     : '#222222';
+
+  if (userDATA.isRain) {
+    makeItRain(0);
+  } else {
+    makeItRain(100);
+  }
 }
 
 /**
@@ -1235,6 +1242,23 @@ export async function saveFontToDb(fontName) {
 }
 
 /**
+ * сохраняет настройки дождя в БД
+ */
+export async function setRainToDb(isRain) {
+  $api
+    .post('/setRain', { isRain })
+    .then(async (response) => {
+      const data = response.data;
+      if (data) {
+        announcementMessage('Вы успешно сменили настройки дождя');
+        renderAccount();
+        await renderUserProfilePage(localStorage.getItem('id'));
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
  * обработчик события НОВОЕ СООБЩЕНИЕ
  */
 export async function handlerMessageEvent(event) {
@@ -1489,7 +1513,7 @@ export function addPost(event) {
   event.preventDefault();
   const formData = new FormData(this);
   const wallId = formData.get('wallId')?.toString().trim();
-  const postText = formData.get('postText')?.toString().trim();
+  const postText = formData.get('postText')?.toString();
   const photo = formData.get('photo');
   const file = formData.get('file');
   const email = localStorage.getItem('email');
@@ -1498,7 +1522,7 @@ export function addPost(event) {
   }
   const DATA = {
     wallId,
-    postText: postText ? escapeSql(escapeHtml(postText)) : '',
+    postText: postText ? postText : '',
     photo: photo,
     //file: file,
   };

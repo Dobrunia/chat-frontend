@@ -17,6 +17,7 @@ import {
   changeColors,
   resetColors,
   setFont,
+  setRain,
 } from '../themes/themesAnimation.js';
 
 /**
@@ -113,3 +114,8 @@ $('#anton_button').addEventListener('click', () => setFont('Anton'));
 $('#bangers_button').addEventListener('click', () => setFont('Bangers'));
 $('#baloo_button').addEventListener('click', () => setFont('Baloo Bhai 2'));
 
+/**
+ * вкл и выкл дождя
+ */
+$('#rain_on').addEventListener('click', () => setRain('true'));
+$('#rain_off').addEventListener('click', () => setRain(''));
