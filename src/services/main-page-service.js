@@ -24,10 +24,12 @@ export async function isUserLoggedInCheck() {
   try {
     const userId = localStorage.getItem('id');
     if (userId) {
-      const userData = await findUserById(userId);
-      if (userData !== null) {
-        userIn();
-      }
+      // const userData = await findUserById(userId);
+      // if (userData !== null) {
+      userIn();
+      // }
+    } else {
+      userOut();
     }
   } catch (eror) {
     userOut();
