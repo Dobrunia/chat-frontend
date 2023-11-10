@@ -4,7 +4,6 @@
     background: var(--navLightBg);
     position: relative;
     z-index: 0;
-    color: var(--white);
 }
 
 .glow-on-hover:before {
