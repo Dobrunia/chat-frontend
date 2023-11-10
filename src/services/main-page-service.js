@@ -21,20 +21,31 @@ export const $ = (element) => document.querySelector(element);
  * проверка и авторизация пользователя
  */
 export async function isUserLoggedInCheck() {
-  try {
-    const userId = localStorage.getItem('id');
-    if (userId) {
-      // const userData = await findUserById(userId);
-      // if (userData !== null) {
-      userIn();
-      // }
-    } else {
+  // try {
+  //   const userId = localStorage.getItem('id');
+  //   if (userId) {
+  //     // const userData = await findUserById(userId);
+  //     // if (userData !== null) {
+  //     userIn();
+  //     // }
+  //   } else {
+  //     userOut();
+  //   }
+  // } catch (eror) {
+  //   userOut();
+  //   return console.log('ошибку при входе отловил');
+  // }
+  $api
+    .get(`/isUserLoggedInCheck`)
+    .then((response) => {
+      if (response.data) {
+        userIn();
+      }
+    })
+    .catch((error) => {
       userOut();
-    }
-  } catch (eror) {
-    userOut();
-    return console.log('ошибку при входе отловил');
-  }
+      announcementMessage('Вам нужно залогиниться');
+    });
 }
 
 /**
@@ -185,6 +196,7 @@ export async function changeSection(data_section, userId) {
         : await renderUserProfilePage(localStorage.getItem('id'));
       break;
     case 'messenger':
+      await renderChats();
       hideSections('messenger');
       break;
     case 'cats':
@@ -208,6 +220,9 @@ async function findUserById(userId) {
     const response = await $api.get(`/findUserById?search_value=${userId}`);
     return response.data[0];
   } catch (error) {
+    //TODO:: нужно везьде обрабатывать ошибку
+    userOut();
+    announcementMessage('Вам нужно залогиниться');
     throw error;
   }
 }
@@ -1324,15 +1339,9 @@ export function renderMessage(message) {
 /**
  * вызывает установщики информации во всех местах + socket
  */
-function setInfo() {
-  let email = localStorage.getItem('email');
-  // if (email) {
-  //   socketService.login(email);
-  // }
-  renderNotifications();
+async function setInfo() {
   renderAccount();
-  //renderThemes();
-  renderChats();
+  await renderNotifications();
 }
 
 /**
@@ -1341,7 +1350,6 @@ function setInfo() {
 function removeUserData() {
   localStorage.clear();
   removeAccount();
-  //removeThemes();
   removeChats();
 }
 
