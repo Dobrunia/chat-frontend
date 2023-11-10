@@ -322,7 +322,7 @@
 
 .nav_users_friends {
     width: 30%;
-    height: 300px;
+    max-height: 300px;
     background-color: var(--navLightBg);
     margin-left: 20px;
 }
