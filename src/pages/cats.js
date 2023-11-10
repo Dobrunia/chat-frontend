@@ -70,9 +70,10 @@ export async function makeCats() {
           minSize,
         ),
       );
+      makeCats();
     } catch (e) {
       console.log('placeholder creation error', e);
-      alert('Картинки такого размера не найдено(')
+      alert('Картинки такого размера не найдено(');
     }
   }
   placeholders.forEach(loadImageToPlaceholder);

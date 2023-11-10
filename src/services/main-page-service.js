@@ -1085,7 +1085,7 @@ export function searchInputHandler() {
     } else {
       $('#search_request').innerHTML = '';
     }
-  }, 500);
+  }, 300);
   debouncedFunction();
 }
 

@@ -233,6 +233,10 @@
     /* #0ff */
 }
 
+.nav_user_marquee span img {
+    height: 200px;
+}
+
 @keyframes marquee {
     0% {
         transform: translateX(0);
