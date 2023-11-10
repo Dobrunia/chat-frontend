@@ -61,3 +61,8 @@ export function changeColors() {
   saveColorsToDb(colorInputWhite, colorInputAttention, colorInputNavLightBg);
 }
 /* changeColors */
+
+// font-family: 'Comfortaa', sans-serif;
+// font-family: 'Lobster', sans-serif;
+// font-family: 'Overpass', sans-serif;
+// font-family: 'Pacifico', cursive; с ру
