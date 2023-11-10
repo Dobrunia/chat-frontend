@@ -653,7 +653,7 @@ async function renderProfilePage(userDATA) {
             name="wallId"
             style="display: none"
           />
-          <button type="submit" class="btn btn-outline-light me-2">
+          <button type="submit" class="btn btn-outline-light me-2 glow-on-hover">
             Опубликовать
           </button>
         </div>
