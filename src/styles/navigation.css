@@ -24,14 +24,18 @@
 
 .nav_ul {
     width: 100%;
-    margin-top: 150px;
+    margin-top: 160px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-end;
+    justify-content: center;
 }
 
 .nav_li {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    justify-content: flex-start;
-    width: 100%;
+    justify-content: flex-end; */
+    width: max-content;
     height: 35px;
     padding: 5px;
     text-align: center;
