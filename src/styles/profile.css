@@ -47,6 +47,10 @@
     height: 52px;
     left: 300px;
     bottom: 0;
+    max-width: 600px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     /* transform: translate(0, 45%); */
     font-size: 34px;
     color: var(--attention);

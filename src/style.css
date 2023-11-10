@@ -406,6 +406,10 @@ body {
 
 .my_name {
   margin-right: 10px;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status {
