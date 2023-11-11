@@ -1235,82 +1235,6 @@ export async function saveMessageToDb(message) {
 }
 
 /**
- * сохраняет свойства background в БД
- */
-export async function saveBackgroundStyleToDb(style) {
-  $api
-    .post('/saveBackgroundStyleToDb', { style })
-    .then(async (response) => {
-      const data = response.data;
-      if (data) {
-        announcementMessage('Вы успешно сменили настройки фона');
-        renderAccount();
-        await renderUserProfilePage(localStorage.getItem('id'));
-      }
-    })
-    .catch((error) => console.log('Ошибка:', error));
-}
-
-/**
- * сохраняет цвета в БД
- */
-export async function saveColorsToDb(
-  colorInputNav,
-  colorInputAttention,
-  colorInputNavLightBg,
-) {
-  $api
-    .post('/saveColorsToDb', {
-      colorInputNav,
-      colorInputAttention,
-      colorInputNavLightBg,
-    })
-    .then(async (response) => {
-      const data = response.data;
-      if (data) {
-        announcementMessage('Вы успешно сменили настройки цветов');
-        renderAccount();
-        await renderUserProfilePage(localStorage.getItem('id'));
-      }
-    })
-    .catch((error) => console.log('Ошибка:', error));
-}
-
-/**
- * сохраняет шрифт в БД
- */
-export async function saveFontToDb(fontName) {
-  $api
-    .post('/saveFontToDb', { fontName })
-    .then(async (response) => {
-      const data = response.data;
-      if (data) {
-        announcementMessage('Вы успешно сменили настройки шрифта');
-        renderAccount();
-        await renderUserProfilePage(localStorage.getItem('id'));
-      }
-    })
-    .catch((error) => console.log('Ошибка:', error));
-}
-
-/**
- * сохраняет настройки дождя в БД
- */
-export async function setRainToDb(isRain) {
-  $api
-    .post('/setRain', { isRain })
-    .then(async (response) => {
-      const data = response.data;
-      if (data) {
-        announcementMessage('Вы успешно сменили настройки дождя');
-        renderAccount();
-        await renderUserProfilePage(localStorage.getItem('id'));
-      }
-    })
-    .catch((error) => console.log('Ошибка:', error));
-}
-
-/**
  * обработчик события НОВОЕ СООБЩЕНИЕ
  */
 export async function handlerMessageEvent(event) {
@@ -1466,42 +1390,45 @@ export function changePhoto() {
   );
 }
 
-export function changeUserInfo(type) {
-  let value = '';
-  let infoType = '';
-  switch (type) {
-    case 'scrollingText':
-      value = $('#scrollingText_input').value.toString();
-      infoType = 'scrollingText';
-      break;
-    case 'telegramLink':
-      value = $('#telegramLink_input').value.toString();
-      infoType = 'telegramLink';
-      break;
-    case 'steamLink':
-      value = $('#steamLink_input').value.toString();
-      infoType = 'steamLink';
-      break;
-    case 'shikimoriLink':
-      value = $('#shikimoriLink_input').value.toString();
-      infoType = 'shikimoriLink';
-      break;
-    default:
-      break;
-  }
-
-  if (!value) {
-    value = '';
-  }
+/**
+ * меняет данные пользователя
+ */
+export function changeUserInfo(value, tableName) {
   $api
     .post('/changeUserInfo', {
-      value: escapeSql(escapeHtml(value)),
-      infoType: infoType,
+      value: escapeHtml(value),
+      tableName: tableName,
     })
     .then(async (response) => {
       const data = response.data;
       if (data) {
         announcementMessage('Вы успешно изменили данные');
+        renderAccount();
+        await renderUserProfilePage(localStorage.getItem('id'));
+      }
+    })
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * сохраняет цвета в БД
+ */
+export async function saveColorsToDb(
+  colorInputNav,
+  colorInputAttention,
+  colorInputNavLightBg,
+) {
+  $api
+    .post('/saveColorsToDb', {
+      colorInputNav,
+      colorInputAttention,
+      colorInputNavLightBg,
+    })
+    .then(async (response) => {
+      const data = response.data;
+      if (data) {
+        announcementMessage('Вы успешно сменили настройки цветов');
+        renderAccount();
         await renderUserProfilePage(localStorage.getItem('id'));
       }
     })
