@@ -25,6 +25,17 @@
     border: 3px solid var(--navLightBg);
     border-radius: 50%;
     /* animation: neon-animation 1.5s ease-in-out infinite alternate; */
+    /* animation: spin-animation 1.5s linear infinite; */
+}
+
+@keyframes spin-animation {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .nav_status {
