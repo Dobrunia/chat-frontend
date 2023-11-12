@@ -1,0 +1,60 @@
+<section class="module_wrapper" id="registration_window">
+    <div class="module_window">
+      <div class="module_container">
+        <h1>Регистрация</h1>
+        <form role="form" id="registrationForm">
+          <label>Имя пользователя</label>
+          <input
+            class="text-imput"
+            name="username"
+            type="text"
+            autocomplete="username"
+            maxlength="25"
+            required
+          />
+          <label>Почта</label>
+          <input
+            class="text-imput"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+          />
+          <label>Пароль</label>
+          <input
+            class="text-imput"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            maxlength="21"
+            required
+          />
+          <label>Повторите пароль</label>
+          <input
+            class="text-imput"
+            name="password2"
+            type="password"
+            autocomplete="new-password"
+            maxlength="21"
+            required
+          />
+          <input
+            class="checkbox-imput"
+            type="checkbox"
+            name="accept"
+            required
+          /><span>я согласен на обработку персональных данных</span>
+          <input
+            class="button"
+            type="submit"
+            name="submit"
+            value="Зарегистрироваться"
+          />
+        </form>
+        <button id="get_in_2" class="reg_form_btns">
+          Уже есть аккаунт? Войти
+        </button>
+      </div>
+      <button class="exit" id="registration_exit">x</button>
+    </div>
+  </section>

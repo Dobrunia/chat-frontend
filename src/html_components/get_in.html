@@ -1,0 +1,41 @@
+<section class="module_wrapper none" id="get_in_window">
+    <div class="module_window">
+      <div class="module_container">
+        <h1>Вход</h1>
+        <form action="./api/get-in" method="post" id="authorizationForm">
+          <label>Почта</label>
+          <input
+            class="text-imput"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+          />
+          <label>Пароль</label>
+          <input
+            class="text-imput"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            maxlength="21"
+            required
+          />
+          <input
+            class="checkbox-imput"
+            type="checkbox"
+            name="not_my_pc"
+          /><span>чужой компьютер</span>
+          <input
+            class="button"
+            type="submit"
+            name="submit"
+            value="Войти"
+          />
+        </form>
+        <button id="registration_2" class="reg_form_btns">
+          Зарегистрироваться
+        </button>
+      </div>
+      <button class="exit" id="get_in_exit">x</button>
+    </div>
+  </section>

@@ -576,26 +576,9 @@ body {
   opacity: 0.6;
 }
 
-.settings_wrapper {
-  width: 100vw;
-  height: calc(100vh - 72px);
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 20;
-}
 
-.settings_window {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-flow: column nowrap;
-  align-items: center;
-  justify-content: space-around;
-  background-color: var(--backG);
-  text-align: center;
-}
+
+
 
 .input_color {
   background-color: var(--navLightBg) !important;
