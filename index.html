@@ -640,7 +640,7 @@
       </div>
     </div>
   </body>
-  <script>
+  <script defer>
     function autoResize(textarea) {
       textarea.style.height = 'auto';
       textarea.style.height = textarea.scrollHeight + 5 + 'px';
@@ -649,6 +649,36 @@
       const remaining = maxLength - currentLength;
 
       charCount.textContent = remaining;
+    }
+
+    function openModal(img) {
+      // Создаем модальное окно
+      var modal = document.createElement('div');
+      modal.classList.add('modal');
+
+      // Создаем изображение в модальном окне
+      var modalImg = document.createElement('img');
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modalImg.classList.add('modal-img');
+
+      // Добавляем изображение в модальное окно
+      modal.appendChild(modalImg);
+
+      // Добавляем модальное окно в тело документа
+      document.body.appendChild(modal);
+
+      // Закрытие модального окна при клике за его пределами
+      modal.addEventListener('click', function (event) {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+
+      // Функция для закрытия модального окна
+      function closeModal() {
+        document.body.removeChild(modal);
+      }
     }
   </script>
   <script

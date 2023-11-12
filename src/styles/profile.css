@@ -474,6 +474,7 @@
     max-width: 600px;
     height: 190px;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 
 .nav_user_wall_post_file {

@@ -765,7 +765,7 @@ async function renderUsersPosts(userDATA) {
           ? (content += `<div class="nav_user_wall_postTextarea">${element.text}</div>`)
           : (content += '');
         element.photos && element.photos.data[0]
-          ? (content += `<div class="nav_user_wall_post_imgWrapper"><img src="data:image/png;base64,${element.photosString}" alt="" /></div>`)
+          ? (content += `<div class="nav_user_wall_post_imgWrapper"><img src="data:image/png;base64,${element.photosString}" alt="" onclick="openModal(this)" /></div>`)
           : (content += '');
         element.files && element.files.data[0]
           ? (content += `<a href="${element.files}" class="nav_user_wall_post_file" target="_blank"><img src="./src/img/File.svg" alt="" /></a>`)
