@@ -310,7 +310,10 @@
               >
                 Моя страница
               </div>
-              <div class="nav_li nav_select_section nav_li_letter" data-section="messenger">
+              <div
+                class="nav_li nav_select_section nav_li_letter"
+                data-section="messenger"
+              >
                 Мессенджер
                 <!-- <span>4</span> -->
                 <div class="letter-image">
@@ -330,7 +333,10 @@
                   </div>
                 </div>
               </div>
-              <div class="nav_li nav_select_section" data-section="friends_people">
+              <div
+                class="nav_li nav_select_section"
+                data-section="friends_people"
+              >
                 Друзья и Люди
               </div>
               <div class="nav_li nav_select_section" data-section="cats">
@@ -433,9 +439,7 @@
               class="nav_friends_people nav_selected_section none"
               id="friends_people"
               data-section="friends_people"
-            >
-
-          </div>
+            ></div>
 
             <!-- <div
               class="nav_имя nav_selected_section none"
@@ -647,11 +651,18 @@
       charCount.textContent = remaining;
     }
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"></script>
-  <script type="module" src="./src/socket/socket.ts"></script>
-  <script type="module" src="./src/socket/socket-service.ts"></script>
-  <script type="module" src="./src/handlers/header-handler.js"></script>
-  <script type="module" src="./src/handlers/main-page-handler.js"></script>
-  <script type="module" src="./src/main.js"></script>
-  <script type="module" src="./src/pages/cats.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"
+    defer
+  ></script>
+  <script type="module" src="./src/socket/socket.ts" defer></script>
+  <script type="module" src="./src/socket/socket-service.ts" defer></script>
+  <script type="module" src="./src/handlers/header-handler.js" defer></script>
+  <script
+    type="module"
+    src="./src/handlers/main-page-handler.js"
+    defer
+  ></script>
+  <script type="module" src="./src/main.js" defer></script>
+  <script type="module" src="./src/pages/cats.js" defer></script>
 </html>
