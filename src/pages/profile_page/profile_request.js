@@ -5,7 +5,6 @@ import { $api } from '../../http/api.ts';
  */
 export async function findUserById(userId) {
   try {
-    console.log('findUserById');
     const response = await $api.get(`/findUserById/${userId}`);
     return response.data[0];
   } catch (error) {
@@ -33,7 +32,6 @@ export function getFriendStatusInfo(userId) {
  */
 export async function saveNewUsername(username) {
     try {
-      console.log('saveNewUsername');
       const response = await $api.post('/changeUsername', { username: username })
       return response.data;
     } catch (error) {
@@ -47,7 +45,6 @@ export async function saveNewUsername(username) {
  */
 export async function savePhoto(photoUrl) {
   try {
-    console.log('savePhoto');
     const response = await $api.post('/changePhoto', { photoUrl });
     return response.data;
   } catch (error) {
@@ -61,7 +58,6 @@ export async function savePhoto(photoUrl) {
  */
 export async function saveChangedUserInfo(value, tableName) {
   try {
-    console.log('saveChangedUserInfo');
     const response = await $api.post('/changeUserInfo', {
       value,
       tableName,
@@ -96,7 +92,6 @@ export async function saveColorsToDb(
 
 export async function removePost(postId) {
   try {
-    console.log('removePost');
     const response = await $api.post('/deletePost', { postId });
     return response.data;
   } catch (error) {
@@ -117,7 +112,6 @@ export async function removeFriend(friendId) {
 
 export async function savePost(DATA) {
   try {
-    console.log('savePost');
     const response = await $api.post('/addPost', DATA, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -132,7 +126,6 @@ export async function savePost(DATA) {
 
 export async function getUserPosts(userId) {
   try {
-    console.log('getUserPosts');
     const response = await $api.get(`/getUserPosts?search_value=${userId}`);
     return response.data;
   } catch (error) {
