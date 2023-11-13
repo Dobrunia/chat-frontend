@@ -6,7 +6,7 @@ import {
   writeNewUserInChat,
 } from './messenger_request.js';
 import { getAndRenderMyInfo } from '../general.js';
-await getAndRenderMyInfo();
+getAndRenderMyInfo();
 
 const $ = (element) => document.querySelector(element);
 /**

@@ -1,5 +1,5 @@
 import { getAndRenderMyInfo } from '../general.js';
-await getAndRenderMyInfo();
+getAndRenderMyInfo();
 
 const createImagePlaceholder = (container, minSize) =>
   new Promise((resolve, reject) => {

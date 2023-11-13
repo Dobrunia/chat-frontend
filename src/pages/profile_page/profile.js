@@ -8,6 +8,7 @@ import {
   savePost,
   getUserPosts,
   removePost,
+  savePhoto,
 } from './profile_request.js';
 import { getAllFriendsInfo } from '../general_request.js';
 import {
@@ -40,17 +41,15 @@ export async function changeUsername() {
   const username = escapeSql(
     escapeHtml($('#changeName_input').value.toString().trim()),
   );
-  if (!localStorage.getItem('email')) {
-    announcementMessage('Прежде всего войдите в аккаунт');
-    return 'Прежде всего войдите в аккаунт';
-  }
   if (!username) {
     announcementMessage('Некорректное имя пользователя');
     return 'Некорректное имя пользователя';
   }
-  await saveNewUsername(username);
-  $('#changeName_input').value = '';
-  announcementMessage('Вы успешно сменили имя');
+  const data = await saveNewUsername(username);
+  if (data) {
+    $('#changeName_input').value = '';
+    await renderUserProfilePage();
+  }
 }
 
 /**
@@ -63,7 +62,8 @@ export function hideUserInfoEditWindow() {
 /**
  * рендер верстки страницы пользователя
  */
-async function renderProfilePage(userDATA) {
+async function renderProfilePage(userId) {
+  const userDATA = await findUserById(userId);
   let friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" data-username="${userDATA.username}" data-email="${userDATA.email}" data-avatar="${userDATA.avatar}" data-chatid="${userDATA.chatId}" title="Открыть переписку с ${userDATA.username}">Написать</div>`;
   if (userDATA.id.toString() === localStorage.getItem('id')) {
     friendBtn = '';
@@ -445,6 +445,43 @@ async function renderProfilePage(userDATA) {
         <div class="nav_friends" id="nav_all_friends"></div>
       </div>
     </div>`;
+  if (userDATA.backgroundStyle) {
+    document.getElementById('nav_content').style = userDATA.backgroundStyle;
+    $('#nav_sections').style = 'border: none; background: none;';
+  } else {
+    document.getElementById('nav_content').style = '';
+    $('#nav_sections').style = '';
+  }
+
+  // Установка значения переменной CSS
+  document.documentElement.style.setProperty(
+    '--navColor',
+    `${userDATA.colorInputNav ? userDATA.colorInputNav : '#ffffff'}`,
+  );
+  document.documentElement.style.setProperty(
+    '--attention',
+    `${
+      userDATA.colorInputAttention ? userDATA.colorInputAttention : '#ffc107'
+    }`,
+  );
+  document.documentElement.style.setProperty(
+    '--navLightBg',
+    `${
+      userDATA.colorInputNavLightBg ? userDATA.colorInputNavLightBg : '#222222'
+    }`,
+  );
+
+  if (userDATA.isRain) {
+    makeItRain(0);
+  } else {
+    makeItRain(100);
+  }
+  localStorage.setItem('username', userDATA.username);
+  $('#my_name').innerHTML = userDATA.username;
+  localStorage.setItem('avatar', userDATA.avatar);
+  $(
+    '#my_avatar',
+  ).innerHTML = `<img class="user_avatar_img" src="${userDATA.avatar}" alt="фото профиля" /><div class="status"></div>`;
 }
 
 /**
@@ -534,10 +571,8 @@ export async function renderUsersFriends(userId) {
  * общий рендер страницы пользователя
  */
 async function renderUserProfilePage() {
-  console.log('renderUserProfilePage');
   const id = urlParams.get('id');
-  const userDATA = await findUserById(id);
-  await renderProfilePage(userDATA);
+  await renderProfilePage(id);
   /**
    * лисинер на изменения личной инфы
    */
@@ -593,44 +628,6 @@ async function renderUserProfilePage() {
   $('#addPost').addEventListener('submit', addPost);
   await renderUsersFriends(id);
   await renderNotifications();
-
-  if (userDATA.backgroundStyle) {
-    document.getElementById('nav_content').style = userDATA.backgroundStyle;
-    $('#nav_sections').style = 'border: none; background: none;';
-  } else {
-    document.getElementById('nav_content').style = '';
-    $('#nav_sections').style = '';
-  }
-
-  // Установка значения переменной CSS
-  document.documentElement.style.setProperty(
-    '--navColor',
-    `${userDATA.colorInputNav ? userDATA.colorInputNav : '#ffffff'}`,
-  );
-  document.documentElement.style.setProperty(
-    '--attention',
-    `${
-      userDATA.colorInputAttention ? userDATA.colorInputAttention : '#ffc107'
-    }`,
-  );
-  document.documentElement.style.setProperty(
-    '--navLightBg',
-    `${
-      userDATA.colorInputNavLightBg ? userDATA.colorInputNavLightBg : '#222222'
-    }`,
-  );
-
-  if (userDATA.isRain) {
-    makeItRain(0);
-  } else {
-    makeItRain(100);
-  }
-  localStorage.setItem('username', userDATA.username);
-  $('#my_name').innerHTML = userDATA.username;
-  localStorage.setItem('avatar', userDATA.avatar);
-  $(
-    '#my_avatar',
-  ).innerHTML = `<img class="user_avatar_img" src="${userDATA.avatar}" alt="фото профиля" /><div class="status"></div>`;
 }
 
 /**
@@ -653,11 +650,10 @@ export function changePhoto() {
   askConfirmationFromUser('Вы уверены, что хотите сменить аватар?').then(
     async (confirmed) => {
       if (confirmed) {
-        const data = savePhoto(photoUrl);
+        const data = await savePhoto(photoUrl);
         if (data) {
-          localStorage.setItem('avatar', photoUrl);
           $('#photoUrl').value = '';
-          announcementMessage('Вы успешно сменили аватар');
+          await renderUserProfilePage();
         }
       }
     },
@@ -811,4 +807,4 @@ export async function deleteFriend(event) {
   }
 }
 
-await renderUserProfilePage();
+renderUserProfilePage();

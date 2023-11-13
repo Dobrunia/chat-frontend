@@ -6,10 +6,11 @@ import { $api } from '../../http/api.ts';
 export async function findUserById(userId) {
   try {
     console.log('findUserById');
-    const response = await $api.get(`/findUserById?search_value=${userId}`);
+    const response = await $api.get(`/findUserById/${userId}`);
     return response.data[0];
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    // window.location.href = import.meta.env.VITE_SRC;
+    console.log(error);
     throw error;
   }
 }
@@ -31,10 +32,14 @@ export function getFriendStatusInfo(userId) {
  * сохраняет новое имя пользователя
  */
 export async function saveNewUsername(username) {
-  $api
-    .post('/changeUsername', { username: username })
-    .then((response) => response.data)
-    .catch((error) => (window.location.href = 'https://memessenger.ru'));
+    try {
+      console.log('saveNewUsername');
+      const response = await $api.post('/changeUsername', { username: username })
+      return response.data;
+    } catch (error) {
+      window.location.href = import.meta.env.VITE_SRC;
+      throw error;
+    }
 }
 
 /**
@@ -46,7 +51,7 @@ export async function savePhoto(photoUrl) {
     const response = await $api.post('/changePhoto', { photoUrl });
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }
@@ -63,7 +68,7 @@ export async function saveChangedUserInfo(value, tableName) {
     });
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }
@@ -84,7 +89,7 @@ export async function saveColorsToDb(
     });
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }
@@ -95,7 +100,7 @@ export async function removePost(postId) {
     const response = await $api.post('/deletePost', { postId });
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }
@@ -105,7 +110,7 @@ export async function removeFriend(friendId) {
     const response = await $api.post('/removeFriend', { friendId });
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }
@@ -120,7 +125,7 @@ export async function savePost(DATA) {
     });
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }
@@ -131,7 +136,7 @@ export async function getUserPosts(userId) {
     const response = await $api.get(`/getUserPosts?search_value=${userId}`);
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }

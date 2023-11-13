@@ -7,7 +7,7 @@ export async function getNotifications() {
   return $api
     .get(`/getNotifications`)
     .then((response) => response.data)
-    .catch((error) => (window.location.href = 'https://memessenger.ru'));
+    .catch((error) => (window.location.href = import.meta.env.VITE_SRC));
 }
 
 /**
@@ -17,7 +17,7 @@ export function getAllFriendsInfo(userId) {
   return $api
     .get(`/getAllFriendsInfo/${userId}`)
     .then((response) => response.data)
-    .catch((error) => (window.location.href = 'https://memessenger.ru'));
+    .catch((error) => (window.location.href = import.meta.env.VITE_SRC));
 }
 
 /**
@@ -27,7 +27,7 @@ function getAllUsers() {
   return $api
     .get('/allUsers')
     .then((response) => response.data)
-    .catch((error) => (window.location.href = 'https://memessenger.ru'));
+    .catch((error) => (window.location.href = import.meta.env.VITE_SRC));
 }
 
 /**
@@ -37,7 +37,7 @@ export async function findUserByName(userName) {
   return $api
     .get(`/findUserByName/${userName}`)
     .then((response) => response.data)
-    .catch((error) => (window.location.href = 'https://memessenger.ru'));
+    .catch((error) => (window.location.href = import.meta.env.VITE_SRC));
 }
 
 /**
@@ -48,7 +48,7 @@ export async function saveFriendRequest(friendId) {
     const response = await $api.post('/addFriend', { friendId });
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }
@@ -64,7 +64,7 @@ export async function responseToFriendRequest(friend_id, status) {
     });
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }
@@ -77,7 +77,7 @@ export async function getMyInfo() {
     const response = await $api.get(`/getMyInfo`);
     return response.data[0];
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }

@@ -1,4 +1,3 @@
-import debounce from 'lodash/debounce';
 import {
   findUserByName,
   getMyInfo,

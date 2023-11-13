@@ -12,7 +12,7 @@ export async function getMessages(chatId) {
     const response = await $api.get(`/getMessagesByChatId/${chatId}`);
     return response.data;
   } catch (error) {
-    window.location.href = 'https://memessenger.ru';
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }

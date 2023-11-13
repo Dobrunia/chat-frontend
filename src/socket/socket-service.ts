@@ -1,13 +1,13 @@
 import socket from './socket.js';
 
 export class SocketService {
-  status(userId: string) {
-    socket.auth = { userId };
-    socket.connect();
-    socket.on('user online', (socket) => {
-      //event и в базу
-    });
-  }
+  // status(userId: string) {
+  //   socket.auth = { userId };
+  //   socket.connect();
+  //   socket.on('user online', (socket) => {
+  //     //event и в базу
+  //   });
+  // }
 
   startChat(chatId: string, userId: string) {
     socket.auth = { chatId, userId };

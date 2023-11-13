@@ -16,13 +16,13 @@ $('#my_avatar').addEventListener(
   'dblclick',
   () =>
     (window.location.href =
-      `https://memessenger.ru/pages/profile_page/profile.html?id=${localStorage.getItem('id')}`),
+      `${import.meta.env.VITE_SRC}pages/profile_page/profile.html?id=${localStorage.getItem('id')}`),
 );
 $('#logo').addEventListener(
   'click',
   () =>
     (window.location.href =
-      `https://memessenger.ru/pages/profile_page/profile.html?id=${localStorage.getItem('id')}`),
+      `${import.meta.env.VITE_SRC}pages/profile_page/profile.html?id=${localStorage.getItem('id')}`),
 );
 
 /**
@@ -35,7 +35,7 @@ $('#notification_bell').addEventListener('click', showNotificationsMenu);
  */
 $('#account_exit').addEventListener('click', () => {
   localStorage.clear();
-  window.location.href = 'https://memessenger.ru';
+  window.location.href = import.meta.env.VITE_SRC;
 });
 
 /**
