@@ -285,16 +285,30 @@ export async function renderNotifications() {
   isFriend.forEach((element) => {
     if (element.status === 'pending') {
       notificationsNumber += 1;
-      content += `<div class="user_avatar user_avatar_small notification_user" title="${element.username}">
-      <img
+      content += `<div class="user_avatar user_avatar_small notification_user" title="${
+        element.username
+      }">
+      <a href="${
+        import.meta.env.VITE_SRC +
+        'pages/profile_page/profile.html?id=' +
+        element.user_id
+      }">
+        <img
         class="user_avatar_img openProfile"
         src="${element.avatar}"
         data-id="${element.user_id}"
         alt=""
-      />
-    </div><span class="friendName">${element.username}</span><br>хочет добавить Вас в друзья<br>
-    <div class="reaction responseToFriendRequest" data-id="${element.user_id}" data-status='accepted'>Принять</div>
-    <div class="reaction responseToFriendRequest" data-id="${element.user_id}" data-status='rejected'>Отказать</div><br><br><br>`;
+        />
+      </a>
+    </div><span class="friendName">${
+      element.username
+    }</span><br>хочет добавить Вас в друзья<br>
+    <div class="reaction responseToFriendRequest" data-id="${
+      element.user_id
+    }" data-status='accepted'>Принять</div>
+    <div class="reaction responseToFriendRequest" data-id="${
+      element.user_id
+    }" data-status='rejected'>Отказать</div><br><br><br>`;
     }
   });
 
@@ -335,10 +349,24 @@ function renderUsers(users_response_result) {
       const id_el = 'id' + user.id;
       $(
         '#search_request',
-      ).innerHTML += `<div class="element openDialog" id="${id_el}" data-id="${user.id}" data-username="${user.username}" data-email="${user.email}" data-avatar="${user.avatar}" data-chatid="${user.chatId}" title="${user.username}">
+      ).innerHTML += `<div class="element openDialog" id="${id_el}" data-id="${
+        user.id
+      }" data-username="${user.username}" data-email="${
+        user.email
+      }" data-avatar="${user.avatar}" data-chatid="${user.chatId}" title="${
+        user.username
+      }">
       <div class="user_avatar user_avatar_small">
-        <img class="user_avatar_img openProfile" src="${user.avatar}" alt="" data-id="${user.id}"/>
-        <div class="status"></div>
+        <a href="${
+          import.meta.env.VITE_SRC +
+          'pages/profile_page/profile.html?id=' +
+          user.id
+        }">
+          <img class="user_avatar_img openProfile" src="${
+            user.avatar
+          }" alt="" data-id="${user.id}"/>
+          <div class="status"></div>
+        </a>
       </div>
       <span class="element_span">${user.username}</span>
     </div>`;

@@ -557,8 +557,12 @@ export async function renderUsersFriends(userId) {
     friendsArray.map(async (friend) => {
       friends += `
       <div class="user_avatar user_avatar_small" title="${friend.username}">
-        <img class="user_avatar_img openProfile" src="${friend.avatar}" data-id="${friend.id}" alt=""/>
+      <a href="${import.meta.env.VITE_SRC + 'pages/profile_page/profile.html?id=' + friend.id}">
+        <img class="user_avatar_img openProfile" src="${
+          friend.avatar
+        }" data-id="${friend.id}" alt=""/>
         <div class="status"></div>
+        </a>
       </div>`;
       numberOfFriends += 1;
     }),
@@ -744,6 +748,7 @@ export async function renderUsersPosts(userId) {
       `<div class="nav_user_wall_post">
           <div class="nav_user_wall_post_div">
           <div class="user_avatar user_avatar_small" title="${element.username}">
+            <a href="${import.meta.env.VITE_SRC + 'pages/profile_page/profile.html?id=' + element.id}">
               <img
                 class="user_avatar_img openProfile"
                 src="${element.avatar}"
@@ -751,6 +756,7 @@ export async function renderUsersPosts(userId) {
                 alt=""
               />
               <div class="status"></div>
+            </a>
           </div>
           <div class="post_author_name">${element.username}</div>
           </div>

@@ -263,6 +263,13 @@ body {
     height: 40px;
 }
 
+.user_avatar a {
+    width: inherit;
+    height: inherit;
+    border-radius: 50px;
+    overflow: hidden;
+}
+
 .user_avatar_big {
     width: 60px;
     height: 60px;
