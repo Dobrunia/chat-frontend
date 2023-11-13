@@ -24,7 +24,6 @@ import {
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-renderUserProfilePage();
 const $ = (element) => document.querySelector(element);
 /**
  * открыть окно UserInfoEditWindow
@@ -50,10 +49,8 @@ export async function changeUsername() {
     return 'Некорректное имя пользователя';
   }
   await saveNewUsername(username);
-  await getAndRenderMyInfo();
   $('#changeName_input').value = '';
   announcementMessage('Вы успешно сменили имя');
-  await renderUserProfilePage();
 }
 
 /**
@@ -537,6 +534,7 @@ async function renderUsersFriends(userId) {
  * общий рендер страницы пользователя
  */
 async function renderUserProfilePage() {
+  console.log('renderUserProfilePage');
   const id = urlParams.get('id');
   const userDATA = await findUserById(id);
   await renderProfilePage(userDATA);
@@ -660,7 +658,6 @@ export function changePhoto() {
           localStorage.setItem('avatar', photoUrl);
           $('#photoUrl').value = '';
           announcementMessage('Вы успешно сменили аватар');
-          await renderUserProfilePage();
         }
       }
     },
@@ -697,7 +694,6 @@ export async function changeColors(
 export async function addPost(event) {
   //TODO:: photo\file ВАЛИДАЦИЯ
   event.preventDefault();
-  console.log('addPost');
   const formData = new FormData(this);
   const wallId = formData.get('wallId')?.toString().trim();
   const postText = formData.get('postText')?.toString().trim();
@@ -720,6 +716,7 @@ export async function addPost(event) {
   }
   const data = await savePost(DATA);
   if (data) {
+    $('#postText').value = '';
     await renderUsersPosts(urlParams.get('id'));
   }
   return false;
@@ -813,3 +810,5 @@ export async function deleteFriend(event) {
     await renderUsersFriends(urlParams.get('id'));
   }
 }
+
+await renderUserProfilePage();

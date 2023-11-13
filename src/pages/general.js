@@ -437,6 +437,5 @@ export async function addFriend(event) {
   const data = await saveFriendRequest(friendId);
   if (data) {
     announcementMessage('Запрос на добавления в друзья отправлен');
-    await renderUserProfilePage(friendId);
   }
 }

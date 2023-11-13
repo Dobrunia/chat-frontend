@@ -17,7 +17,7 @@ export function getAllFriendsInfo(userId) {
   return $api
     .get(`/getAllFriendsInfo/${userId}`)
     .then((response) => response.data)
-    .catch((error) => console.log('Ошибка:', error));
+    .catch((error) => (window.location.href = 'https://memessenger.ru'));
 }
 
 /**
@@ -27,7 +27,7 @@ function getAllUsers() {
   return $api
     .get('/allUsers')
     .then((response) => response.data)
-    .catch((error) => console.log('Ошибка:', error));
+    .catch((error) => (window.location.href = 'https://memessenger.ru'));
 }
 
 /**
@@ -44,13 +44,13 @@ export async function findUserByName(userName) {
  * Добавить в друзья
  */
 export async function saveFriendRequest(friendId) {
-    try {
-      const response = await $api.post('/addFriend', { friendId })
-      return response.data;
-    } catch (error) {
-      window.location.href = 'https://memessenger.ru';
-      throw error; // Пробрасывание ошибки, если нужно
-    }
+  try {
+    const response = await $api.post('/addFriend', { friendId });
+    return response.data;
+  } catch (error) {
+    window.location.href = 'https://memessenger.ru';
+    throw error;
+  }
 }
 
 /**
@@ -58,11 +58,14 @@ export async function saveFriendRequest(friendId) {
  */
 export async function responseToFriendRequest(friend_id, status) {
   try {
-    const response = await $api.post('/responseToFriendRequest', {friend_id, status});
+    const response = await $api.post('/responseToFriendRequest', {
+      friend_id,
+      status,
+    });
     return response.data;
   } catch (error) {
     window.location.href = 'https://memessenger.ru';
-    throw error; // Пробрасывание ошибки, если нужно
+    throw error;
   }
 }
 
@@ -75,6 +78,6 @@ export async function getMyInfo() {
     return response.data[0];
   } catch (error) {
     window.location.href = 'https://memessenger.ru';
-    throw error; // Пробрасывание ошибки, если нужно
+    throw error;
   }
 }

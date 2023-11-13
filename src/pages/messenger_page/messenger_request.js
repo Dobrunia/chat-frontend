@@ -13,7 +13,7 @@ export async function getMessages(chatId) {
     return response.data;
   } catch (error) {
     window.location.href = 'https://memessenger.ru';
-    throw error; // Пробрасывание ошибки, если нужно
+    throw error;
   }
 }
 
