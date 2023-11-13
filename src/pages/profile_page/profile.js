@@ -48,6 +48,7 @@ export async function changeUsername() {
   const data = await saveNewUsername(username);
   if (data) {
     $('#changeName_input').value = '';
+    localStorage.setItem('username', username);
     await renderUserProfilePage();
   }
 }
@@ -476,12 +477,6 @@ async function renderProfilePage(userId) {
   } else {
     makeItRain(100);
   }
-  localStorage.setItem('username', userDATA.username);
-  $('#my_name').innerHTML = userDATA.username;
-  localStorage.setItem('avatar', userDATA.avatar);
-  $(
-    '#my_avatar',
-  ).innerHTML = `<img class="user_avatar_img" src="${userDATA.avatar}" alt="фото профиля" /><div class="status"></div>`;
 }
 
 /**
@@ -557,7 +552,11 @@ export async function renderUsersFriends(userId) {
     friendsArray.map(async (friend) => {
       friends += `
       <div class="user_avatar user_avatar_small" title="${friend.username}">
-      <a href="${import.meta.env.VITE_SRC + 'pages/profile_page/profile.html?id=' + friend.id}">
+      <a href="${
+        import.meta.env.VITE_SRC +
+        'pages/profile_page/profile.html?id=' +
+        friend.id
+      }">
         <img class="user_avatar_img openProfile" src="${
           friend.avatar
         }" data-id="${friend.id}" alt=""/>
@@ -574,7 +573,7 @@ export async function renderUsersFriends(userId) {
 /**
  * общий рендер страницы пользователя
  */
-async function renderUserProfilePage() {
+export async function renderUserProfilePage() {
   const id = urlParams.get('id');
   await renderProfilePage(id);
   /**
@@ -632,6 +631,13 @@ async function renderUserProfilePage() {
   $('#addPost').addEventListener('submit', addPost);
   await renderUsersFriends(id);
   await renderNotifications();
+
+  $('#my_name').innerHTML = localStorage.getItem('username');
+  $(
+    '#my_avatar',
+  ).innerHTML = `<img class="user_avatar_img" src="${localStorage.getItem(
+    'avatar',
+  )}" alt="фото профиля" /><div class="status"></div>`;
 }
 
 /**
@@ -657,6 +663,7 @@ export function changePhoto() {
         const data = await savePhoto(photoUrl);
         if (data) {
           $('#photoUrl').value = '';
+          localStorage.setItem('avatar', photoUrl);
           await renderUserProfilePage();
         }
       }
@@ -747,8 +754,14 @@ export async function renderUsersPosts(userId) {
       'afterbegin',
       `<div class="nav_user_wall_post">
           <div class="nav_user_wall_post_div">
-          <div class="user_avatar user_avatar_small" title="${element.username}">
-            <a href="${import.meta.env.VITE_SRC + 'pages/profile_page/profile.html?id=' + element.id}">
+          <div class="user_avatar user_avatar_small" title="${
+            element.username
+          }">
+            <a href="${
+              import.meta.env.VITE_SRC +
+              'pages/profile_page/profile.html?id=' +
+              element.id
+            }">
               <img
                 class="user_avatar_img openProfile"
                 src="${element.avatar}"
@@ -809,7 +822,7 @@ export async function deleteFriend(event) {
   const data = await removeFriend(friendId);
   if (data) {
     announcementMessage('Пользователь удален из друзей');
-    await renderUsersFriends(urlParams.get('id'));
+    await renderUserProfilePage();
   }
 }
 

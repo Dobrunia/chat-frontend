@@ -15,6 +15,7 @@ async function isUserLoggedInCheck() {
       }
     })
     .catch((error) => {
+      localStorage.clear();
       toggleModuleWindow('get_in');
     });
 }
@@ -87,7 +88,7 @@ function authorization(event) {
       localStorage.setItem('username', data.username);
       localStorage.setItem('avatar', data.avatar);
       localStorage.setItem('accessToken', data.accessToken);
-      window.location.href = './pages/profile_page/profile.html';
+      window.location.href = `./pages/profile_page/profile.html?id=${data.id}`;
     })
     .catch((error) => alert('Неверное имя пользователя или пароль'));
   return false;

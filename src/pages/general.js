@@ -5,7 +5,7 @@ import {
   responseToFriendRequest,
   saveFriendRequest,
 } from './general_request.js';
-import { renderUsersFriends } from './profile_page/profile.js';
+import { renderUsersFriends, renderUserProfilePage } from './profile_page/profile.js';
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -468,5 +468,6 @@ export async function addFriend(event) {
   const data = await saveFriendRequest(friendId);
   if (data) {
     announcementMessage('Запрос на добавления в друзья отправлен');
+    await renderUserProfilePage();
   }
 }
