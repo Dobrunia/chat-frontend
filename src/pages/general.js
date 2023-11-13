@@ -5,9 +5,12 @@ import {
   getNotifications,
   responseToFriendRequest,
   saveFriendRequest,
-} from './general_request';
-const $ = (element) => document.querySelector(element);
+} from './general_request.js';
+import { renderUsersFriends } from './profile_page/profile.js';
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const $ = (element) => document.querySelector(element);
 /**
  * получить свои данные настройки и тд себя как пользователя
  */
@@ -309,13 +312,14 @@ export async function renderNotifications() {
    */
   let btns = [...document.getElementsByClassName('responseToFriendRequest')];
   btns.forEach((btn) => {
-    btn.addEventListener('click', async() => {
+    btn.addEventListener('click', async () => {
       const data = await responseToFriendRequest(
         btn.getAttribute('data-id'),
         btn.getAttribute('data-status'),
       );
       if (data) {
         renderNotifications();
+        await renderUsersFriends(urlParams.get('id'));
       }
     });
   });

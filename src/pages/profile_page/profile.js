@@ -450,7 +450,7 @@ async function renderProfilePage(userDATA) {
 /**
  * рендер друзей пользователя
  */
-async function renderUsersFriends(userId) {
+export async function renderUsersFriends(userId) {
   let save = `<div class="nav_friends nav_friends_line">
     Друзья онлайн <span>2</span>
     <div class="nav_friends_wrapper">
