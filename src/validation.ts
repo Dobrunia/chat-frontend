@@ -1,4 +1,4 @@
-import { FormValidationType, ValidationType } from '../models/types.js';
+import { FormValidationType, ValidationType } from './models/types.js';
 
 function checkPasswordSecurity(password: string | undefined) {
   if (!password) {

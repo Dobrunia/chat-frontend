@@ -15,7 +15,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(root, 'index.html'),
-        // text: resolve(root, 'test', 'test.html'),
+        profile_page: resolve(root, 'pages', 'profile_page', 'profile.html'),
+        messenger_page: resolve(root, 'pages', 'messenger_page', 'messenger.html'),
+        cat_page: resolve(root, 'pages', 'cat_page', 'cat.html'),
+        donate_page: resolve(root, 'pages', 'donate_page', 'donate.html'),
+        about_project_page: resolve(root, 'pages', 'about_project_page', 'about_project.html'),
       },
     },
   },

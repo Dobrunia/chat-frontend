@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <include src="../../html_components/default_css_links.html"></include>
+    <link rel="stylesheet" type="text/css" href="./messenger.css" />
+  </head>
+  <body>
+    <div class="nav_wrapper">
+      <div class="nav_elements" id="nav_elements">
+        <include src="../../html_components/header.html"></include>
+        <include src="../../html_components/announcement.html"></include>
+        <include src="../../html_components/confirmation.html"></include>
+        <div
+          class="nav_content fallback back-row-toggle splat-toggle"
+          id="nav_content"
+        >
+          <include src="../../html_components/navigation.html"></include>
+          <div class="nav_sections" id="nav_sections">
+            <div class="nav_messaging" id="messenger">
+              <section class="users_wrapper" id="menu">
+                <input
+                  type="search"
+                  class="form-control form-control-dark text-bg-dark mar input_color"
+                  id="chat_search"
+                  placeholder="Поиск моих чатов..."
+                  style="width: 250px"
+                />
+                <div class="users" id="users"></div>
+              </section>
+              <section class="wrapper" id="wrapper">
+                <div class="dialogue_with">
+                  <div
+                    class="dialogue_with_wrapper"
+                    id="dialogue_with_wrapper"
+                  ></div>
+                </div>
+                <section
+                  class="messages_wrapper"
+                  id="messages_wrapper"
+                ></section>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script type="module" src="../general_handler.js" defer></script>
+  <script type="module" src="./messenger.js" defer></script>
+  <script type="module" src="./messenger_handler.js" defer></script>
+</html>

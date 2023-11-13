@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <include src="../../html_components/default_css_links.html"></include>
+    <link rel="stylesheet" type="text/css" href="./profile.css" />
+  </head>
+  <body>
+    <div class="nav_wrapper">
+      <div class="nav_elements" id="nav_elements">
+        <include src="../../html_components/header.html"></include>
+        <include src="../../html_components/announcement.html"></include>
+        <include src="../../html_components/confirmation.html"></include>
+        <div
+          class="nav_content fallback back-row-toggle splat-toggle"
+          id="nav_content"
+        >
+          <include src="../../html_components/navigation.html"></include>
+          <div class="nav_sections" id="nav_sections">
+            <div class="nav_profile" id="profile_page"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav_user_info_edit_window none" id="nav_user_info_edit_window">
+      <div class="nav_user_info_edit_window_elements">
+        <h2>Общие настройки:</h2>
+        <div class="edit_window_element">
+          <h3>Сменить никнейм</h3>
+          <div>
+            <input
+              type="text"
+              name="username"
+              id="changeName_input"
+              maxlength="25"
+            />
+            <button id="changeName_button">Применить</button>
+          </div>
+        </div>
+        <div class="edit_window_element">
+          <h3>Сменить аватар</h3>
+          <div>
+            <input
+              type="text"
+              id="photoUrl"
+              placeholder="Вставьте URL картинки (не все картинки работают)"
+            />
+            <button id="change_photoUrl">Применить</button>
+          </div>
+        </div>
+        <div class="edit_window_element">
+          <h3>Изменить бегущую строку</h3>
+          <div>
+            <input id="scrollingText_input" type="text" maxlength="100" />
+            <button id="scrollingText_button">Применить</button>
+          </div>
+        </div>
+        <div class="edit_window_element">
+          <h3>Дождь:</h3>
+          <div>
+            <button id="rain_on">Вкл</button>
+            <button id="rain_off">Выкл</button>
+          </div>
+        </div>
+        <h2>Добавление ссылок на соц сети:</h2>
+        <div class="edit_window_element">
+          <h3>Изменить ссылку на Telegram</h3>
+          <div>
+            <input
+              id="telegramLink_input"
+              type="text"
+              maxlength="25"
+              placeholder="Напишите Ваш логин от ТГ без '@'"
+            />
+            <button id="telegramLink_button">Применить</button>
+          </div>
+        </div>
+        <div class="edit_window_element">
+          <h3>Изменить ссылку на Steam</h3>
+          <div>
+            <input
+              id="steamLink_input"
+              type="text"
+              maxlength="25"
+              placeholder="Напишите Ваш id от steam"
+            />
+            <button id="steamLink_button">Применить</button>
+          </div>
+        </div>
+        <div class="edit_window_element">
+          <h3>Изменить ссылку на Shikimori</h3>
+          <div>
+            <input
+              id="shikimoriLink_input"
+              type="text"
+              maxlength="25"
+              placeholder="Напишите Ваш логин от shikimori"
+            />
+            <button id="shikimoriLink_button">Применить</button>
+          </div>
+        </div>
+        <h2>Смена настроек фона:</h2>
+        <div class="edit_window_element">
+          <h3>Поставить на фон динамический градиент</h3>
+          <h4>Выберите цвета градиента:</h4>
+          <div class="element_input_colors">
+            <input type="color" id="colorInput1" />
+            <input type="color" id="colorInput2" />
+            <input type="color" id="colorInput3" />
+            <input type="color" id="colorInput4" />
+          </div>
+          <div>
+            <input
+              id="linear_gradient_v1_input"
+              type="text"
+              maxlength="4"
+              placeholder="Желаемый угол наклона градиента (в градусах)"
+            />
+            <button id="linear_gradient_v1_button">Применить</button>
+          </div>
+        </div>
+        <div class="edit_window_element">
+          <h3>Поставить на фон картинку, которая уплывает вниз</h3>
+          <div>
+            <input
+              id="fallback_input"
+              type="text"
+              placeholder="Ссылка на картинку... (некоторые картинки не работают)"
+            />
+            <button id="fallback_button">Применить</button>
+          </div>
+        </div>
+        <div class="edit_window_element">
+          <h3>Поставить на фон статичную картинку</h3>
+          <div>
+            <input
+              id="staticImg_input"
+              type="text"
+              placeholder="Ссылка на картинку... (некоторые картинки не работают)"
+            />
+            <button id="staticImg_button">Применить</button>
+          </div>
+        </div>
+        <div class="edit_window_element">
+          <div>
+            <button id="button_remove">Сбросить все настройки фона</button>
+          </div>
+        </div>
+        <h2>Смена настроек цвета:</h2>
+        <div class="edit_window_element">
+          <div class="element_input_colors">
+            <span>Цвет кнопок навигации:</span>
+            <input type="color" id="colorInputNav" />
+            <span>Цвет выделяющий:</span>
+            <input type="color" id="colorInputAttention" />
+            <span>Основной цвет задних фонов:</span>
+            <input type="color" id="colorInputNavLightBg" />
+          </div>
+          <div>
+            <button id="changeColors_button">Применить</button>
+            <button id="resetColors_button">Сбросить все цвета</button>
+          </div>
+        </div>
+        <h2>Поменять шрифт имени в профиле:</h2>
+        <div class="edit_window_element">
+          <h3>Поддерживают кириллицу</h3>
+          <div>
+            <button id="comfortaa_button">Comfortaa</button>
+            <button id="lobster_button">Lobster</button>
+            <button id="overpass_button">Overpass</button>
+            <!-- <button id="pacifico_button">Pacifico</button> -->
+          </div>
+          <br /><br />
+          <h3>Не поддерживают кириллицу</h3>
+          <div>
+            <!-- <button id="dancing_button">Dancing Script</button> -->
+            <button id="anton_button">Anton</button>
+            <button id="bangers_button">Bangers</button>
+            <button id="baloo_button">Baloo Bhai 2</button>
+          </div>
+        </div>
+      </div>
+      <button
+        class="nav_user_info_edit_window_exit"
+        id="nav_user_info_edit_window_exit"
+      >
+        x
+      </button>
+    </div>
+  </body>
+  <script defer>
+    function autoResize(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 5 + 'px';
+      const maxLength = parseInt(textarea.getAttribute('maxlength'));
+      const currentLength = textarea.value.length;
+      const remaining = maxLength - currentLength;
+
+      charCount.textContent = remaining;
+    }
+
+    function openModal(img) {
+      // Создаем модальное окно
+      var modal = document.createElement('div');
+      modal.classList.add('modal');
+
+      // Создаем изображение в модальном окне
+      var modalImg = document.createElement('img');
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modalImg.classList.add('modal-img');
+
+      // Добавляем изображение в модальное окно
+      modal.appendChild(modalImg);
+
+      // Добавляем модальное окно в тело документа
+      document.body.appendChild(modal);
+
+      // Закрытие модального окна при клике за его пределами
+      modal.addEventListener('click', function (event) {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+
+      // Функция для закрытия модального окна
+      function closeModal() {
+        document.body.removeChild(modal);
+      }
+    }
+  </script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/emoji-mart@latest/dist/browser.js"
+    defer
+  ></script>
+  <script type="module" src="../general_handler.js" defer></script>
+  <script type="module" src="./profile.js" defer></script>
+  <script type="module" src="./profile_handler.js" defer></script>
+</html>

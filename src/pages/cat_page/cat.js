@@ -1,3 +1,6 @@
+import { getAndRenderMyInfo } from '../general.js';
+await getAndRenderMyInfo();
+
 const createImagePlaceholder = (container, minSize) =>
   new Promise((resolve, reject) => {
     let placeholder = null;
@@ -53,11 +56,8 @@ const loadImageToPlaceholder = (placeholder, index) => {
   };
   image.src = path;
 };
-export function removeCats() {
-  document.getElementById('cats_place').innerHTML = '';
-  makeCats();
-}
-export async function makeCats() {
+
+async function makeCats() {
   const maxPlaceholders = 1;
   const minSize = 200;
   const placeholders = [];
@@ -72,10 +72,15 @@ export async function makeCats() {
       );
       makeCats();
     } catch (e) {
-      console.log('placeholder creation error', e);
+      //console.log('placeholder creation error', e);
       alert('Картинки такого размера не найдено(');
     }
   }
   placeholders.forEach(loadImageToPlaceholder);
   return;
 }
+export function removeCats() {
+  document.getElementById('cats_place').innerHTML = '';
+  makeCats();
+}
+removeCats();
