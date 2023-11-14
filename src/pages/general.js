@@ -5,10 +5,7 @@ import {
   responseToFriendRequest,
   saveFriendRequest,
 } from './general_request.js';
-import { renderUsersFriends, renderUserProfilePage } from './profile_page/profile.js';
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
 const $ = (element) => document.querySelector(element);
 /**
  * получить свои данные настройки и тд себя как пользователя
@@ -332,7 +329,6 @@ export async function renderNotifications() {
       );
       if (data) {
         renderNotifications();
-        await renderUsersFriends(urlParams.get('id'));
       }
     });
   });
@@ -368,7 +364,11 @@ function renderUsers(users_response_result) {
           <div class="status"></div>
         </a>
       </div>
-      <span class="element_span">${user.username}</span>
+      <a href="${
+        import.meta.env.VITE_SRC
+      }pages/messenger_page/messenger.html?chatId=${user.chatId}" class="chat_id_href element_span"><span class="">${
+        user.username
+      }</span></a>
     </div>`;
     });
   }
@@ -468,6 +468,5 @@ export async function addFriend(event) {
   const data = await saveFriendRequest(friendId);
   if (data) {
     announcementMessage('Запрос на добавления в друзья отправлен');
-    await renderUserProfilePage();
   }
 }

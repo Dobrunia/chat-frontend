@@ -12,7 +12,7 @@ export async function getMessages(chatId) {
     const response = await $api.get(`/getMessagesByChatId/${chatId}`);
     return response.data;
   } catch (error) {
-    window.location.href = import.meta.env.VITE_SRC;
+    console.log(error);
     throw error;
   }
 }
@@ -45,6 +45,20 @@ export async function getUsersChats() {
     .get(`/returnActiveChats`)
     .then((response) => response.data)
     .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
+ * возвращает данные о пользователях в чате
+ */
+export async function findCompanionsData(chatId) {
+  try {
+    const response = await $api.get(`/findCompanionsData/${chatId}`);
+    return response.data;
+  } catch (error) {
+    // window.location.href = import.meta.env.VITE_SRC;
+    console.log(error);
+    throw error;
+  }
 }
 
 /**

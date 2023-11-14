@@ -4,9 +4,20 @@ import {
   getMessages,
   createNewChat,
   writeNewUserInChat,
+  findCompanionsData,
 } from './messenger_request.js';
 import { getAndRenderMyInfo } from '../general.js';
-getAndRenderMyInfo();
+
+async function start() {
+  await getAndRenderMyInfo();
+  let queryString = window.location.search;
+  let urlParams = new URLSearchParams(queryString);
+  if (urlParams.get('chatId')) {
+    selectChatHandler(null, urlParams.get('chatId'));
+  }
+  await renderChats();
+}
+start();
 
 const $ = (element) => document.querySelector(element);
 /**
@@ -101,10 +112,15 @@ export async function renderChats() {
   });
   const openDialogs = document.querySelectorAll('.openDialog');
   openDialogs.forEach((dialog) => {
-    dialog.addEventListener('click', startChatingHandler);
+    //dialog.addEventListener('click', startChatingHandler);
+    dialog.addEventListener('click', () => {
+      let chatId = dialog.getAttribute('data-chatId');
+      window.location.href = `${
+        import.meta.env.VITE_SRC
+      }pages/messenger_page/messenger.html?chatId=${chatId}`;
+    });
   });
 }
-renderChats();
 
 /**
  * рендер сообщений
@@ -175,12 +191,28 @@ function messageHandler(event) {
  * обработка клика по чату с собеседником
  */
 async function selectChatHandler(elem, chatId) {
-  const companionData = {
-    id: elem.getAttribute('data-id'),
-    username: elem.getAttribute('data-username'),
-    email: elem.getAttribute('data-email'),
-    avatar: elem.getAttribute('data-avatar'),
-  };
+  let companionData;
+  if (elem === null) {
+    let companions = await findCompanionsData(chatId);
+    companions.forEach((user) => {
+      if (user.id.toString() !== localStorage.getItem('id')) {
+        companionData = {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          avatar: user.avatar,
+        };
+      }
+    });
+  } else {
+    companionData = {
+      id: elem.getAttribute('data-id'),
+      username: elem.getAttribute('data-username'),
+      email: elem.getAttribute('data-email'),
+      avatar: elem.getAttribute('data-avatar'),
+    };
+  }
+
   //$('#messages_wrapper').style.backgroundImage = "url('./img/ChatbackG.png')";
   $('#messages_wrapper').innerHTML = `<div class="messages" id="messages">
   <!-- <div class="message from">

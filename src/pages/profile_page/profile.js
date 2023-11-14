@@ -23,8 +23,12 @@ import {
   askConfirmationFromUser,
 } from '../general.js';
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
+let queryString = window.location.search;
+let urlParams = new URLSearchParams(queryString);
+async function start() {
+  await renderUserProfilePage();
+}
+start();
 const $ = (element) => document.querySelector(element);
 /**
  * открыть окно UserInfoEditWindow
@@ -64,6 +68,7 @@ export function hideUserInfoEditWindow() {
  * рендер верстки страницы пользователя
  */
 async function renderProfilePage(userId) {
+  console.log('renderProfilePage');
   const userDATA = await findUserById(userId);
   let friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" data-username="${userDATA.username}" data-email="${userDATA.email}" data-avatar="${userDATA.avatar}" data-chatid="${userDATA.chatId}" title="Открыть переписку с ${userDATA.username}">Написать</div>`;
   if (userDATA.id.toString() === localStorage.getItem('id')) {
@@ -825,5 +830,3 @@ export async function deleteFriend(event) {
     await renderUserProfilePage();
   }
 }
-
-renderUserProfilePage();

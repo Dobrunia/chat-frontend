@@ -998,6 +998,13 @@ body {
     cursor: pointer;
 }
 
+.chat_id_href {
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+}
+
 .element_span {
     max-width: 121px;
     white-space: nowrap;
@@ -1006,6 +1013,8 @@ body {
     overflow: hidden;
     /* Обрезаем текст, который превышает заданную ширину контейнера */
     text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
 }
 
 .element:hover {
