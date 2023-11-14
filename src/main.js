@@ -51,7 +51,6 @@ $('#registrationForm').addEventListener('submit', registration);
  * функция авторизации пользователей
  */
 function authorization(event) {
-  //TODO:: type
   event.preventDefault();
   const formData = new FormData(this);
   let email = formData.get('email')?.toString().trim();
