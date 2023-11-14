@@ -36,12 +36,24 @@ function renderChatHeader(chatId, companionData) {
   dialogue_with_wrapper.innerHTML = '';
   dialogue_with_wrapper.innerHTML = `
           <div class="dialogue_with_text">
-            <div class="dialogue_with_name" id="data_chatID" data-chatId="${chatId}">${companionData.username}</div>
+            <div class="dialogue_with_name" id="data_chatID" data-chatId="${chatId}">${
+    companionData.username
+  }</div>
             <div class="last_entrance">был в сети час назад</div>
           </div>
           <div class="user_avatar user_avatar_small">
-            <img id="user_header" class="user_avatar_img openProfile" src="${companionData.avatar}" alt="" data-id="${companionData.id}" data-username="${companionData.username}" title="${companionData.username}"/>
+          <a href="${
+            import.meta.env.VITE_SRC +
+            'pages/profile_page/profile.html?id=' +
+            companionData.id
+          }">
+            <img id="user_header" class="user_avatar_img openProfile" src="${
+              companionData.avatar
+            }" alt="" data-id="${companionData.id}" data-username="${
+    companionData.username
+  }" title="${companionData.username}"/>
             <div class="status"></div>
+            </a>
           </div>`;
 }
 
@@ -86,14 +98,28 @@ export async function renderChats() {
       formattedTime = messageDate.toLocaleDateString(); // Формат день, месяц, год
     }
     //<div class="line"></div>
-    const content = `<div class="user openDialog" title="${element.name}" data-id="${element.userId}" data-username="${element.name}" data-email="${element.userEmail}" data-avatar="${element.avatar}" data-chatId="${element.chatId}">
+    const content = `<div class="user openDialog" title="${
+      element.name
+    }" data-id="${element.userId}" data-username="${
+      element.name
+    }" data-email="${element.userEmail}" data-avatar="${
+      element.avatar
+    }" data-chatId="${element.chatId}">
           <div class="user_avatar user_avatar_small">
-            <img class="user_avatar_img" src="${element.avatar}" alt=""/>
-            <div class="status"></div>
+            <a href="${
+              import.meta.env.VITE_SRC +
+              'pages/profile_page/profile.html?id=' +
+              element.userId
+            }">
+              <img class="user_avatar_img" src="${element.avatar}" alt=""/>
+              <div class="status"></div>
+            </a>
           </div>
           <div class="user_info">
             <div class="user_name"><strong>${element.name}</strong></div>
-            <div class="user_last_message" title="${element.last_message}">${element.last_message}</div>
+            <div class="user_last_message" title="${element.last_message}">${
+      element.last_message
+    }</div>
           </div>
           <div class="user_metric">
             <span>${element.notifications}</span>
@@ -149,6 +175,7 @@ export function renderMessage(message) {
         ? localStorage.getItem('username')
         : document.getElementById('user_header').getAttribute('data-username')
     }">
+    <a href="${import.meta.env.VITE_SRC +'pages/profile_page/profile.html?id=' + (isMyMessage? localStorage.getItem('id'): message.sendBy)}">
       <img class="user_avatar_img openProfile" src="${
         isMyMessage
           ? localStorage.getItem('avatar')
@@ -157,6 +184,7 @@ export function renderMessage(message) {
     isMyMessage ? localStorage.getItem('id') : message.sendBy
   }" alt=""/>
       <div class="status"></div>
+      </a>
     </div>`;
   messagesWrapper.innerHTML += `
       <div class="message ${isMyMessage ? 'my' : 'from'}">
