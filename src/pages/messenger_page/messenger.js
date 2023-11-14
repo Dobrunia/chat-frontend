@@ -13,7 +13,7 @@ async function start() {
   let queryString = window.location.search;
   let urlParams = new URLSearchParams(queryString);
   if (urlParams.get('chatId')) {
-    selectChatHandler(null, urlParams.get('chatId'));
+    await selectChatHandler(null, urlParams.get('chatId'));
   }
   await renderChats();
 }
@@ -113,11 +113,17 @@ export async function renderChats() {
   const openDialogs = document.querySelectorAll('.openDialog');
   openDialogs.forEach((dialog) => {
     //dialog.addEventListener('click', startChatingHandler);
-    dialog.addEventListener('click', () => {
+    dialog.addEventListener('click', async () => {
       let chatId = dialog.getAttribute('data-chatId');
-      window.location.href = `${
-        import.meta.env.VITE_SRC
-      }pages/messenger_page/messenger.html?chatId=${chatId}`;
+      // window.location.href = `${
+      //   import.meta.env.VITE_SRC
+      // }pages/messenger_page/messenger.html?chatId=${chatId}`;
+      let queryString = window.location.search;
+      let urlParams = new URLSearchParams(queryString);
+      urlParams.set('chatId', chatId);
+      let newUrl = window.location.pathname + '?' + urlParams.toString();
+      window.history.pushState({}, '', newUrl);
+      await selectChatHandler(null, urlParams.get('chatId'));
     });
   });
 }
@@ -190,7 +196,7 @@ function messageHandler(event) {
 /**
  * обработка клика по чату с собеседником
  */
-async function selectChatHandler(elem, chatId) {
+export async function selectChatHandler(elem, chatId) {
   let companionData;
   if (elem === null) {
     let companions = await findCompanionsData(chatId);
