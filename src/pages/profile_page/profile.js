@@ -83,7 +83,7 @@ async function renderProfilePage(userId) {
   const userDATA = await findUserById(userId);
   let friendBtn = `<a href="${
     import.meta.env.VITE_SRC
-  }pages/messenger_page/messenger.html?chatId=${
+  }pages/messenger_page/messenger.html?id=${userDATA.id}&chatId=${
     userDATA.chatId
   }" class="nav_user_writeTo"><div class="btn btn-outline-light me-2 openDialog" data-id="${
     userDATA.id

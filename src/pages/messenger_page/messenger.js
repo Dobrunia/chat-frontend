@@ -12,8 +12,12 @@ async function start() {
   await getAndRenderMyInfo();
   let queryString = window.location.search;
   let urlParams = new URLSearchParams(queryString);
-  if (urlParams.get('chatId')) {
-    await selectChatHandler(null, urlParams.get('chatId'));
+  let chatId = urlParams.get('chatId');
+  let companionId = urlParams.get('id');
+  if (chatId && companionId) {
+    await selectChatHandler(null, chatId);
+  } else if(!chatId && companionId) {
+    await renderChatId();
   }
   await renderChats();
 }
@@ -60,13 +64,13 @@ function renderChatHeader(chatId, companionData) {
 /**
  * создания chatId если он отсутствует
  */
-async function renderChatId(currentElement) {
+async function renderChatId() {
   const newPrivateChatId = await createNewChat(true);
-  const companionId = currentElement.getAttribute('data-id');
+  const companionId = urlParams.get('id');
   const request1 = writeNewUserInChat(newPrivateChatId);
   const request2 = writeNewUserInChat(newPrivateChatId, companionId);
   if ((await request1) && (await request2)) {
-    await selectChatHandler(currentElement, newPrivateChatId);
+    await selectChatHandler(null, newPrivateChatId);
   }
 }
 
@@ -175,7 +179,11 @@ export function renderMessage(message) {
         ? localStorage.getItem('username')
         : document.getElementById('user_header').getAttribute('data-username')
     }">
-    <a href="${import.meta.env.VITE_SRC +'pages/profile_page/profile.html?id=' + (isMyMessage? localStorage.getItem('id'): message.sendBy)}">
+    <a href="${
+      import.meta.env.VITE_SRC +
+      'pages/profile_page/profile.html?id=' +
+      (isMyMessage ? localStorage.getItem('id') : message.sendBy)
+    }">
       <img class="user_avatar_img openProfile" src="${
         isMyMessage
           ? localStorage.getItem('avatar')
@@ -318,6 +326,7 @@ export async function startChatingHandler(event) {
     const chatId = currentElement?.getAttribute('data-chatId');
     chatId !== 'null'
       ? await selectChatHandler(currentElement, chatId)
-      : await renderChatId(currentElement);
+      : await renderChatId();
+    // await selectChatHandler(null, currentElement?.getAttribute('data-chatId'))
   }
 }

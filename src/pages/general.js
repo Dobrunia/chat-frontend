@@ -228,7 +228,7 @@ export function globalClickAnimation(event) {
     !$('#nav_user_info_edit_window')?.contains(targetElement) &&
     !$('#nav_user_info_edit')?.contains(targetElement)
   ) {
-    $('#nav_user_info_edit_window').classList.add('none');
+    $('#nav_user_info_edit_window')?.classList.add('none');
   }
   // //скрыть окно UserInfoEditWindow
 
@@ -365,7 +365,7 @@ function renderUsers(users_response_result) {
       </div>
       <a href="${
         import.meta.env.VITE_SRC
-      }pages/messenger_page/messenger.html?chatId=${user.chatId}" class="chat_id_href element_span"><span class="">${
+      }pages/messenger_page/messenger.html?id=${user.id}&chatId=${user.chatId}" class="chat_id_href element_span"><span class="">${
         user.username
       }</span></a>
     </div>`;
