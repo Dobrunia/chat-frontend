@@ -82,12 +82,14 @@ function authorization(event) {
   )
     .then((response) => response.json())
     .then((data) => {
-      localStorage.setItem('id', data.id);
-      localStorage.setItem('email', data.email);
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('avatar', data.avatar);
-      localStorage.setItem('accessToken', data.accessToken);
-      window.location.href = `./pages/profile_page/profile.html?id=${data.id}`;
+      if (
+        data.message === 'password invalid' ||
+        data.message === "Cannot read properties of undefined (reading 'id')"
+      ) {
+        localStorage.clear();
+        toggleModuleWindow('get_in');
+        alert('Неверное имя пользователя или пароль');
+      }
     })
     .catch((error) => alert('Неверное имя пользователя или пароль'));
   return false;
