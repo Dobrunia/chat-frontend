@@ -70,7 +70,7 @@ export function hideUserInfoEditWindow() {
 async function renderProfilePage(userId) {
   console.log('renderProfilePage');
   const userDATA = await findUserById(userId);
-  let friendBtn = `<div class="btn btn-outline-light me-2 nav_user_writeTo openDialog" data-id="${userDATA.id}" data-username="${userDATA.username}" data-email="${userDATA.email}" data-avatar="${userDATA.avatar}" data-chatid="${userDATA.chatId}" title="Открыть переписку с ${userDATA.username}">Написать</div>`;
+  let friendBtn = `<a href="${import.meta.env.VITE_SRC}pages/messenger_page/messenger.html?chatId=${userDATA.chatId}" class="nav_user_writeTo"><div class="btn btn-outline-light me-2 openDialog" data-id="${userDATA.id}" data-username="${userDATA.username}" data-email="${userDATA.email}" data-avatar="${userDATA.avatar}" data-chatid="${userDATA.chatId}" title="Открыть переписку с ${userDATA.username}">Написать</div></a>`;
   if (userDATA.id.toString() === localStorage.getItem('id')) {
     friendBtn = '';
   } else {
@@ -589,7 +589,7 @@ export async function renderUserProfilePage() {
   /**
    * Добавить в друзья
    */
-  $('#nav_user_add_friend')?.addEventListener('click', addFriend);
+  $('#nav_user_add_friend')?.addEventListener('click', addFriend);//TODO:: 
 
   /**
    * Удалить из друзей
