@@ -41,19 +41,6 @@ export async function findUserByName(userName) {
 }
 
 /**
- * Добавить в друзья
- */
-export async function saveFriendRequest(friendId) {
-  try {
-    const response = await $api.post('/addFriend', { friendId });
-    return response.data;
-  } catch (error) {
-    window.location.href = import.meta.env.VITE_SRC;
-    throw error;
-  }
-}
-
-/**
  * ответ на запрос дружбы
  */
 export async function responseToFriendRequest(friend_id, status) {

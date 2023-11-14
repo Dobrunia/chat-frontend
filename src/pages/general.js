@@ -3,7 +3,6 @@ import {
   getMyInfo,
   getNotifications,
   responseToFriendRequest,
-  saveFriendRequest,
 } from './general_request.js';
 
 const $ = (element) => document.querySelector(element);
@@ -459,14 +458,4 @@ export function announcementMessage(text) {
   $('#announcement_text').innerHTML = '';
   $('#announcement_text').innerHTML = `${text}`;
   showAnnouncementMenu();
-}
-
-export async function addFriend(event) {
-  let targetElement = event.target;
-  let currentElement = targetElement.closest('.nav_user_add_friend');
-  let friendId = currentElement?.getAttribute('data-id');
-  const data = await saveFriendRequest(friendId);
-  if (data) {
-    announcementMessage('Запрос на добавления в друзья отправлен');
-  }
 }

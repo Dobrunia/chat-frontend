@@ -9,6 +9,7 @@ import {
   getUserPosts,
   removePost,
   savePhoto,
+  saveFriendRequest,
 } from './profile_request.js';
 import { getAllFriendsInfo } from '../general_request.js';
 import {
@@ -18,7 +19,6 @@ import {
   makeItRain,
   escapeHtml,
   escapeSql,
-  addFriend,
   getCurrentDate,
   askConfirmationFromUser,
 } from '../general.js';
@@ -57,6 +57,17 @@ export async function changeUsername() {
   }
 }
 
+async function addFriend(event) {
+  let targetElement = event.target;
+  let currentElement = targetElement.closest('.nav_user_add_friend');
+  let friendId = currentElement?.getAttribute('data-id');
+  const data = await saveFriendRequest(friendId);
+  if (data) {
+    announcementMessage('Запрос на добавления в друзья отправлен');
+    renderUserProfilePage();
+  }
+}
+
 /**
  * закрыть окно UserInfoEditWindow
  */
@@ -70,7 +81,17 @@ export function hideUserInfoEditWindow() {
 async function renderProfilePage(userId) {
   console.log('renderProfilePage');
   const userDATA = await findUserById(userId);
-  let friendBtn = `<a href="${import.meta.env.VITE_SRC}pages/messenger_page/messenger.html?chatId=${userDATA.chatId}" class="nav_user_writeTo"><div class="btn btn-outline-light me-2 openDialog" data-id="${userDATA.id}" data-username="${userDATA.username}" data-email="${userDATA.email}" data-avatar="${userDATA.avatar}" data-chatid="${userDATA.chatId}" title="Открыть переписку с ${userDATA.username}">Написать</div></a>`;
+  let friendBtn = `<a href="${
+    import.meta.env.VITE_SRC
+  }pages/messenger_page/messenger.html?chatId=${
+    userDATA.chatId
+  }" class="nav_user_writeTo"><div class="btn btn-outline-light me-2 openDialog" data-id="${
+    userDATA.id
+  }" data-username="${userDATA.username}" data-email="${
+    userDATA.email
+  }" data-avatar="${userDATA.avatar}" data-chatid="${
+    userDATA.chatId
+  }" title="Открыть переписку с ${userDATA.username}">Написать</div></a>`;
   if (userDATA.id.toString() === localStorage.getItem('id')) {
     friendBtn = '';
   } else {
@@ -482,6 +503,27 @@ async function renderProfilePage(userId) {
   } else {
     makeItRain(100);
   }
+
+  /**
+   * лисинер на изменения личной инфы
+   */
+  $('#nav_user_info_edit')?.addEventListener('click', showUserInfoEditWindow);
+
+  /**
+   * Добавить в друзья
+   */
+  $('#nav_user_add_friend')?.addEventListener('click', addFriend); //TODO::
+
+  /**
+   * Удалить из друзей
+   */
+  $('#nav_user_remove_friend')?.addEventListener('click', async () => {
+    const data = await removeFriend(urlParams.get('id'));
+    if (data) {
+      announcementMessage('Вы удалили из друзей');
+      renderUserProfilePage();
+    }
+  });
 }
 
 /**
@@ -581,21 +623,6 @@ export async function renderUsersFriends(userId) {
 export async function renderUserProfilePage() {
   const id = urlParams.get('id');
   await renderProfilePage(id);
-  /**
-   * лисинер на изменения личной инфы
-   */
-  $('#nav_user_info_edit')?.addEventListener('click', showUserInfoEditWindow);
-
-  /**
-   * Добавить в друзья
-   */
-  $('#nav_user_add_friend')?.addEventListener('click', addFriend);//TODO:: 
-
-  /**
-   * Удалить из друзей
-   */
-  $('#nav_user_remove_friend')?.addEventListener('click', removeFriend);
-
   /**
    * загрузка фото
    */

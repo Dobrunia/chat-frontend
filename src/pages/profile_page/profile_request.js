@@ -31,13 +31,13 @@ export function getFriendStatusInfo(userId) {
  * сохраняет новое имя пользователя
  */
 export async function saveNewUsername(username) {
-    try {
-      const response = await $api.post('/changeUsername', { username: username })
-      return response.data;
-    } catch (error) {
-      window.location.href = import.meta.env.VITE_SRC;
-      throw error;
-    }
+  try {
+    const response = await $api.post('/changeUsername', { username: username });
+    return response.data;
+  } catch (error) {
+    window.location.href = import.meta.env.VITE_SRC;
+    throw error;
+  }
 }
 
 /**
@@ -127,6 +127,19 @@ export async function savePost(DATA) {
 export async function getUserPosts(userId) {
   try {
     const response = await $api.get(`/getUserPosts?search_value=${userId}`);
+    return response.data;
+  } catch (error) {
+    window.location.href = import.meta.env.VITE_SRC;
+    throw error;
+  }
+}
+
+/**
+ * Добавить в друзья
+ */
+export async function saveFriendRequest(friendId) {
+  try {
+    const response = await $api.post('/addFriend', { friendId });
     return response.data;
   } catch (error) {
     window.location.href = import.meta.env.VITE_SRC;

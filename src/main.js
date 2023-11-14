@@ -89,6 +89,13 @@ function authorization(event) {
         localStorage.clear();
         toggleModuleWindow('get_in');
         alert('Неверное имя пользователя или пароль');
+      } else {
+        localStorage.setItem('id', data.id);
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('username', data.username);
+        localStorage.setItem('avatar', data.avatar);
+        localStorage.setItem('accessToken', data.accessToken);
+        window.location.href = `./pages/profile_page/profile.html?id=${data.id}`;
       }
     })
     .catch((error) => alert('Неверное имя пользователя или пароль'));
