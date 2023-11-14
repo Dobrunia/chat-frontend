@@ -224,12 +224,12 @@ export function globalClickAnimation(event) {
   //скрыть оконо оповещений
 
   // //скрыть окно UserInfoEditWindow
-  // if (
-  //   !$('#nav_user_info_edit_window')?.contains(targetElement) &&
-  //   !$('#nav_user_info_edit')?.contains(targetElement)
-  // ) {
-  //   hideUserInfoEditWindow();
-  // }
+  if (
+    !$('#nav_user_info_edit_window')?.contains(targetElement) &&
+    !$('#nav_user_info_edit')?.contains(targetElement)
+  ) {
+    $('#nav_user_info_edit_window').classList.add('none');
+  }
   // //скрыть окно UserInfoEditWindow
 
   //blur $('#nav_user_info_edit_window').classList.contains('none') &&
