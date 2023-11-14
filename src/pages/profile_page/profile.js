@@ -707,7 +707,7 @@ export async function changeUserInfo(value, tableName) {
   const data = await saveChangedUserInfo(escapeHtml(value), tableName);
   if (data) {
     announcementMessage('Вы успешно изменили данные');
-    await getAndRenderMyInfo();
+    await renderUserProfilePage();
   }
 }
 
