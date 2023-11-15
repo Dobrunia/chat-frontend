@@ -23,13 +23,15 @@ import {
   askConfirmationFromUser,
 } from '../general.js';
 
+const $ = (element) => document.querySelector(element);
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 async function start() {
+  $('#spinner_wrapper').classList.remove('none');
   await renderUserProfilePage();
+  $('#spinner_wrapper').classList.add('none');
 }
 start();
-const $ = (element) => document.querySelector(element);
 /**
  * открыть окно UserInfoEditWindow
  */

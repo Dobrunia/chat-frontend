@@ -15,14 +15,16 @@ $('#my_avatar').addEventListener('click', showSmallMenu);
 $('#my_avatar').addEventListener(
   'dblclick',
   () =>
-    (window.location.href =
-      `${import.meta.env.VITE_SRC}pages/profile_page/profile.html?id=${localStorage.getItem('id')}`),
+    (window.location.href = `${
+      import.meta.env.VITE_SRC
+    }pages/profile_page/profile.html?id=${localStorage.getItem('id')}`),
 );
 $('#logo').addEventListener(
   'click',
   () =>
-    (window.location.href =
-      `${import.meta.env.VITE_SRC}pages/profile_page/profile.html?id=${localStorage.getItem('id')}`),
+    (window.location.href = `${
+      import.meta.env.VITE_SRC
+    }pages/profile_page/profile.html?id=${localStorage.getItem('id')}`),
 );
 
 /**
@@ -46,10 +48,12 @@ document.addEventListener('click', globalClickAnimation);
 /**
  * раз в 500мл проверка, что ввел пользователь и запрос на сервер
  */
-$('#users_search').addEventListener('input', () => {
+$('#users_search').addEventListener('input', async () => {
   const users_search = document.querySelector('#users_search').value.trim();
   if (users_search && users_search !== ' ') {
-    searchInputHandler(users_search);
+    $('#search_request').innerHTML =
+      '<div class="spinner"><div class="blob top"></div><div class="blob bottom"></div><div class="blob left"></div><div class="blob move-blob"></div></div>';
+    await searchInputHandler(users_search);
   } else {
     $('#search_request').innerHTML = '';
   }

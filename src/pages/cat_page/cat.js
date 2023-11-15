@@ -1,5 +1,4 @@
 import { getAndRenderMyInfo } from '../general.js';
-getAndRenderMyInfo();
 
 const createImagePlaceholder = (container, minSize) =>
   new Promise((resolve, reject) => {
@@ -83,4 +82,10 @@ export function removeCats() {
   document.getElementById('cats_place').innerHTML = '';
   makeCats();
 }
-removeCats();
+async function start() {
+  document.getElementById('spinner_wrapper').classList.remove('none');
+  await getAndRenderMyInfo();
+  removeCats();
+  document.getElementById('spinner_wrapper').classList.add('none');
+}
+start();

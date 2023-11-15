@@ -9,7 +9,9 @@ import {
 } from './messenger_request.js';
 import { getAndRenderMyInfo } from '../general.js';
 
+const $ = (element) => document.querySelector(element);
 async function start() {
+  $('#spinner_wrapper').classList.remove('none');
   await getAndRenderMyInfo();
   let queryString = window.location.search;
   let urlParams = new URLSearchParams(queryString);
@@ -23,10 +25,10 @@ async function start() {
     await renderChatId(companionId);
   }
   await renderChats();
+  $('#spinner_wrapper').classList.add('none');
 }
 start();
 
-const $ = (element) => document.querySelector(element);
 /**
  * Функция, которая будет скроллить блок переписки вниз
  */
