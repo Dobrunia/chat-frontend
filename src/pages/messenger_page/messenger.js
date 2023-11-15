@@ -4,7 +4,8 @@ import {
   getMessages,
   createNewChat,
   writeNewUserInChat,
-  findCompanionsData,
+  findUserById,
+  findChatByUserId,
 } from './messenger_request.js';
 import { getAndRenderMyInfo } from '../general.js';
 
@@ -12,12 +13,13 @@ async function start() {
   await getAndRenderMyInfo();
   let queryString = window.location.search;
   let urlParams = new URLSearchParams(queryString);
-  let chatId = urlParams.get('chatId');
+  //let chatId = urlParams.get('chatId');
   let companionId = urlParams.get('id');
-  if (chatId && companionId) {
-    await selectChatHandler(null, chatId);
-  } else if(!chatId && companionId) {
-    await renderChatId();
+  const chatId = await findChatByUserId(companionId);
+  if (chatId[0]) {
+    await selectChatHandler(null, chatId[0].id);
+  } else {
+    await renderChatId(companionId);
   }
   await renderChats();
 }
@@ -64,13 +66,17 @@ function renderChatHeader(chatId, companionData) {
 /**
  * создания chatId если он отсутствует
  */
-async function renderChatId() {
+async function renderChatId(companionId) {
   const newPrivateChatId = await createNewChat(true);
-  const companionId = urlParams.get('id');
   const request1 = writeNewUserInChat(newPrivateChatId);
   const request2 = writeNewUserInChat(newPrivateChatId, companionId);
   if ((await request1) && (await request2)) {
     await selectChatHandler(null, newPrivateChatId);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    urlParams.set('chatId', newPrivateChatId);
+    const newUrl = window.location.pathname + '?' + urlParams.toString();
+    window.history.pushState({}, '', newUrl);
   }
 }
 
@@ -87,6 +93,7 @@ export async function renderChats() {
     const dateB = new Date(b.datetime);
     return dateB - dateA;
   });
+  console.log(jsonData)
   jsonData.forEach((element) => {
     const messageDate = new Date(element.datetime);
     const now = new Date();
@@ -206,7 +213,7 @@ export function renderMessage(message) {
         <div class="user_avatar user_avatar_small"></div>
         ${isMyMessage ? user : ''}
       </div>`;
-  scrollChatToBottom();
+  scrollChatToBottom('renderChats');
 }
 
 /**
@@ -235,17 +242,9 @@ function messageHandler(event) {
 export async function selectChatHandler(elem, chatId) {
   let companionData;
   if (elem === null) {
-    let companions = await findCompanionsData(chatId);
-    companions.forEach((user) => {
-      if (user.id.toString() !== localStorage.getItem('id')) {
-        companionData = {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          avatar: user.avatar,
-        };
-      }
-    });
+    let queryString = window.location.search;
+    let urlParams = new URLSearchParams(queryString);
+    companionData = await findUserById(urlParams.get('id'));
   } else {
     companionData = {
       id: elem.getAttribute('data-id'),
@@ -254,7 +253,6 @@ export async function selectChatHandler(elem, chatId) {
       avatar: elem.getAttribute('data-avatar'),
     };
   }
-
   //$('#messages_wrapper').style.backgroundImage = "url('./img/ChatbackG.png')";
   $('#messages_wrapper').innerHTML = `<div class="messages" id="messages">
   <!-- <div class="message from">
@@ -318,7 +316,7 @@ export async function selectChatHandler(elem, chatId) {
 /**
  * обработка клика для начала переписки
  */
-export async function startChatingHandler(event) {
+async function startChatingHandler(event) {
   const targetElement = event.target;
   if (!targetElement.classList.contains('openProfile')) {
     //добавлять в div класс openDialog и атрибут data-chatId или data-id="${user.id}" data-email="${user.email}"

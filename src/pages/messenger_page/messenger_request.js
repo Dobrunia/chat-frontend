@@ -62,13 +62,43 @@ export async function findCompanionsData(chatId) {
 }
 
 /**
+ * возвращает данные о пользователях в чате
+ */
+export async function findChatByUserId(userId) {
+  try {
+    const response = await $api.get(`/findChatByUserId/${userId}`);
+    return response.data;
+  } catch (error) {
+    // window.location.href = import.meta.env.VITE_SRC;
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
+ * поиск данных для страницы профиля
+ */
+export async function findUserById(userId) {
+  try {
+    const response = await $api.get(`/findUserById/${userId}`);
+    return response.data[0];
+  } catch (error) {
+    // window.location.href = import.meta.env.VITE_SRC;
+    console.log(error);
+    throw error;
+  }
+}
+
+/**
  * сохраняет сообщение в БД
  */
 export async function saveMessageToDb(message) {
-  $api
-    .post('/saveMessage', { message })
-    .then((response) => {
-      const data = response.data;
-    })
-    .catch((error) => console.log('Ошибка:', error));
+    try {
+      const response = await $api.post('/saveMessage', { message });
+      return response.data;
+    } catch (error) {
+      // window.location.href = import.meta.env.VITE_SRC;
+      console.log(error);
+      throw error;
+    }
 }

@@ -37,7 +37,7 @@ export async function findUserByName(userName) {
   return $api
     .get(`/findUserByName/${userName}`)
     .then((response) => response.data)
-    .catch((error) => (window.location.href = import.meta.env.VITE_SRC));
+    .catch((error) => console.log(error));
 }
 
 /**
