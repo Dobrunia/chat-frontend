@@ -354,7 +354,7 @@ body {
     max-height: 500px;
     height: max-content;
     top: 50px;
-    right: 0;
+    right: -2px;
     /* transform: translate(0, 50%); */
     display: flex;
     flex-flow: column nowrap;
