@@ -771,9 +771,11 @@ export async function renderUsersPosts(userId) {
   $('#nav_user_wall_wrapper_posts').innerHTML = '';
   for (const element of userPosts) {
     let content = '';
-    element.text
-      ? (content += `<div class="nav_user_wall_postTextarea">${element.text}</div>`)
-      : (content += '');
+    if (element.text) {
+      // Заменяем символы '\n' на переводы строк
+      const text = element.text.replace(/\\n/g, '<br>');
+      content += `<div class="nav_user_wall_postTextarea">${text}</div>`;
+    }
     element.photos && element.photos.data[0]
       ? (content += `<div class="nav_user_wall_post_imgWrapper"><img src="data:image/png;base64,${element.photosString}" alt="" onclick="openModal(this)" /></div>`)
       : (content += '');
