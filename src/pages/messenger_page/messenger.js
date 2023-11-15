@@ -18,7 +18,8 @@ async function start() {
   const chatId = await findChatByUserId(companionId);
   if (chatId[0]) {
     await selectChatHandler(null, chatId[0].id);
-  } else {
+  }
+  if (companionId && !chatId[0]) {
     await renderChatId(companionId);
   }
   await renderChats();
@@ -93,7 +94,6 @@ export async function renderChats() {
     const dateB = new Date(b.datetime);
     return dateB - dateA;
   });
-  console.log(jsonData)
   jsonData.forEach((element) => {
     const messageDate = new Date(element.datetime);
     const now = new Date();
@@ -151,12 +151,14 @@ export async function renderChats() {
   openDialogs.forEach((dialog) => {
     //dialog.addEventListener('click', startChatingHandler);
     dialog.addEventListener('click', async () => {
+      let userId = dialog.getAttribute('data-id');
       let chatId = dialog.getAttribute('data-chatId');
       // window.location.href = `${
       //   import.meta.env.VITE_SRC
       // }pages/messenger_page/messenger.html?chatId=${chatId}`;
       let queryString = window.location.search;
       let urlParams = new URLSearchParams(queryString);
+      urlParams.set('id', userId);
       urlParams.set('chatId', chatId);
       let newUrl = window.location.pathname + '?' + urlParams.toString();
       window.history.pushState({}, '', newUrl);
