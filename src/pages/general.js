@@ -348,7 +348,7 @@ function renderUsers(users_response_result) {
         user.id
       }" data-username="${user.username}" data-email="${
         user.email
-      }" data-avatar="${user.avatar}" data-chatid="${user.chatId}" title="${
+      }" data-avatar="${user.avatar}" data-chatid="${null}" title="${
         user.username
       }">
       <div class="user_avatar user_avatar_small">
@@ -365,7 +365,7 @@ function renderUsers(users_response_result) {
       </div>
       <a href="${
         import.meta.env.VITE_SRC
-      }pages/messenger_page/messenger.html?id=${user.id}&chatId=${user.chatId}" class="chat_id_href element_span"><span class="">${
+      }pages/messenger_page/messenger.html?id=${user.id}&chatId=${null}" class="chat_id_href element_span"><span class="">${
         user.username
       }</span></a>
     </div>`;
