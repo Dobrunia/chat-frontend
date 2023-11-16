@@ -1,6 +1,7 @@
 import './style.css';
 import { $api } from './http/api.ts';
 import { validation } from './validation.ts';
+import { genSaltSync, hashSync } from 'bcrypt-ts';
 
 const $ = (element) => document.querySelector(element);
 /**

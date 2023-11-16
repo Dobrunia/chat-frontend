@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <include src="../../html_components/default_css_links.html"></include>
+    <link rel="stylesheet" type="text/css" href="./friends.css" />
+  </head>
+  <body>
+    <div class="nav_wrapper">
+      <div class="nav_elements" id="nav_elements">
+        <include src="../../html_components/header.html"></include>
+        <include src="../../html_components/announcement.html"></include>
+        <include src="../../html_components/confirmation.html"></include>
+        <div
+          class="nav_content fallback back-row-toggle splat-toggle"
+          id="nav_content"
+        >
+          <include src="../../html_components/navigation.html"></include>
+          <div class="nav_sections" id="nav_sections">
+            <div class="nav_friends_wrapper">
+              <div class="friends_column column">
+                <div class="input_submit">
+                  <input
+                    type="text"
+                    class="column_input mod1"
+                    id="friends_input"
+                    placeholder="Поиск по моим друзьям"
+                  />
+                </div>
+                <div class="column_users">
+                  <div class="users_elements" id="friends">
+                    <!-- <a class="user_v1">
+                      <img class="user_v1_img" src="../../img/1.jpg" alt="" />
+                      <div>
+                        <div class="user_v1_name">Dobrunia</div>
+                        <div class="user_v1_info">wegfewfg wefwef</div>
+                      </div>
+                    </a> -->
+                  </div>
+                  <div class="animation_wrapper none" id="friends_anim">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="all_users_column column">
+                <div class="input_submit">
+                  <input
+                    type="text"
+                    class="column_input mod2"
+                    id="all_users_input"
+                    placeholder="Поиск по всем пользователям"
+                  />
+                  <!-- <button class="column_submit">поиск</button> -->
+                </div>
+                <div class="column_users">
+                  <div class="users_elements" id="all_users">
+                    <!-- <a class="user_v1">
+                      <img class="user_v1_img" src="../../img/1.jpg" alt="" />
+                      <div>
+                        <div class="user_v1_name">asrghwrgwr gawregwrgwer</div>
+                        <div class="user_v1_info">wegfewfg wefwef</div>
+                      </div>
+                    </a> -->
+                  </div>
+                  <div class="animation_wrapper none" id="all_users_anim">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <include src="../../html_components/spinner.html"></include>
+  </body>
+  <script type="module" src="../general_handler.js" defer></script>
+  <script type="module" src="./friends.js" defer></script>
+  <script type="module" src="./friends_handler.js" defer></script>
+</html>

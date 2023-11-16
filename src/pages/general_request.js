@@ -20,14 +20,27 @@ export function getAllFriendsInfo(userId) {
     .catch((error) => (window.location.href = import.meta.env.VITE_SRC));
 }
 
+export async function getAllMyFriends() {
+  try {
+    const response = await $api.get('/getAllMyFriends');
+    return response.data;
+  } catch (error) {
+    window.location.href = import.meta.env.VITE_SRC;
+    throw error;
+  }
+}
+
 /**
  * получение всех пользователей с БД
  */
-function getAllUsers() {
-  return $api
-    .get('/allUsers')
-    .then((response) => response.data)
-    .catch((error) => (window.location.href = import.meta.env.VITE_SRC));
+export async function getAllUsers() {
+    try {
+      const response = await $api.get('/allUsers');
+      return response.data;
+    } catch (error) {
+      window.location.href = import.meta.env.VITE_SRC;
+      throw error;
+    }
 }
 
 /**

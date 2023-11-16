@@ -15,8 +15,8 @@ body {
 
 /* для Chrome/Edge/Safari */
 *::-webkit-scrollbar {
-    height: 12px;
-    width: 12px;
+    height: 5px;
+    width: 5px;
 }
 
 *::-webkit-scrollbar-track {
@@ -1214,5 +1214,36 @@ body {
     75% {
         top: 50%;
         left: 0;
+    }
+}
+
+.glitch-text {
+    position: relative;
+    animation: glitch-animation 2s infinite;
+}
+
+@keyframes glitch-animation {
+    0% {
+        transform: translate(0);
+    }
+
+    20% {
+        transform: translate(-5px, 5px);
+    }
+
+    40% {
+        transform: translate(5px, -5px);
+    }
+
+    60% {
+        transform: translate(-5px, 5px);
+    }
+
+    80% {
+        transform: translate(5px, -5px);
+    }
+
+    100% {
+        transform: translate(0);
     }
 }
