@@ -365,7 +365,9 @@ function renderUsers(users_response_result) {
       </div>
       <a href="${
         import.meta.env.VITE_SRC
-      }pages/messenger_page/messenger.html?id=${user.id}&chatId=${null}" class="chat_id_href element_span"><span class="">${
+      }pages/messenger_page/messenger.html?id=${
+        user.id
+      }&chatId=${null}" class="chat_id_href element_span"><span class="">${
         user.username
       }</span></a>
     </div>`;
@@ -411,6 +413,43 @@ export function escapeSql(text) {
       case '%':
       case '_':
         return '\\' + char; // экранирование специальных символов
+    }
+  });
+}
+
+export function unescapeHtml(text) {
+  const map = {
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&#039;': "'",
+  };
+  return text.replace(/&(amp|lt|gt|quot|#039);/g, function (m) {
+    return map[m];
+  });
+}
+export function unescapeSql(text) {
+  return text.replace(/\\([0x08\x09\x1a\n\r"'\\%_])/g, function (match, char) {
+    switch (char) {
+      case '0':
+        return '\0';
+      case 'b':
+        return '\x08';
+      case 't':
+        return '\x09';
+      case 'z':
+        return '\x1a';
+      case 'n':
+        return '\n';
+      case 'r':
+        return '\r';
+      case '"':
+      case "'":
+      case '\\':
+      case '%':
+      case '_':
+        return char;
     }
   });
 }

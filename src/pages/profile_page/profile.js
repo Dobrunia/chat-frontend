@@ -21,6 +21,7 @@ import {
   escapeSql,
   getCurrentDate,
   askConfirmationFromUser,
+  unescapeSql,
 } from '../general.js';
 
 const $ = (element) => document.querySelector(element);
@@ -91,7 +92,7 @@ async function renderProfilePage(userId) {
     userDATA.id
   }" data-username="${userDATA.username}" data-email="${
     userDATA.email
-  }" data-avatar="${userDATA.avatar}" data-chatid="${
+  }" data-avatar="${unescapeSql(userDATA.avatar)}" data-chatid="${
     userDATA.chatId
   }" title="Открыть переписку с ${userDATA.username}">Написать</div></a>`;
   if (userDATA.id.toString() === localStorage.getItem('id')) {
@@ -607,7 +608,7 @@ export async function renderUsersFriends(userId) {
         friend.id
       }">
         <img class="user_avatar_img openProfile" src="${
-          friend.avatar
+          unescapeSql(friend.avatar)
         }" data-id="${friend.id}" alt=""/>
         <div class="status"></div>
         </a>
@@ -697,7 +698,7 @@ export function changePhoto() {
         const data = await savePhoto(photoUrl);
         if (data) {
           $('#photoUrl').value = '';
-          localStorage.setItem('avatar', photoUrl);
+          localStorage.setItem('avatar', unescapeSql(photoUrl));
           await renderUserProfilePage();
         }
       }
@@ -773,7 +774,22 @@ export async function renderUsersPosts(userId) {
     let content = '';
     if (element.text) {
       // Заменяем символы '\n' на переводы строк
-      const text = element.text.replace(/\\n/g, '<br>');
+      let text = element.text.replace(/\\n/g, '<br>');
+      const videoLinks = text.match(/https?:\/\/[^ ]+/g);
+      if (videoLinks) {
+        // Iterate over all the found video links and replace them with video preview elements
+        for (const videoLink of videoLinks) {
+          // Replace the video link with a video preview element
+          text = text.replace(
+            videoLink,
+            `<div class="video-preview" style="display: inline-block;">
+              <a href="${unescapeSql(videoLink)}" target="_blank">
+                Ссылка на видео
+              </a>
+            </div>`,
+          );
+        }
+      }
       content += `<div class="nav_user_wall_postTextarea">${text}</div>`;
     }
     element.photos && element.photos.data[0]
@@ -800,7 +816,7 @@ export async function renderUsersPosts(userId) {
             }">
               <img
                 class="user_avatar_img openProfile"
-                src="${element.avatar}"
+                src="${unescapeSql(element.avatar)}"
                 data-id="${element.id}"
                 alt=""
               />
