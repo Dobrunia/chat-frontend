@@ -782,7 +782,7 @@ export async function renderUsersPosts(userId) {
           text = text.replace(
             videoLink,
             `<div class="video-preview" style="display: inline-block;">
-              <a href="${unescapeSql(videoLink)}" target="_blank">
+              <a href="${unescapeSql(videoLink)}" style="color: var(--attention); text-decoration: underline;" target="_blank">
                 Ссылка на видео
               </a>
             </div>`,
