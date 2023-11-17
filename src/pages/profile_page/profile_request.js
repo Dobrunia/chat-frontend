@@ -8,8 +8,7 @@ export async function findUserById(userId) {
     const response = await $api.get(`/findUserById/${userId}`);
     return response.data[0];
   } catch (error) {
-    // window.location.href = import.meta.env.VITE_SRC;
-    console.log(error);
+    window.location.href = import.meta.env.VITE_SRC;
     throw error;
   }
 }

@@ -69,8 +69,8 @@ export async function findChatByUserId(userId) {
     const response = await $api.get(`/findChatByUserId/${userId}`);
     return response.data;
   } catch (error) {
-    // window.location.href = import.meta.env.VITE_SRC;
-    console.log(error);
+    window.location.href = import.meta.env.VITE_SRC;
+    //console.log(error);
     throw error;
   }
 }
@@ -83,8 +83,8 @@ export async function findUserById(userId) {
     const response = await $api.get(`/findUserById/${userId}`);
     return response.data[0];
   } catch (error) {
-    // window.location.href = import.meta.env.VITE_SRC;
-    console.log(error);
+    window.location.href = import.meta.env.VITE_SRC;
+    // console.log(error);
     throw error;
   }
 }
