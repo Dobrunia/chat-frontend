@@ -615,7 +615,7 @@ export async function renderUsersFriends(userId) {
       numberOfFriends += 1;
     }),
   );
-  let content = `Друзья <span>${numberOfFriends}</span><div class="nav_friends_wrapper">${friends}</div>`;
+  let content = `<a href="../../pages/friends_page/friends.html">Друзья</a> <span>${numberOfFriends}</span><div class="nav_friends_wrapper">${friends}</div>`;
   $('#nav_all_friends').innerHTML = content;
 }
 
@@ -786,6 +786,7 @@ export async function renderUsersPosts(userId) {
                 Ссылка на видео
               </a>
             </div>`,
+            //`<iframe width="560" height="315" src="${unescapeSql(videoLink)}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`,
           );
         }
       }
