@@ -51,10 +51,10 @@ export async function getAndRenderMyInfo() {
   }
   localStorage.setItem('username', myDATA.username);
   $('#my_name').innerHTML = myDATA.username;
-  localStorage.setItem('avatar', myDATA.avatar);
+  localStorage.setItem('avatar', unescapeSql(myDATA.avatar));
   $(
     '#my_avatar',
-  ).innerHTML = `<img class="user_avatar_img" src="${myDATA.avatar}" alt="фото профиля" /><div class="status"></div>`;
+  ).innerHTML = `<img class="user_avatar_img" src="${unescapeSql(myDATA.avatar)}" alt="фото профиля" /><div class="status"></div>`;
   await renderNotifications();
 }
 
@@ -291,7 +291,7 @@ export async function renderNotifications() {
       }">
         <img
         class="user_avatar_img openProfile"
-        src="${element.avatar}"
+        src="${unescapeSql(element.avatar)}"
         data-id="${element.user_id}"
         alt=""
         />
@@ -348,7 +348,7 @@ function renderUsers(users_response_result) {
         user.id
       }" data-username="${user.username}" data-email="${
         user.email
-      }" data-avatar="${user.avatar}" data-chatid="${null}" title="${
+      }" data-avatar="${unescapeSql(user.avatar)}" data-chatid="${null}" title="${
         user.username
       }">
       <div class="user_avatar user_avatar_small">
@@ -358,7 +358,7 @@ function renderUsers(users_response_result) {
           user.id
         }">
           <img class="user_avatar_img openProfile" src="${
-            user.avatar
+            unescapeSql(user.avatar)
           }" alt="" data-id="${user.id}"/>
           <div class="status"></div>
         </a>
