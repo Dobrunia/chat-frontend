@@ -82,7 +82,6 @@ export function hideUserInfoEditWindow() {
  * рендер верстки страницы пользователя
  */
 async function renderProfilePage(userId) {
-  console.log('renderProfilePage');
   const userDATA = await findUserById(userId);
   let friendBtn = `<a href="${
     import.meta.env.VITE_SRC
