@@ -52,9 +52,9 @@ export async function getAndRenderMyInfo() {
   localStorage.setItem('username', myDATA.username);
   $('#my_name').innerHTML = myDATA.username;
   localStorage.setItem('avatar', unescapeSql(myDATA.avatar));
-  $(
-    '#my_avatar',
-  ).innerHTML = `<img class="user_avatar_img" src="${unescapeSql(myDATA.avatar)}" alt="фото профиля" /><div class="status"></div>`;
+  $('#my_avatar').innerHTML = `<img class="user_avatar_img" src="${unescapeSql(
+    myDATA.avatar,
+  )}" alt="фото профиля" /><div class="status"></div>`;
   await renderNotifications();
 }
 
@@ -306,6 +306,29 @@ export async function renderNotifications() {
       element.user_id
     }" data-status='rejected'>Отказать</div><br><br><br>`;
     }
+    if (element.user_id_to) {
+      notificationsNumber += 1;
+      content += `<a href="${
+        import.meta.env.VITE_SRC +
+        'pages/messenger_page/messenger.html?id=' +
+        element.user_id_from
+      }&chatId=${null}">
+    <br>У Вас новое сообщение от<br>
+    <div class="user_avatar user_avatar_small notification_user" title="">
+      <img
+      class="user_avatar_img openProfile"
+      src="${unescapeSql(element.avatar)}"
+      data-id="${element.user_id_from}"
+      alt="${element.user_id}"
+      />
+  </div><span class="friendName">${
+    element.username
+  }</span><br><span style="font-style: italic;">${
+        element.message_content
+      }</span>
+  <br>
+    </a>`;
+    }
   });
 
   if (notificationsNumber === 0) {
@@ -348,18 +371,18 @@ function renderUsers(users_response_result) {
         user.id
       }" data-username="${user.username}" data-email="${
         user.email
-      }" data-avatar="${unescapeSql(user.avatar)}" data-chatid="${null}" title="${
-        user.username
-      }">
+      }" data-avatar="${unescapeSql(
+        user.avatar,
+      )}" data-chatid="${null}" title="${user.username}">
       <div class="user_avatar user_avatar_small">
         <a href="${
           import.meta.env.VITE_SRC +
           'pages/profile_page/profile.html?id=' +
           user.id
         }">
-          <img class="user_avatar_img openProfile" src="${
-            unescapeSql(user.avatar)
-          }" alt="" data-id="${user.id}"/>
+          <img class="user_avatar_img openProfile" src="${unescapeSql(
+            user.avatar,
+          )}" alt="" data-id="${user.id}"/>
           <div class="status"></div>
         </a>
       </div>
