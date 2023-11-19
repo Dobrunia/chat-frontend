@@ -25,7 +25,7 @@ export async function handlerMessageEvent(event) {
     datetime,
     content: escapeSql(escapeHtml(event.detail.message.content)),
   };
-  await saveMessageToDb(message);
+  //await saveMessageToDb(message);
   renderMessage(message);
   await renderChats();
 }

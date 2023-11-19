@@ -22,6 +22,7 @@ import {
   getCurrentDate,
   askConfirmationFromUser,
   unescapeSql,
+  initSocketConnection,
 } from '../general.js';
 
 const $ = (element) => document.querySelector(element);
@@ -30,6 +31,7 @@ let urlParams = new URLSearchParams(queryString);
 async function start() {
   $('#spinner_wrapper').classList.remove('none');
   await renderUserProfilePage();
+  initSocketConnection(localStorage.getItem('id'));
   $('#spinner_wrapper').classList.add('none');
 }
 start();
@@ -357,7 +359,7 @@ async function renderProfilePage(userId) {
       <div class="nav_profile_avatar">
         <img
           class="nav_profile_avatar_img"
-          src="${userDATA.avatar}"
+          src="${unescapeSql(userDATA.avatar)}"
           alt=""
         />
         <div class="nav_status"></div>
@@ -606,9 +608,9 @@ export async function renderUsersFriends(userId) {
         'pages/profile_page/profile.html?id=' +
         friend.id
       }">
-        <img class="user_avatar_img openProfile" src="${
-          unescapeSql(friend.avatar)
-        }" data-id="${friend.id}" alt=""/>
+        <img class="user_avatar_img openProfile" src="${unescapeSql(
+          friend.avatar,
+        )}" data-id="${friend.id}" alt=""/>
         <div class="status"></div>
         </a>
       </div>`;
@@ -667,10 +669,8 @@ export async function renderUserProfilePage() {
   await renderNotifications();
 
   $('#my_name').innerHTML = localStorage.getItem('username');
-  $(
-    '#my_avatar',
-  ).innerHTML = `<img class="user_avatar_img" src="${localStorage.getItem(
-    'avatar',
+  $('#my_avatar').innerHTML = `<img class="user_avatar_img" src="${unescapeSql(
+    localStorage.getItem('avatar'),
   )}" alt="фото профиля" /><div class="status"></div>`;
 }
 
@@ -782,7 +782,9 @@ export async function renderUsersPosts(userId) {
           text = text.replace(
             videoLink,
             `<div class="video-preview" style="display: inline-block;">
-              <a href="${unescapeSql(videoLink)}" style="color: var(--attention); text-decoration: underline;" target="_blank">
+              <a href="${unescapeSql(
+                videoLink,
+              )}" style="color: var(--attention); text-decoration: underline;" target="_blank">
                 Ссылка на видео
               </a>
             </div>`,

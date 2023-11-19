@@ -3,9 +3,24 @@ import {
   getMyInfo,
   getNotifications,
   responseToFriendRequest,
+  getUsersChats,
 } from './general_request.js';
+import socketService from '../socket/socket-service.ts';
 
 const $ = (element) => document.querySelector(element);
+
+/**
+ * soket
+ */
+export function initSocketConnection(userId) {
+  socketService.connectUserToSocketServer(userId);
+  getUsersChats().then((existingChats) => {
+    existingChats.forEach((chat) => {
+      socketService.startChat(chat.chatId);
+    });
+  });
+}
+
 /**
  * получить свои данные настройки и тд себя как пользователя
  */
@@ -56,6 +71,7 @@ export async function getAndRenderMyInfo() {
     myDATA.avatar,
   )}" alt="фото профиля" /><div class="status"></div>`;
   await renderNotifications();
+  initSocketConnection(myDATA.id);
 }
 
 /* rain */
@@ -350,7 +366,7 @@ export async function renderNotifications() {
         btn.getAttribute('data-status'),
       );
       if (data) {
-        renderNotifications();
+        await renderNotifications();
       }
     });
   });

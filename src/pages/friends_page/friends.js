@@ -1,4 +1,4 @@
-import { getAndRenderMyInfo } from '../general.js';
+import { getAndRenderMyInfo, unescapeSql } from '../general.js';
 import { getAllUsers, getAllMyFriends } from '../general_request.js';
 
 let friendsArray;
@@ -28,7 +28,7 @@ function renderUsers(where, usersArray) {
       import.meta.env.VITE_SRC + 'pages/profile_page/profile.html?id=' + user.id
     }" 
     class="user_v1" title="${user.username}">
-    <img class="user_v1_img" src="${user.avatar}" alt="" />
+    <img class="user_v1_img" src="${unescapeSql(user.avatar)}" alt="" />
     <div>
       <div class="user_v1_name ${user.permission === 3 ? 'glitch-text' : ''}">${
       user.username

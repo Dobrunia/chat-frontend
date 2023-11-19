@@ -11,6 +11,16 @@ export async function getNotifications() {
 }
 
 /**
+ * получение чатов пользователя
+ */
+export async function getUsersChats() {
+  return $api
+    .get(`/returnActiveChats`)
+    .then((response) => { return response.data})
+    .catch((error) => console.log('Ошибка:', error));
+}
+
+/**
  * возвращает всех друзей пользователя с бд с их данными
  */
 export function getAllFriendsInfo(userId) {

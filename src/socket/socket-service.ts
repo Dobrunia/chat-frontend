@@ -9,13 +9,16 @@ export class SocketService {
   //   });
   // }
 
-  startChat(chatId: string, userId: string) {
-    socket.auth = { chatId, userId };
+  connectUserToSocketServer(userId: string) {
+    socket.auth = { userId };
     socket.connect();
-    //console.log('зашли в чат ' + userId + ' подключился');
     socket.on('user connected', (socket) => {
-      console.log(socket);
-      // console.log('в чат зашёл ' + (socket as any).userId);
+      //console.log(socket);
+      // TODO: handle status connected
+      //event do
+    });   
+    socket.on('user disconnected', (socket) => {
+      // TODO: handle status disconnected
     });
     socket.on('private message', (message) => {
       let event = new CustomEvent('newMessage', {
@@ -25,7 +28,18 @@ export class SocketService {
         composed: false,
       });
       document.dispatchEvent(event);
-    });
+      // Отправка push-уведомления
+      if (Notification.permission === 'granted' && message.from.toString() !== localStorage.getItem('id')) {
+        const notification = new Notification('Новое сообщение', {
+          body: 'Вы получили новое сообщение',
+          // Дополнительные параметры, если необходимо
+        });
+      }
+    });   
+  }
+
+  startChat(chatId: string) {
+    socket.emit('join', chatId);    
   }
 
   sendMessage(content: string, chatId: string, userId: string) {
@@ -33,18 +47,18 @@ export class SocketService {
       content,
       to: chatId,
     });
-    let message = {
-      chatId,
-      content,
-      from: userId,
-    };
-    let event = new CustomEvent('newMessage', {
-      detail: { message },
-      bubbles: true,
-      cancelable: true,
-      composed: false,
-    });
-    document.dispatchEvent(event);
+    // let message = {
+    //   chatId,
+    //   content,
+    //   from: userId,
+    // };
+    // let event = new CustomEvent('newMessage', {
+    //   detail: { message },
+    //   bubbles: true,
+    //   cancelable: true,
+    //   composed: false,
+    // });
+    // document.dispatchEvent(event);
   }
 }
 export default new SocketService();

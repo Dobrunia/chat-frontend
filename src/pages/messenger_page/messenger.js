@@ -1,13 +1,13 @@
 import socketService from '../../socket/socket-service.ts';
 import {
-  getUsersChats,
   getMessages,
   createNewChat,
   writeNewUserInChat,
   findUserById,
   findChatByUserId,
 } from './messenger_request.js';
-import { getAndRenderMyInfo } from '../general.js';
+import { getUsersChats } from '../general_request.js';
+import { getAndRenderMyInfo, unescapeSql } from '../general.js';
 
 const $ = (element) => document.querySelector(element);
 async function start() {
@@ -57,7 +57,7 @@ function renderChatHeader(chatId, companionData) {
             companionData.id
           }">
             <img id="user_header" class="user_avatar_img openProfile" src="${
-              companionData.avatar
+              unescapeSql(companionData.avatar)
             }" alt="" data-id="${companionData.id}" data-username="${
     companionData.username
   }" title="${companionData.username}"/>
@@ -75,6 +75,7 @@ async function renderChatId(companionId) {
   const request2 = writeNewUserInChat(newPrivateChatId, companionId);
   if ((await request1) && (await request2)) {
     await selectChatHandler(null, newPrivateChatId);
+    socketService.startChat(newPrivateChatId, localStorage.getItem('id'));
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     urlParams.set('chatId', newPrivateChatId);
@@ -124,7 +125,7 @@ export async function renderChats() {
               'pages/profile_page/profile.html?id=' +
               element.userId
             }">
-              <img class="user_avatar_img" src="${element.avatar}" alt=""/>
+              <img class="user_avatar_img" src="${unescapeSql(element.avatar)}" alt=""/>
               <div class="status"></div>
             </a>
           </div>
@@ -227,7 +228,7 @@ function messageHandler(event) {
   event.preventDefault();
   // const chatID = 'lents@mail.ru';
   try {
-    const chatID = $('#data_chatID').getAttribute('data-chatID');
+    const chatID = $('#data_chatID').getAttribute('data-chatid');
     const content = $('#message_text').value.trim();
     if (!chatID || content == '') {
       announcementMessage('Не отправляйте пустые сообщения');
@@ -305,7 +306,6 @@ export async function selectChatHandler(elem, chatId) {
   />
 </form>`;
   $('#messages').innerHTML = '';
-  socketService.startChat(chatId, localStorage.getItem('id'));
   /**
    * отправка сообщений по кнопке
    */

@@ -38,16 +38,6 @@ export async function writeNewUserInChat(chatId, userId) {
 }
 
 /**
- * получение чатов пользователя
- */
-export async function getUsersChats() {
-  return $api
-    .get(`/returnActiveChats`)
-    .then((response) => response.data)
-    .catch((error) => console.log('Ошибка:', error));
-}
-
-/**
  * возвращает данные о пользователях в чате
  */
 export async function findCompanionsData(chatId) {
