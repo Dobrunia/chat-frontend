@@ -539,12 +539,12 @@ export function announcementMessage(text) {
 }
 
 export function checkIfPast15Minutes(dateString) {
-  var currentDate = new Date();  // Текущая дата и время
-  var inputDate = new Date(dateString);  // Входная дата и время
-  var diffInMilliseconds = currentDate - inputDate;  // Разница в миллисекундах
+  let currentDate = new Date();  // Текущая дата и время
+  let inputDate = new Date(dateString);  // Входная дата и время
+  let diffInMilliseconds = currentDate - inputDate;  // Разница в миллисекундах
 
   // Переводим разницу в минуты
-  var diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
-
+  let diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
+  console.log(diffInMinutes > 15)
   return diffInMinutes > 15;
 }
