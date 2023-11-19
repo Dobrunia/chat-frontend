@@ -26,6 +26,7 @@ export class SocketService {
     });   
     socket.on('user disconnected', (socket) => {
       // TODO: handle status disconnected
+      console.log(socket);
     });
     socket.on('private message', (message) => {
       let event = new CustomEvent('newMessage', {
@@ -36,12 +37,12 @@ export class SocketService {
       });
       document.dispatchEvent(event);
       // Отправка push-уведомления
-      if (Notification.permission === 'granted' && message.from.toString() !== localStorage.getItem('id')) {
-        const notification = new Notification('Новое сообщение', {
-          body: message.content,
-          // Дополнительные параметры, если необходимо
-        });
-      }
+      // if (Notification.permission === 'granted' && message.from.toString() !== localStorage.getItem('id')) {
+      //   const notification = new Notification('Новое сообщение', {
+      //     body: message.content,
+      //     // Дополнительные параметры, если необходимо
+      //   });
+      // }
     });   
   }
 
@@ -49,7 +50,7 @@ export class SocketService {
     socket.emit('join', chatId);    
   }
 
-  sendMessage(content: string, chatId: string, userId: string) {
+  sendMessage(content: string, chatId: string) {
     socket.emit('private message', {
       content,
       to: chatId,

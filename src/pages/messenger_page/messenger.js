@@ -233,7 +233,7 @@ function messageHandler(event) {
     if (!chatID || content == '') {
       announcementMessage('Не отправляйте пустые сообщения');
     } else {
-      socketService.sendMessage(content, chatID, localStorage.getItem('id'));
+      socketService.sendMessage(content, chatID);
       $('#message_text').value = '';
     }
   } catch (e) {
