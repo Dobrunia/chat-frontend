@@ -6,6 +6,7 @@ import {
   getUsersChats,
 } from './general_request.js';
 import socketService from '../socket/socket-service.ts';
+import { DateTime } from 'luxon';
 
 const $ = (element) => document.querySelector(element);
 
@@ -69,7 +70,9 @@ export async function getAndRenderMyInfo() {
   localStorage.setItem('avatar', unescapeSql(myDATA.avatar));
   $('#my_avatar').innerHTML = `<img class="user_avatar_img" src="${unescapeSql(
     myDATA.avatar,
-  )}" alt="фото профиля" /><div class="status ${'online_'+ myDATA.id} ${checkIfPast15Minutes(myDATA.status) ? 'statusOffline' : 'statusOnline'}"></div>`;
+  )}" alt="фото профиля" /><div class="status ${'online_' + myDATA.id} ${
+    checkIfPast15Minutes(myDATA.status) ? 'statusOffline' : 'statusOnline'
+  }"></div>`;
   await renderNotifications();
   initSocketConnection(myDATA.id);
 }
@@ -399,7 +402,9 @@ function renderUsers(users_response_result) {
           <img class="user_avatar_img openProfile" src="${unescapeSql(
             user.avatar,
           )}" alt="" data-id="${user.id}"/>
-          <div class="status ${'online_'+ user.id} ${checkIfPast15Minutes(user.status) ? 'statusOffline' : 'statusOnline'}"></div>
+          <div class="status ${'online_' + user.id} ${
+        checkIfPast15Minutes(user.status) ? 'statusOffline' : 'statusOnline'
+      }"></div>
         </a>
       </div>
       <a href="${
@@ -539,12 +544,11 @@ export function announcementMessage(text) {
 }
 
 export function checkIfPast15Minutes(dateString) {
-  let currentDate = new Date();  // Текущая дата и время
-  let inputDate = new Date(dateString);  // Входная дата и время
-  let diffInMilliseconds = currentDate - inputDate;  // Разница в миллисекундах
+  const currentTime = DateTime.now().setZone('Europe/Moscow');
+  const targetTime = DateTime.fromISO(dateString).setZone('Europe/Moscow');
 
-  // Переводим разницу в минуты
-  let diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
-  console.log(diffInMinutes > 15)
-  return diffInMinutes > 15;
+  const timeDifference = currentTime.diff(targetTime, 'minutes').toObject().minutes;
+  console.log(timeDifference)
+  console.log(targetTime)
+  return dateString ? timeDifference > 15 : true;
 }
