@@ -75,7 +75,7 @@ async function renderChatId(companionId) {
   const request2 = writeNewUserInChat(newPrivateChatId, companionId);
   if ((await request1) && (await request2)) {
     await selectChatHandler(null, newPrivateChatId);
-    socketService.startChat(newPrivateChatId, localStorage.getItem('id'));
+    socketService.startChat(newPrivateChatId);
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     urlParams.set('chatId', newPrivateChatId);
@@ -98,7 +98,6 @@ export async function renderChats() {
     return dateB - dateA;
   });
   jsonData.forEach((element) => {
-    console.log(element)
     const messageDate = new Date(element.datetime);
     const now = new Date();
     const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);

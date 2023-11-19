@@ -16,13 +16,13 @@ export class SocketService {
       //console.log(socket);
       // TODO: handle status connected
       //event do
-      let event = new CustomEvent('user online', {
+      let event2 = new CustomEvent('user online', {
         detail: { id: socket.userId },
         bubbles: true,
         cancelable: true,
         composed: false,
       });
-      document.dispatchEvent(event);
+      document.dispatchEvent(event2);
     });   
     socket.on('user disconnected', (socket) => {
       // TODO: handle status disconnected
