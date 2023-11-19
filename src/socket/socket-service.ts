@@ -31,7 +31,7 @@ export class SocketService {
       // Отправка push-уведомления
       if (Notification.permission === 'granted' && message.from.toString() !== localStorage.getItem('id')) {
         const notification = new Notification('Новое сообщение', {
-          body: 'Вы получили новое сообщение',
+          body: message.content,
           // Дополнительные параметры, если необходимо
         });
       }
