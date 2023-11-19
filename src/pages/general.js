@@ -69,7 +69,7 @@ export async function getAndRenderMyInfo() {
   localStorage.setItem('avatar', unescapeSql(myDATA.avatar));
   $('#my_avatar').innerHTML = `<img class="user_avatar_img" src="${unescapeSql(
     myDATA.avatar,
-  )}" alt="фото профиля" /><div class="status"></div>`;
+  )}" alt="фото профиля" /><div class="status ${'online_'+ myDATA.id} ${checkIfPast15Minutes(myDATA.status) ? 'statusOffline' : 'statusOnline'}"></div>`;
   await renderNotifications();
   initSocketConnection(myDATA.id);
 }
@@ -399,7 +399,7 @@ function renderUsers(users_response_result) {
           <img class="user_avatar_img openProfile" src="${unescapeSql(
             user.avatar,
           )}" alt="" data-id="${user.id}"/>
-          <div class="status"></div>
+          <div class="status ${'online_'+ user.id} ${checkIfPast15Minutes(user.status) ? 'statusOffline' : 'statusOnline'}"></div>
         </a>
       </div>
       <a href="${
@@ -536,4 +536,15 @@ export function announcementMessage(text) {
   $('#announcement_text').innerHTML = '';
   $('#announcement_text').innerHTML = `${text}`;
   showAnnouncementMenu();
+}
+
+export function checkIfPast15Minutes(dateString) {
+  var currentDate = new Date();  // Текущая дата и время
+  var inputDate = new Date(dateString);  // Входная дата и время
+  var diffInMilliseconds = currentDate - inputDate;  // Разница в миллисекундах
+
+  // Переводим разницу в минуты
+  var diffInMinutes = Math.floor(diffInMilliseconds / (1000 * 60));
+
+  return diffInMinutes > 15;
 }

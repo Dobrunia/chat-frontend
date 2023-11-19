@@ -930,8 +930,12 @@ body {
     transform-origin: center;
 }
 
-.status {
-    background-color: green;
+.statusOffline {
+    background-color: #656565;
+}
+
+.statusOnline {
+    background-color: #4BB34B;
 }
 
 .user:hover {

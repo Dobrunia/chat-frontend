@@ -7,7 +7,7 @@ import {
   findChatByUserId,
 } from './messenger_request.js';
 import { getUsersChats } from '../general_request.js';
-import { getAndRenderMyInfo, unescapeSql } from '../general.js';
+import { getAndRenderMyInfo, unescapeSql, checkIfPast15Minutes } from '../general.js';
 
 const $ = (element) => document.querySelector(element);
 async function start() {
@@ -61,7 +61,7 @@ function renderChatHeader(chatId, companionData) {
             }" alt="" data-id="${companionData.id}" data-username="${
     companionData.username
   }" title="${companionData.username}"/>
-            <div class="status"></div>
+            <div class="status ${'online_'+ companionData.id} ${checkIfPast15Minutes(companionData.status) ? 'statusOffline' : 'statusOnline'}"></div>
             </a>
           </div>`;
 }
@@ -98,6 +98,7 @@ export async function renderChats() {
     return dateB - dateA;
   });
   jsonData.forEach((element) => {
+    console.log(element)
     const messageDate = new Date(element.datetime);
     const now = new Date();
     const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -126,7 +127,7 @@ export async function renderChats() {
               element.userId
             }">
               <img class="user_avatar_img" src="${unescapeSql(element.avatar)}" alt=""/>
-              <div class="status"></div>
+              <div class="status ${'online_'+ element.userId} ${checkIfPast15Minutes(element.status) ? 'statusOffline' : 'statusOnline'}"></div>
             </a>
           </div>
           <div class="user_info">
@@ -203,7 +204,6 @@ export function renderMessage(message) {
       }" data-id="${
     isMyMessage ? localStorage.getItem('id') : message.sendBy
   }" alt=""/>
-      <div class="status"></div>
       </a>
     </div>`;
   messagesWrapper.innerHTML += `

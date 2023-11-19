@@ -23,6 +23,7 @@ import {
   askConfirmationFromUser,
   unescapeSql,
   initSocketConnection,
+  checkIfPast15Minutes,
 } from '../general.js';
 
 const $ = (element) => document.querySelector(element);
@@ -362,7 +363,9 @@ async function renderProfilePage(userId) {
           src="${unescapeSql(userDATA.avatar)}"
           alt=""
         />
-        <div class="nav_status"></div>
+        <div class="nav_status ${'online_' + userDATA.id} ${
+    checkIfPast15Minutes(userDATA.status) ? 'statusOffline' : 'statusOnline'
+  }"></div>
         ${canEditInfo}
       </div>
       <div class="nav_profile_name" style="${
@@ -611,7 +614,9 @@ export async function renderUsersFriends(userId) {
         <img class="user_avatar_img openProfile" src="${unescapeSql(
           friend.avatar,
         )}" data-id="${friend.id}" alt=""/>
-        <div class="status"></div>
+        <div class="status ${'online_' + friend.id} ${
+        checkIfPast15Minutes(friend.status) ? 'statusOffline' : 'statusOnline'
+      }"></div>
         </a>
       </div>`;
       numberOfFriends += 1;
@@ -671,7 +676,7 @@ export async function renderUserProfilePage() {
   $('#my_name').innerHTML = localStorage.getItem('username');
   $('#my_avatar').innerHTML = `<img class="user_avatar_img" src="${unescapeSql(
     localStorage.getItem('avatar'),
-  )}" alt="фото профиля" /><div class="status"></div>`;
+  )}" alt="фото профиля" />`;
 }
 
 /**
@@ -822,7 +827,9 @@ export async function renderUsersPosts(userId) {
                 data-id="${element.id}"
                 alt=""
               />
-              <div class="status"></div>
+              <div class="status ${'online_' + element.id} ${
+        checkIfPast15Minutes(element.status) ? 'statusOffline' : 'statusOnline'
+      }"></div>
             </a>
           </div>
           <div class="post_author_name">${element.username}</div>

@@ -63,3 +63,12 @@ $('#users_search').addEventListener('input', async () => {
  * закрытие окна уведомлений
  */
 $('#announcement_exit').addEventListener('click', hideAnnouncementMenu);
+
+document.addEventListener('user online', userOnline);
+
+function userOnline(event) {
+  const elements = [...document.getElementsByClassName('online_' + event.detail.id)];
+  elements.forEach((element) => {
+    element.style = 'background-color: green;';
+  });
+}
