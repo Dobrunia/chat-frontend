@@ -548,5 +548,5 @@ export function checkIfPast15Minutes(dateString) {
   const targetTime = DateTime.fromISO(dateString).setZone('Europe/Moscow');
 
   const timeDifference = currentTime.diff(targetTime, 'minutes').toObject().minutes;
-  return dateString ? timeDifference > 15 : true;
+  return dateString ? timeDifference > 5 : true;
 }

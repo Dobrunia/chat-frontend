@@ -22,15 +22,15 @@ export class SocketService {
       });
       document.dispatchEvent(connect);
     });   
-    socket.on('user disconnected', (socket) => {
-      let disconnect = new CustomEvent('user disconnected', {
-        detail: { id: socket.userId },
-        bubbles: true,
-        cancelable: true,
-        composed: false,
-      });
-      document.dispatchEvent(disconnect);
-    });
+    // socket.on('user disconnected', (socket) => {
+    //   let disconnect = new CustomEvent('user disconnected', {
+    //     detail: { id: socket.userId },
+    //     bubbles: true,
+    //     cancelable: true,
+    //     composed: false,
+    //   });
+    //   document.dispatchEvent(disconnect);
+    // });
     socket.on('private message', (message) => {
       let event = new CustomEvent('newMessage', {
         detail: { message },
@@ -40,12 +40,12 @@ export class SocketService {
       });
       document.dispatchEvent(event);
       // Отправка push-уведомления
-      // if (Notification.permission === 'granted' && message.from.toString() !== localStorage.getItem('id')) {
-      //   const notification = new Notification('Новое сообщение', {
-      //     body: message.content,
-      //     // Дополнительные параметры, если необходимо
-      //   });
-      // }
+      if (Notification.permission === 'granted' && message.from.toString() !== localStorage.getItem('id')) {
+        const notification = new Notification('Новое сообщение', {
+          body: message.content,
+          // Дополнительные параметры, если необходимо
+        });
+      }
     });   
   }
 
