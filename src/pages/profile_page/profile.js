@@ -793,6 +793,7 @@ export async function renderUsersPosts(userId) {
   $('#nav_user_wall_wrapper_posts').innerHTML = '';
   for (const element of userPosts) {
     let content = '';
+    let speachToText = '';
     if (element.text) {
       // Заменяем символы '\n' на переводы строк
       let text = element.text.replace(/\\n/g, '<br>');
@@ -814,7 +815,46 @@ export async function renderUsersPosts(userId) {
           );
         }
       }
-      content += `<div class="nav_user_wall_postTextarea">${text}</div>`;
+      content += `<div class="nav_user_wall_postTextarea" id="post_text_${element.postsid.toString()}">${text}</div>`;
+
+      speachToText = `<div class="voice_btn" data-postTextId="post_text_${element.postsid.toString()}"><?xml version="1.0" encoding="iso-8859-1"?>
+      <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+      <svg fill="var(--attention)" height="15px" width="15px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+         viewBox="0 0 512 512" xml:space="preserve">
+      <g>
+        <g>
+          <path d="M240.478,42.234l-140.282,96.87v233.791l140.282,96.87c10.986,8.178,26.712,0.38,26.712-13.373V55.607
+            C267.19,41.939,251.545,34.024,240.478,42.234z"/>
+        </g>
+      </g>
+      <g>
+        <g>
+          <path d="M438.761,89.335c-6.523-6.523-17.091-6.523-23.614,0s-6.523,17.091,0,23.614c84.606,84.638,84.606,222.408,0,307.047
+            c-6.523,6.523-6.523,17.091,0,23.614c6.524,6.524,17.091,6.524,23.614,0C536.413,345.925,536.413,187.019,438.761,89.335z"/>
+        </g>
+      </g>
+      <g>
+        <g>
+          <path d="M391.501,136.563c-6.523-6.523-17.091-6.523-23.614,0c-6.523,6.523-6.523,17.091,0,23.614
+            c58.578,58.61,58.578,153.981,0,212.591c-6.523,6.523-6.523,17.091,0,23.614c6.524,6.524,17.091,6.524,23.614,0
+            C463.093,324.757,463.093,208.187,391.501,136.563z"/>
+        </g>
+      </g>
+      <g>
+        <g>
+          <path d="M344.305,183.823c-6.523-6.523-17.091-6.523-23.614,0c-6.523,6.523-6.523,17.091,0,23.614
+            c32.55,32.55,32.55,85.519-0.032,118.103c-6.523,6.523-6.523,17.09,0,23.614c6.523,6.524,17.091,6.524,23.614,0
+            C389.87,303.556,389.87,229.388,344.305,183.823z"/>
+        </g>
+      </g>
+      <g>
+        <g>
+          <path d="M16.699,139.104C7.477,139.104,0,146.581,0,155.804v200.393c0,9.223,7.477,16.699,16.699,16.699h50.098V139.104H16.699z"
+            />
+        </g>
+      </g>
+      </svg></div>`;
+      //<select id="select_${element.postsid.toString()}"></select>
     }
     element.photos && element.photos.data[0]
       ? (content += `<div class="nav_user_wall_post_imgWrapper"><img src="data:image/png;base64,${element.photosString}" alt="" onclick="openModal(this)" /></div>`)
@@ -850,12 +890,27 @@ export async function renderUsersPosts(userId) {
             </a>
           </div>
           <div class="post_author_name">${element.username}</div>
+          ${speachToText}
           </div>
           ${content}
           <div class="post_postTime">${element.postTime}</div>
         </div>`,
     );
   }
+
+  /**
+   * прослушка на озвучку
+   */
+  let speachBtns = [...document.getElementsByClassName('voice_btn')];
+  speachBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      let dataPostTextId = btn.getAttribute('data-postTextId');
+      let synth = window.speechSynthesis;
+      let toSpeak = new SpeechSynthesisUtterance(document.getElementById(dataPostTextId).textContent);
+      synth.speak(toSpeak);
+      //console.log(document.getElementById(dataPostTextId).textContent);
+    });
+  });
 
   /**
    * удаление поста
