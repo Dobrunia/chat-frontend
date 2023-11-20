@@ -15,4 +15,6 @@
     --borderRadiusRem: 0.5rem;
     --announcement: #5D4BA6;
     --confirmation: #361c9e;
+    --statusOffline: #656565;
+    --statusOnline: #4BB34B;
 }

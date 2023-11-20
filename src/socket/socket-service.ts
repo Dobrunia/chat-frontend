@@ -14,19 +14,22 @@ export class SocketService {
     socket.connect();
     socket.on('user connected', (socket) => {
       //console.log(socket);
-      // TODO: handle status connected
-      //event do
-      let event2 = new CustomEvent('user online', {
+      let connect = new CustomEvent('user online', {
         detail: { id: socket.userId },
         bubbles: true,
         cancelable: true,
         composed: false,
       });
-      document.dispatchEvent(event2);
+      document.dispatchEvent(connect);
     });   
     socket.on('user disconnected', (socket) => {
-      // TODO: handle status disconnected
-      console.log(socket);
+      let disconnect = new CustomEvent('user disconnected', {
+        detail: { id: socket.userId },
+        bubbles: true,
+        cancelable: true,
+        composed: false,
+      });
+      document.dispatchEvent(disconnect);
     });
     socket.on('private message', (message) => {
       let event = new CustomEvent('newMessage', {

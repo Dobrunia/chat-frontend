@@ -931,11 +931,11 @@ body {
 }
 
 .statusOffline {
-    background-color: #656565;
+    background-color: var(--statusOffline);
 }
 
 .statusOnline {
-    background-color: #4BB34B;
+    background-color: var(--statusOnline);
 }
 
 .user:hover {

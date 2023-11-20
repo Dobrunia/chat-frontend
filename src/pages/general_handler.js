@@ -65,10 +65,18 @@ $('#users_search').addEventListener('input', async () => {
 $('#announcement_exit').addEventListener('click', hideAnnouncementMenu);
 
 document.addEventListener('user online', userOnline);
+document.addEventListener('user disconnected', userOffline);
 
 function userOnline(event) {
   const elements = [...document.getElementsByClassName('online_' + event.detail.id)];
   elements.forEach((element) => {
-    element.style = 'background-color: green;';
+    element.style = 'background-color: var(--statusOnline);';
+  });
+}
+
+function userOffline(event) {
+  const elements = [...document.getElementsByClassName('online_' + event.detail.id)];
+  elements.forEach((element) => {
+    element.style = 'background-color: var(--statusOffline);';
   });
 }
