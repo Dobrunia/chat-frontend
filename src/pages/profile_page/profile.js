@@ -515,6 +515,16 @@ async function renderProfilePage(userId) {
     }`,
   );
 
+  $('#colorInputNav').value = userDATA.colorInputNav
+    ? userDATA.colorInputNav
+    : '#ffffff';
+  $('#colorInputAttention').value = userDATA.colorInputAttention
+    ? userDATA.colorInputAttention
+    : '#ffc107';
+  $('#colorInputNavLightBg').value = userDATA.colorInputNavLightBg
+    ? userDATA.colorInputNavLightBg
+    : '#222222';
+
   if (userDATA.isRain) {
     makeItRain(0);
   } else {

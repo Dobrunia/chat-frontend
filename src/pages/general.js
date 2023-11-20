@@ -50,17 +50,6 @@ export async function getAndRenderMyInfo() {
     `${myDATA.colorInputNavLightBg ? myDATA.colorInputNavLightBg : '#222222'}`,
   );
 
-  //только для profile page
-  // $('#colorInputNav').value = myDATA.colorInputNav
-  //   ? myDATA.colorInputNav
-  //   : '#ffffff';
-  // $('#colorInputAttention').value = myDATA.colorInputAttention
-  //   ? myDATA.colorInputAttention
-  //   : '#ffc107';
-  // $('#colorInputNavLightBg').value = myDATA.colorInputNavLightBg
-  //   ? myDATA.colorInputNavLightBg
-  //   : '#222222';
-
   if (myDATA.isRain) {
     makeItRain(0);
   } else {
