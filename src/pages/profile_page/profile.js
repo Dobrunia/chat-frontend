@@ -30,10 +30,8 @@ const $ = (element) => document.querySelector(element);
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 async function start() {
-  $('#spinner_wrapper').classList.remove('none');
   initSocketConnection(localStorage.getItem('id'));
   await renderUserProfilePage();
-  $('#spinner_wrapper').classList.add('none');
 }
 start();
 /**
@@ -474,9 +472,21 @@ async function renderProfilePage(userId) {
           </div>
         </form>
         <div class="nav_user_wall_wrapper_posts" id="nav_user_wall_wrapper_posts"></div>
+        <div class="spinner none" id="posts_spinner">
+          <div class="blob top"></div>
+          <div class="blob bottom"></div>
+          <div class="blob left"></div>
+          <div class="blob move-blob"></div>
+        </div>
       </div>
       <div class="nav_users_friends">
         <div class="nav_friends" id="nav_all_friends"></div>
+        <div class="spinner none" id="friends_spinner">
+          <div class="blob top"></div>
+          <div class="blob bottom"></div>
+          <div class="blob left"></div>
+          <div class="blob move-blob"></div>
+        </div>
       </div>
     </div>`;
   if (userDATA.backgroundStyle) {
@@ -631,7 +641,9 @@ export async function renderUsersFriends(userId) {
  */
 export async function renderUserProfilePage() {
   const id = urlParams.get('id');
+  $('#spinner_wrapper').classList.remove('none');
   await renderProfilePage(id);
+  $('#spinner_wrapper').classList.add('none');
   /**
    * загрузка фото
    */
@@ -650,7 +662,15 @@ export async function renderUserProfilePage() {
       fileInfo.textContent = '';
     }
   });
+  await renderNotifications();
+  
+  $('#friends_spinner').classList.remove('none');
+  await renderUsersFriends(id);
+  $('#friends_spinner').classList.add('none');
+
+  $('#posts_spinner').classList.remove('none');
   await renderUsersPosts(id);
+  $('#posts_spinner').classList.add('none');
   /**
    * наполнение смайликов
    */
@@ -670,8 +690,6 @@ export async function renderUserProfilePage() {
    * submit поста
    */
   $('#addPost').addEventListener('submit', addPost);
-  await renderUsersFriends(id);
-  await renderNotifications();
 
   $('#my_name').innerHTML = localStorage.getItem('username');
   $('#my_avatar').innerHTML = `<img class="user_avatar_img" src="${unescapeSql(
