@@ -27,6 +27,7 @@ export function initSocketConnection(userId) {
  */
 export async function getAndRenderMyInfo() {
   const myDATA = await getMyInfo();
+  initSocketConnection(myDATA.id);
   if (myDATA.backgroundStyle) {
     document.getElementById('nav_content').style = myDATA.backgroundStyle;
     $('#nav_sections').style = 'border: none; background: none;';
@@ -74,7 +75,6 @@ export async function getAndRenderMyInfo() {
     checkIfPast15Minutes(myDATA.status) ? 'statusOffline' : 'statusOnline'
   }"></div>`;
   await renderNotifications();
-  initSocketConnection(myDATA.id);
 }
 
 /* rain */

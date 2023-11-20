@@ -31,8 +31,8 @@ let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 async function start() {
   $('#spinner_wrapper').classList.remove('none');
-  await renderUserProfilePage();
   initSocketConnection(localStorage.getItem('id'));
+  await renderUserProfilePage();
   $('#spinner_wrapper').classList.add('none');
 }
 start();

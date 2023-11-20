@@ -26,20 +26,20 @@ document.addEventListener("DOMContentLoaded", function() {
   // Проверяем, есть ли у пользователя cookie с подтверждением использования
   if (document.cookie.indexOf('cookies_accepted=true') === -1) {
       // Если нет, показываем окно с подтверждением использования
-      var cookieConsent = document.getElementById('cookieConsent');
+      let cookieConsent = document.getElementById('cookieConsent');
       cookieConsent.style.display = 'block';
   }
 
   // Обработчик события для кнопки подтверждения использования
-  var cookieButton = document.getElementById('cookieButton');
+  let cookieButton = document.getElementById('cookieButton');
   cookieButton.addEventListener("click", function() {
       // Устанавливаем cookie с подтверждением использования на 365 дней
-      var date = new Date();
+      let date = new Date();
       date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
       document.cookie = 'cookies_accepted=true; expires=' + date.toUTCString() + '; path=/';
 
       // Скрываем окно с подтверждением использования
-      var cookieConsent = document.getElementById('cookieConsent');
+      let cookieConsent = document.getElementById('cookieConsent');
       cookieConsent.style.display = 'none';
   });
 });
