@@ -641,7 +641,6 @@ export async function renderUsersFriends(userId) {
  */
 export async function renderUserProfilePage() {
   const id = urlParams.get('id');
-  $('#spinner_wrapper').classList.remove('none');
   await renderProfilePage(id);
   $('#spinner_wrapper').classList.add('none');
   /**
@@ -663,7 +662,7 @@ export async function renderUserProfilePage() {
     }
   });
   await renderNotifications();
-  
+
   $('#friends_spinner').classList.remove('none');
   await renderUsersFriends(id);
   $('#friends_spinner').classList.add('none');

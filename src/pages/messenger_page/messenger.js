@@ -11,7 +11,6 @@ import { getAndRenderMyInfo, unescapeSql, checkIfPast15Minutes } from '../genera
 
 const $ = (element) => document.querySelector(element);
 async function start() {
-  $('#spinner_wrapper').classList.remove('none');
   await getAndRenderMyInfo();
   let queryString = window.location.search;
   let urlParams = new URLSearchParams(queryString);

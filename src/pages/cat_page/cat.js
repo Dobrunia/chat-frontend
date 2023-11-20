@@ -83,7 +83,6 @@ export function removeCats() {
   makeCats();
 }
 async function start() {
-  document.getElementById('spinner_wrapper').classList.remove('none');
   await getAndRenderMyInfo();
   removeCats();
   document.getElementById('spinner_wrapper').classList.add('none');
