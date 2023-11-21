@@ -653,6 +653,11 @@ export async function renderUserProfilePage() {
   const id = urlParams.get('id');
   await renderProfilePage(id);
   $('#spinner_wrapper').classList.add('none');
+  $('#my_name').innerHTML = localStorage.getItem('username');
+  $('#my_avatar').innerHTML = `<img class="user_avatar_img" src="${unescapeSql(
+    localStorage.getItem('avatar'),
+  )}" alt="фото профиля" />`;
+
   /**
    * загрузка фото
    */
@@ -699,11 +704,6 @@ export async function renderUserProfilePage() {
    * submit поста
    */
   $('#addPost').addEventListener('submit', addPost);
-
-  $('#my_name').innerHTML = localStorage.getItem('username');
-  $('#my_avatar').innerHTML = `<img class="user_avatar_img" src="${unescapeSql(
-    localStorage.getItem('avatar'),
-  )}" alt="фото профиля" />`;
 }
 
 /**
@@ -916,7 +916,9 @@ export async function renderUsersPosts(userId) {
     btn.addEventListener('click', () => {
       let dataPostTextId = btn.getAttribute('data-postTextId');
       let synth = window.speechSynthesis;
-      let toSpeak = new SpeechSynthesisUtterance(document.getElementById(dataPostTextId).textContent);
+      let toSpeak = new SpeechSynthesisUtterance(
+        document.getElementById(dataPostTextId).textContent,
+      );
       synth.speak(toSpeak);
       //console.log(document.getElementById(dataPostTextId).textContent);
     });
