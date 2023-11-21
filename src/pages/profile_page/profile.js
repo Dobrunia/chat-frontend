@@ -1036,7 +1036,7 @@ export async function renderUsersPosts(userId) {
             <input name="postId" value="${
               element.postsid
             }" style="display: none;"/>
-            <label class="anonim">Отправить комментарий анонимо?<input type="checkbox" name="checkbox"></label>
+            <label class="anonim">Отправить комментарий анонимно?<input type="checkbox" name="checkbox"></label>
             <textarea id="comment_textarea_${
               element.postsid
             }" class="comment_textarea" name="textarea" placeholder="Ваш комментарий..." maxlength="250" spellcheck="true"></textarea>
