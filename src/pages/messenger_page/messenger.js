@@ -8,6 +8,7 @@ import {
 } from './messenger_request.js';
 import { getUsersChats } from '../general_request.js';
 import { getAndRenderMyInfo, unescapeSql, checkIfPast15Minutes } from '../general.js';
+import { DateTime } from 'luxon';
 
 const $ = (element) => document.querySelector(element);
 async function start() {
@@ -47,7 +48,7 @@ function renderChatHeader(chatId, companionData) {
             <div class="dialogue_with_name" id="data_chatID" data-chatId="${chatId}">${
     companionData.username
   }</div>
-            <div class="last_entrance">был в сети час назад</div>
+            <div class="last_entrance">последний онлайн: ${DateTime.fromISO(companionData.status).toLocaleString({ month: 'long', day: 'numeric' })} в ${DateTime.fromISO(companionData.status).toLocaleString({ hour: 'numeric', minute: 'numeric' })}</div>
           </div>
           <div class="user_avatar user_avatar_small">
           <a href="${
@@ -207,9 +208,8 @@ export function renderMessage(message) {
   messagesWrapper.innerHTML += `
       <div class="message ${isMyMessage ? 'my' : 'from'}">
       ${isMyMessage ? '' : user}
-        <div class="message_metric">${formatter2.format(
-          new Date(message.datetime),
-        )}<br />${formatter1.format(new Date(message.datetime))}</div>
+        <div class="message_metric">${DateTime.fromISO(message.datetime).toLocaleString({ month: 'long', day: 'numeric' })}
+        <br />${DateTime.fromISO(message.datetime).toLocaleString({ hour: 'numeric', minute: 'numeric' })}</div>
         <div class="message_text">
           ${message.content}
         </div>

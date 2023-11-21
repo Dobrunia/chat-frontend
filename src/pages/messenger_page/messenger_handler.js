@@ -18,11 +18,12 @@ document.addEventListener('newMessage', handlerMessageEvent);
  * обработчик события НОВОЕ СООБЩЕНИЕ
  */
 export async function handlerMessageEvent(event) {
-  let datetime = new Date();
+  const now = new Date();
+  const isoDate = now.toISOString();
   let message = {
     chatId: event.detail.message.chatId,
     sendBy: event.detail.message.from,
-    datetime,
+    datetime: isoDate,
     content: escapeSql(escapeHtml(event.detail.message.content)),
   };
   //await saveMessageToDb(message);
