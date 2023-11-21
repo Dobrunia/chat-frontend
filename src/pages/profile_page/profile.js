@@ -10,6 +10,8 @@ import {
   removePost,
   savePhoto,
   saveFriendRequest,
+  getCommentsByPostId,
+  saveComment,
 } from './profile_request.js';
 import { getAllFriendsInfo } from '../general_request.js';
 import {
@@ -30,7 +32,7 @@ const $ = (element) => document.querySelector(element);
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 async function start() {
-  await initSocketConnection(localStorage.getItem('id'));//TODO:: FIX
+  await initSocketConnection(localStorage.getItem('id')); //TODO:: FIX
   await renderUserProfilePage();
 }
 start();
@@ -397,11 +399,11 @@ async function renderProfilePage(userId) {
             id="postText"
             placeholder="Что у Вас нового..."
             oninput="autoResize(this)"
-            maxlength="250"
+            maxlength="300"
           ></textarea>
           <div class="nav_user_wall_files_wrapper">
-          <p class="nav_user_wall_files_charCount">Осталось символов: <span id="charCount">250</span></p>
-            <div class="emoji_picker" id="emoji_picker">
+          <p class="nav_user_wall_files_charCount">Осталось символов: <span id="charCount">300</span></p>
+            <div class="emoji_picker" id="emoji_picker" title="Выбрать смайлик">
               <!-- Здесь может быть панель с эмодзи для выбора -->
               <!-- Например, используя библиотеку как EmojiMart -->
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="50px" height="50px">
@@ -685,6 +687,29 @@ export async function renderUserProfilePage() {
   $('#posts_spinner').classList.remove('none');
   await renderUsersPosts(id);
   $('#posts_spinner').classList.add('none');
+
+  /**
+   * комментарии к постам
+   */
+  let accordion_btns = [...document.getElementsByClassName('accordion_btn')];
+  accordion_btns.forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      let content = document.getElementById(
+        'comments_' + btn.getAttribute('data-postsid'),
+      );
+
+      // Проверяем, содержит ли элемент класс "active"
+      if (content.classList.contains('accordion_active')) {
+        // Если содержит, то скрываем содержимое
+        content.classList.remove('accordion_active');
+      } else {
+        // Если не содержит, то показываем содержимое
+        content.classList.add('accordion_active');
+        await commentsRender(btn.getAttribute('data-postsid'));
+      }
+    });
+  });
+
   /**
    * наполнение смайликов
    */
@@ -704,13 +729,91 @@ export async function renderUserProfilePage() {
    * submit поста
    */
   $('#addPost').addEventListener('submit', addPost);
+
+  /**
+   * submit комментария
+   */
+  let comments_forms = [...document.getElementsByClassName('add_comment_form')];
+  comments_forms.forEach((form) => {
+    form.addEventListener('submit', addComment);
+    form.reset();
+  });
+}
+
+/**
+ * рендер комментариев
+ */
+async function commentsRender(postId) {
+  let wrapper = document.getElementById('comments_wrapper_' + postId);
+  let commentsArray = await getCommentsByPostId(postId);
+
+  if (commentsArray.length < 1) {
+    wrapper.innerHTML = '';
+    return;
+  }
+  wrapper.innerHTML = '';
+  commentsArray.forEach((comment) => {
+    wrapper.innerHTML += `<div class="comment">
+    <a class="comment_avatar" href="${
+      comment.userId
+        ? import.meta.env.VITE_SRC +
+          'pages/profile_page/profile.html?id=' +
+          comment.userId
+        : 'https://ru.wikipedia.org/wiki/Аноним'
+    }" target="_blank">
+      <img
+        class="user_avatar_img openProfile"
+        src="${
+          comment.avatar
+            ? unescapeSql(comment.avatar)
+            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Man_silhouette.svg/640px-Man_silhouette.svg.png'
+        }"
+        data-id="${comment.userId}"
+        alt=""
+      />
+    </a>
+    <textarea class="submit_comment_textarea" maxlength="250" disabled>${
+      comment.commentText
+    }</textarea>
+</div>`;
+  });
+}
+
+/**
+ * добавление нового комментария
+ */
+async function addComment(event) {
+  event.preventDefault();
+  const formData = new FormData(this);
+  const textarea = formData.get('textarea').toString().trim();
+  const checkbox = formData.get('checkbox');
+  const postId = formData.get('postId').toString();
+  if (textarea === '') {
+    announcementMessage('Не отправляйте пустой комментарий');
+    return;
+  }
+  const DATA = {
+    postId,
+    commentText: escapeSql(escapeHtml(textarea)),
+  };
+  if (checkbox === 'on') {
+    DATA.authorId = null;
+  }
+  $(`#comment_textarea_${postId}`).value = '';
+  const data = await saveComment(DATA);
+  if (data) {
+    await commentsRender(postId);
+    const chatContainer = $('#comments_wrapper_' + postId);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+  return false;
 }
 
 /**
  * show/hide smiles
  */
-export function showSmiles() {
-  $('#emoji_picker_wrapper')?.classList.toggle('none');
+function showSmiles() {
+  $('#emoji_picker_wrapper')?.classList.remove('none');
 }
 
 /**
@@ -764,7 +867,7 @@ export async function changeColors(
 /**
  * добавление нового поста
  */
-export async function addPost(event) {
+async function addPost(event) {
   //TODO:: photo\file ВАЛИДАЦИЯ
   event.preventDefault();
   const formData = new FormData(this);
@@ -787,9 +890,9 @@ export async function addPost(event) {
     announcementMessage('Не отправляйте пустой пост');
     return;
   }
+  $('#postText').value = '';
   const data = await savePost(DATA);
   if (data) {
-    $('#postText').value = '';
     await renderUsersPosts(urlParams.get('id'));
   }
   return false;
@@ -903,8 +1006,45 @@ export async function renderUsersPosts(userId) {
           ${speachToText}
           </div>
           ${content}
-          <div class="post_postTime">${element.postTime}</div>
-        </div>`,
+          <div class="post_info">
+            <div>комментариев: <span class="post_comments_number">${
+              element.commentCount
+            }<span></div>
+            <div class="post_postTime">${element.postTime}</div>
+          </div>
+        </div>
+      <div class="accordion">
+        <div class="accordion_content" id="comments_${element.postsid}">
+          <div class="comments_wrapper" id="comments_wrapper_${
+            element.postsid
+          }">
+
+          <div class="spinner comments_spinner" id="comments_spinner">
+            <div class="blob top"></div>
+            <div class="blob bottom"></div>
+            <div class="blob left"></div>
+            <div class="blob move-blob"></div>
+          </div>
+
+          </div>
+          <form
+            id="add_comment_${element.postsid}"
+            class="add_comment_form"
+            enctype="multipart/form-data"
+            role="form"
+          >
+            <input name="postId" value="${
+              element.postsid
+            }" style="display: none;"/>
+            <label class="anonim">Отправить комментарий ананимо?<input type="checkbox" name="checkbox"></label>
+            <textarea id="comment_textarea_${
+              element.postsid
+            }" class="comment_textarea" name="textarea" placeholder="Ваш комментарий..." maxlength="250" spellcheck="true"></textarea>
+            <button type="submit" class="btn btn-outline-light me-2 glow-on-hover">Отправить</button>
+          </form>
+        </div>
+        <div class="accordion_btn" data-postsid="${element.postsid}">***</div>
+      </div>`,
     );
   }
 

@@ -211,8 +211,8 @@ export function globalClickAnimation(event) {
   //скрыть поиск пользователей при 2м клике
 
   //скрыть смайлы
-  if (!$('#emoji_picker')?.contains(targetElement)) {
-    $('.emoji_picker_wrapper')?.classList.add('none');
+  if (!$('#emoji_picker')?.contains(targetElement) && !$('#emoji_picker_wrapper')?.contains(targetElement)) {
+    $('#emoji_picker_wrapper')?.classList.add('none');
   }
   //скрыть смайлы
 

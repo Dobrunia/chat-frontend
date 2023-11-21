@@ -14,6 +14,19 @@ export async function findUserById(userId) {
 }
 
 /**
+ * поиск комментариев к посту
+ */
+export async function getCommentsByPostId(postId) {
+  try {
+    const response = await $api.get(`/getCommentsByPostId/${postId}`);
+    return response.data;
+  } catch (error) {
+    window.location.href = import.meta.env.VITE_SRC;
+    throw error;
+  }
+}
+
+/**
  * функция получения статуса дружбы
  * @param myId id пользователя, который делает запрос
  * @param userId id пользователя, к которому на страницу зашел
@@ -116,6 +129,16 @@ export async function savePost(DATA) {
         'Content-Type': 'multipart/form-data',
       },
     });
+    return response.data;
+  } catch (error) {
+    window.location.href = import.meta.env.VITE_SRC;
+    throw error;
+  }
+}
+
+export async function saveComment(DATA) {
+  try {
+    const response = await $api.post('/saveComment', DATA );
     return response.data;
   } catch (error) {
     window.location.href = import.meta.env.VITE_SRC;
