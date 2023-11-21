@@ -14,10 +14,17 @@ export async function getNotifications() {
  * получение чатов пользователя
  */
 export async function getUsersChats() {
-  return $api
-    .get(`/returnActiveChats`)
-    .then((response) => { return response.data})
-    .catch((error) => console.log('Ошибка:', error));
+  // return $api
+  //   .get(`/returnActiveChats`)
+  //   .then((response) => { return response.data})
+  //   .catch((error) => console.log('Ошибка:', error));
+  try {
+    const response = await $api.get(`/returnActiveChats`);
+    return response.data;
+  } catch (error) {
+    window.location.href = import.meta.env.VITE_SRC;
+    throw error;
+  }
 }
 
 /**

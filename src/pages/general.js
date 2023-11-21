@@ -13,13 +13,17 @@ const $ = (element) => document.querySelector(element);
 /**
  * soket
  */
-export function initSocketConnection(userId) {
+export async function initSocketConnection(userId) {
   socketService.connectUserToSocketServer(userId);
-  getUsersChats().then((existingChats) => {
-    existingChats.forEach((chat) => {
-      socketService.startChat(chat.chatId);
-    });
+  const existingChats = await getUsersChats();
+  existingChats.forEach((chat) => {
+    socketService.startChat(chat.chatId);
   });
+  // getUsersChats().then((existingChats) => {
+  //   existingChats.forEach((chat) => {
+  //     socketService.startChat(chat.chatId);
+  //   });
+  // });
 }
 
 /**
@@ -27,7 +31,7 @@ export function initSocketConnection(userId) {
  */
 export async function getAndRenderMyInfo() {
   const myDATA = await getMyInfo();
-  initSocketConnection(myDATA.id);
+  await initSocketConnection(myDATA.id);
   if (myDATA.backgroundStyle) {
     document.getElementById('nav_content').style = myDATA.backgroundStyle;
     $('#nav_sections').style = 'border: none; background: none;';
@@ -536,6 +540,8 @@ export function checkIfPast15Minutes(dateString) {
   const currentTime = DateTime.now().setZone('Europe/Moscow');
   const targetTime = DateTime.fromISO(dateString).setZone('Europe/Moscow');
 
-  const timeDifference = currentTime.diff(targetTime, 'minutes').toObject().minutes;
+  const timeDifference = currentTime
+    .diff(targetTime, 'minutes')
+    .toObject().minutes;
   return dateString ? timeDifference > 5 : true;
 }

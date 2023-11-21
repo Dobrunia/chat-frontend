@@ -13,7 +13,7 @@ export class SocketService {
     socket.auth = { userId };
     socket.connect();
     socket.on('user connected', (socket) => {
-      //console.log(socket);
+      // console.log(socket.userId);
       let connect = new CustomEvent('user online', {
         detail: { id: socket.userId },
         bubbles: true,
@@ -50,7 +50,7 @@ export class SocketService {
   }
 
   startChat(chatId: string) {
-    socket.emit('join', chatId);    
+    socket.emit('join', chatId);
   }
 
   sendMessage(content: string, chatId: string) {

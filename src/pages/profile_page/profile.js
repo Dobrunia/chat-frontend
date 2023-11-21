@@ -30,7 +30,7 @@ const $ = (element) => document.querySelector(element);
 let queryString = window.location.search;
 let urlParams = new URLSearchParams(queryString);
 async function start() {
-  initSocketConnection(localStorage.getItem('id'));
+  await initSocketConnection(localStorage.getItem('id'));
   await renderUserProfilePage();
 }
 start();
