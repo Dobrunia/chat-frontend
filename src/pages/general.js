@@ -64,9 +64,7 @@ export async function getAndRenderMyInfo() {
   localStorage.setItem('avatar', unescapeSql(myDATA.avatar));
   $('#my_avatar').innerHTML = `<img class="user_avatar_img" src="${unescapeSql(
     myDATA.avatar,
-  )}" alt="фото профиля" /><div class="status ${'online_' + myDATA.id} ${
-    checkIfPast15Minutes(myDATA.status) ? 'statusOffline' : 'statusOnline'
-  }"></div>`;
+  )}" alt="фото профиля" />`;
   await renderNotifications();
 }
 
