@@ -355,7 +355,8 @@
 }
 
 .nav_users_friends {
-    width: 30%;
+    width: max-content;
+    max-width: 170px;
     max-height: 300px;
     background-color: var(--navLightBg);
     margin-left: 20px;
