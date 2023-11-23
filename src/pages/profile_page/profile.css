@@ -8,6 +8,7 @@
 
 .nav_profile_header {
     position: relative;
+    width: 650px;
     height: 150px;
 }
 
@@ -213,6 +214,7 @@
 
 .nav_user_info {
     position: relative;
+    width: 650px;
     height: 200px;
     background-color: var(--navLightBg);
     /* border-top-right-radius: 0px !important;
@@ -333,7 +335,7 @@
     display: flex;
     flex-flow: row nowrap;
     align-items: flex-start;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     padding: 20px 0;
     /* overflow-y: scroll; */
 }
@@ -347,6 +349,10 @@
     align-items: center;
     justify-content: flex-start;
     overflow-y: scroll;
+}
+
+.nav_user_wall::-webkit-scrollbar {
+    width: 0px;
 }
 
 .photo-info {
