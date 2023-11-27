@@ -375,6 +375,7 @@ async function renderProfilePage(userId) {
       }">${userDATA.username}</div>
       
     </div>
+    <div class="nav_user_info_wrapper">
     <div class="nav_user_info">
     <div class="nav_user_info_text"></div>
     ${scrollingText}
@@ -385,6 +386,16 @@ async function renderProfilePage(userId) {
     </div>
     ${friendBtn}
   </div>
+  <div class="nav_users_friends">
+        <div class="nav_friends" id="nav_all_friends"></div>
+        <div class="spinner none" id="friends_spinner">
+          <div class="blob top"></div>
+          <div class="blob bottom"></div>
+          <div class="blob left"></div>
+          <div class="blob move-blob"></div>
+        </div>
+      </div>
+      </div>
     <div class="nav_user_wall_wrapper">
       <div class="nav_user_wall">
         <form
@@ -475,15 +486,6 @@ async function renderProfilePage(userId) {
         </form>
         <div class="nav_user_wall_wrapper_posts" id="nav_user_wall_wrapper_posts"></div>
         <div class="spinner none" id="posts_spinner">
-          <div class="blob top"></div>
-          <div class="blob bottom"></div>
-          <div class="blob left"></div>
-          <div class="blob move-blob"></div>
-        </div>
-      </div>
-      <div class="nav_users_friends">
-        <div class="nav_friends" id="nav_all_friends"></div>
-        <div class="spinner none" id="friends_spinner">
           <div class="blob top"></div>
           <div class="blob bottom"></div>
           <div class="blob left"></div>
