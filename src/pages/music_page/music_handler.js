@@ -1,4 +1,4 @@
-import { saveAudio } from './music.js';
+import { saveAudio, findTrackByString, renderAllTracks } from './music.js';
 
 const uploadButton = document.getElementById('uploadButton');
 const uploadPopup = document.getElementById('uploadPopup');
@@ -14,3 +14,17 @@ closeButton.addEventListener('click', () => {
 
 document.getElementById('uploadForm').addEventListener('submit', saveAudio);
 
+document.getElementById('find_track').addEventListener('input', async () => {
+  const find_track = document.querySelector('#find_track').value.trim();
+  if (find_track && find_track !== ' ') {
+    document.getElementById('tracks').innerHTML =
+      '<div class="spinner"><div class="blob top"></div><div class="blob bottom"></div><div class="blob left"></div><div class="blob move-blob"></div></div>';
+    await findTrackByString(find_track);
+  } else if (!find_track) {
+    document.getElementById('tracks').innerHTML =
+      '<div class="spinner"><div class="blob top"></div><div class="blob bottom"></div><div class="blob left"></div><div class="blob move-blob"></div></div>';
+    await renderAllTracks();
+  } else {
+    document.getElementById('find_track').innerHTML = '';
+  }
+});

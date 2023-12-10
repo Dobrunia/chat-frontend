@@ -1,16 +1,18 @@
-import { getAndRenderMyInfo } from '../general.js';
-import { saveMp3ToServer, getAllServerTracks } from './music_request.js';
-import { announcementMessage } from '../general.js';
+import { getAndRenderMyInfo, announcementMessage } from '../general.js';
+import {
+  saveMp3ToServer,
+  getAllServerTracks,
+  getTrackByString,
+} from './music_request.js';
 
 async function start() {
   await getAndRenderMyInfo();
   document.getElementById('spinner_wrapper').classList.add('none');
-  const allTracksArray = await getAllServerTracks();
-  await renderAudio(allTracksArray);
+  await renderAllTracks();
 }
 start();
 
-async function renderAudio(array) {
+function renderAudio(array) {
   document.getElementById('tracks').innerHTML = '';
   array.forEach((element) => {
     document.getElementById('tracks').innerHTML += `
@@ -29,6 +31,24 @@ async function renderAudio(array) {
       <div class="audio_duration"></div>
    </div>`;
   });
+  //console.log(array.length)
+  // for (let i = 0; i < array.length; i++) {
+  //   document.getElementById('tracks').innerHTML += `
+  //   <div class="audio" data-src="${
+  //     'data:audio/mp3;base64,' + array[i].trackAudios[0].base64Audio
+  //   }">
+  //     <img class="audio_img" src="${
+  //       array[i].trackImage
+  //         ? 'data:image/png;base64,' + array[i].trackImage
+  //         : 'https://dota2.ru/img/heroes/naga_siren/ability5.jpg?1661965541'
+  //     }" alt="" />
+  //     <div class="audio_info">
+  //       <div class="audio_info_name">${array[i].trackName}</div>
+  //       <div class="audio_info_authors">${array[i].trackAuthor}</div>
+  //     </div>
+  //     <div class="audio_duration"></div>
+  //  </div>`;
+  // }
   const trackElements = document.querySelectorAll('.audio');
   let currentlyPlaying = null; // отслеживаем текущий проигрываемый трек
 
@@ -90,12 +110,25 @@ export async function saveAudio(event) {
   if (response) {
     document.getElementById('tracks').innerHTML = '';
     document.getElementById('uploadPopup').style.display = 'none';
-    const allTracksArray = await getAllServerTracks();
-    await renderAudio(allTracksArray);
+    await renderAllTracks();
     announcementMessage('Вы сохранили трек');
   } else {
     announcementMessage(
       'Что-то не так, наверное трек с таким названием вы уже сохраняли',
     );
+  }
+}
+
+export async function renderAllTracks() {
+  const allTracksArray = await getAllServerTracks();
+  renderAudio(allTracksArray);
+}
+
+export async function findTrackByString(string) {
+  try {
+    const allTracksArray = await getTrackByString(string);
+    renderAudio(allTracksArray);
+  } catch (error) {
+    document.getElementById('tracks').innerHTML = 'Ничего не найдено(';
   }
 }

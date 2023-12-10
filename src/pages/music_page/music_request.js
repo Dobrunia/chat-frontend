@@ -32,3 +32,14 @@ export async function getAllServerTracks() {
     throw error;
   }
 }
+
+export async function getTrackByString(string) {
+  try {
+    const response = await $api.get(`/getTrackByString/${string}`);
+    return response.data;
+  } catch (error) {
+    //window.location.href = import.meta.env.VITE_SRC;
+    console.log(error.response.data)
+    throw error;
+  }
+}
