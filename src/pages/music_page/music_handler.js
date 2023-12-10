@@ -1,4 +1,5 @@
-import { saveAudio, findTrackByString, renderAllTracks } from './music.js';
+import { saveAudio, findTrackByString, renderAllTracks, createPlaylist } from './music.js';
+import { escapeSql, escapeHtml } from '../general.js';
 
 const uploadButton = document.getElementById('uploadButton');
 const uploadPopup = document.getElementById('uploadPopup');
@@ -19,7 +20,7 @@ document.getElementById('find_track').addEventListener('input', async () => {
   if (find_track && find_track !== ' ') {
     document.getElementById('tracks').innerHTML =
       '<div class="spinner"><div class="blob top"></div><div class="blob bottom"></div><div class="blob left"></div><div class="blob move-blob"></div></div>';
-    await findTrackByString(find_track);
+    await findTrackByString(escapeSql(escapeHtml(find_track)));
   } else if (!find_track) {
     document.getElementById('tracks').innerHTML =
       '<div class="spinner"><div class="blob top"></div><div class="blob bottom"></div><div class="blob left"></div><div class="blob move-blob"></div></div>';
@@ -28,3 +29,18 @@ document.getElementById('find_track').addEventListener('input', async () => {
     document.getElementById('find_track').innerHTML = '';
   }
 });
+
+
+const playlistForm = document.getElementById('playlistForm');
+const closePlaylistForm = document.getElementById('closePlaylistForm');
+const createPlaylistBtn = document.getElementById('createPlaylist');
+
+createPlaylistBtn.addEventListener('click', () => {
+  playlistForm.style.display = 'flex';
+});
+
+closePlaylistForm.addEventListener('click', () => {
+  playlistForm.style.display = 'none';
+});
+
+playlistForm.addEventListener('submit', createPlaylist);

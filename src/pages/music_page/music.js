@@ -3,33 +3,28 @@ import {
   saveMp3ToServer,
   getAllServerTracks,
   getTrackByString,
+  returnMyPlaylists,
+  returnAddedPlaylists,
+  savePlaylistToDb,
 } from './music_request.js';
+import {
+  returnTrack,
+  returnPlaylist,
+} from '../../components/music_components.js';
+import { escapeSql, escapeHtml } from '../general.js';
 
 async function start() {
   await getAndRenderMyInfo();
   document.getElementById('spinner_wrapper').classList.add('none');
   await renderAllTracks();
+  await renderAllPlaylists();
 }
 start();
 
 function renderAudio(array) {
   document.getElementById('tracks').innerHTML = '';
   array.forEach((element) => {
-    document.getElementById('tracks').innerHTML += `
-    <div class="audio" data-src="${
-      'data:audio/mp3;base64,' + element.trackAudios[0].base64Audio
-    }">
-      <img class="audio_img" src="${
-        element.trackImage
-          ? 'data:image/png;base64,' + element.trackImage
-          : 'https://dota2.ru/img/heroes/naga_siren/ability5.jpg?1661965541'
-      }" alt="" />
-      <div class="audio_info">
-        <div class="audio_info_name">${element.trackName}</div>
-        <div class="audio_info_authors">${element.trackAuthor}</div>
-      </div>
-      <div class="audio_duration"></div>
-   </div>`;
+    document.getElementById('tracks').innerHTML += returnTrack(element);
   });
   const trackElements = document.querySelectorAll('.audio');
   let currentlyPlaying = null; // отслеживаем текущий проигрываемый трек
@@ -85,13 +80,14 @@ export async function saveAudio(event) {
   const formData = new FormData(this);
   formData.set('audioFile', audioFile);
   formData.set('imageFile', imageFile);
-  formData.set('trackName', trackName);
-  formData.set('trackAuthor', trackAuthor);
+  formData.set('trackName', escapeSql(escapeHtml(trackName)));
+  formData.set('trackAuthor', escapeSql(escapeHtml(trackAuthor)));
 
+  document.getElementById('uploadPopup').style.display = 'none';
   const response = await saveMp3ToServer(formData);
+
   if (response) {
     document.getElementById('tracks').innerHTML = '';
-    document.getElementById('uploadPopup').style.display = 'none';
     await renderAllTracks();
     announcementMessage('Вы сохранили трек');
   } else {
@@ -112,5 +108,48 @@ export async function findTrackByString(string) {
     renderAudio(allTracksArray);
   } catch (error) {
     document.getElementById('tracks').innerHTML = 'Ничего не найдено(';
+  }
+}
+
+function renderPlaylists(array, id) {
+  document.getElementById(id).innerHTML = '';
+  array.forEach((element) => {
+    document.getElementById(id).innerHTML += returnPlaylist(element);
+  });
+}
+
+async function renderAllPlaylists() {
+  document.getElementById('my_playlists').innerHTML =
+    '<div class="spinner"><div class="blob top"></div><div class="blob bottom"></div><div class="blob left"></div><div class="blob move-blob"></div></div>';
+  document.getElementById('added_playlists').innerHTML =
+    '<div class="spinner"><div class="blob top"></div><div class="blob bottom"></div><div class="blob left"></div><div class="blob move-blob"></div></div>';
+  const myPlaylists = await returnMyPlaylists();
+  renderPlaylists(myPlaylists, 'my_playlists');
+
+  // const addedPlaylists = await returnAddedPlaylists(null);
+  // renderPlaylists(addedPlaylists, 'added_playlists');
+}
+
+export async function createPlaylist(event) {
+  event.preventDefault();
+  
+  const playlistPhoto = document.getElementById('playlistPhoto').files[0];
+  const playlistName = document.getElementById('playlistName').value;
+  const playlistDescription = document.getElementById('playlistDescription').value;
+
+  const formData = new FormData(this);
+  formData.set('playlistPhoto', playlistPhoto);
+  formData.set('playlistName', escapeSql(escapeHtml(playlistName)));
+  formData.set('playlistDescription', escapeSql(escapeHtml(playlistDescription)));
+
+  document.getElementById('playlistForm').style.display = 'none';
+  const response = await savePlaylistToDb(formData);
+
+  if (response) {
+    announcementMessage('Вы сохранили плейлист');
+    const myPlaylists = await returnMyPlaylists();
+    renderPlaylists(myPlaylists, 'my_playlists');
+  } else {
+    announcementMessage('Что-то не так');
   }
 }

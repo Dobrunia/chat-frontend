@@ -43,3 +43,40 @@ export async function getTrackByString(string) {
     throw error;
   }
 }
+
+export async function returnMyPlaylists() {
+  try {
+    const response = await $api.get('/returnMyPlaylists');
+    return response.data;
+  } catch (error) {
+    //window.location.href = import.meta.env.VITE_SRC;
+    console.log(error.response.data)
+    throw error;
+  }
+}
+
+export async function returnAddedPlaylists(userId) {
+  try {
+    const response = await $api.get(`/returnAddedPlaylists/${userId}`);
+    return response.data;
+  } catch (error) {
+    //window.location.href = import.meta.env.VITE_SRC;
+    console.log(error.response.data)
+    throw error;
+  }
+}
+
+export async function savePlaylistToDb(formData) {
+  try {
+    const response = await $api.post('/savePlaylistToDb', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    //window.location.href = import.meta.env.VITE_SRC;
+    console.log(error.response.data)
+    throw error;
+  }
+}

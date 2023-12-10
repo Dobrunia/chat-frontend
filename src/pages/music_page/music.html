@@ -47,9 +47,21 @@
                       type="search"
                       class="all_tracks_input text-bg-dark form-control form-control-dark"
                       id="find_track"
-                      placeholder="Поиск по всем трекам..."
+                      placeholder="Поиск по..."
                       aria-label="Search"
                     />
+                    <div class="radio_btns btn-group btn-group-toggle" data-toggle="buttons">
+                      <label class="btn btn-secondary active">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Названию
+                      </label>
+                      <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="option2" autocomplete="off">Исполнителю
+                      </label>
+                      <label class="btn btn-secondary">
+                        <input type="radio" name="options" id="option3" autocomplete="off">Плейлисту
+                      </label>
+                    </div>
+                    
                   </form>
                   <div class="tracks" id="tracks">
                     <div class="spinner">
@@ -58,25 +70,45 @@
                       <div class="blob left"></div>
                       <div class="blob move-blob"></div>
                     </div>
-                    <!-- <div class="audio" data-src="../../audio/Memphis.mp3">
-                      <img class="audio_img" src="https://dota2.ru/img/heroes/naga_siren/ability5.jpg?1661965541" alt="" />
-                      <div class="audio_info">
-                        <div class="audio_info_name">Memphis</div>
-                        <div class="audio_info_authors">Loli</div>
-                      </div>
-                      <div class="audio_duration">2:17</div>
-                    </div> -->
                   </div>
                 </div>
               </div>
               <div class="playlist_music">
-                <div class="playlists_wrapper"></div>
+                <div class="playlists_wrapper">
+                  <div class="playlists_sections">
+                    <div class="playlist_section">
+                      <span>Мои плейлисты</span>
+                      <button
+                        class="upload_btn btn btn-secondary"
+                        id="createPlaylist"
+                        title="Создать новый плейлист"
+                      >
+                        +
+                      </button>
+                      <div class="playlists_list" id="my_playlists"></div>
+                    </div>
+                    <div class="playlist_section">
+                      <span>Добавленные плейлисты</span>
+                      <div class="playlists_list" id="added_playlists"></div>
+                    </div>
+                  </div>
+                </div>
                 <div class="audioPlayer">
                   <div class="audioControls">
-                    <img class="playerImg" id="playerImg" alt="" />
+                    <img
+                      class="playerImg"
+                      id="playerImg"
+                      src="../../img/def.PNG"
+                      alt=""
+                    />
                     <span class="audioPlayer_name" id="AudioPlayerName"></span>
                   </div>
-                  <audio id="audioPlayer" src="" controls preload="metadata"></audio>
+                  <audio
+                    id="audioPlayer"
+                    src=""
+                    controls
+                    preload="metadata"
+                  ></audio>
                 </div>
               </div>
             </div>
@@ -120,11 +152,48 @@
               </form>
             </div>
           </div>
+          <form class="playlistForm" id="playlistForm" enctype="multipart/form-data">
+            <div class="close-btn" id="closePlaylistForm">&times;</div>
+            <div class="form-group" style="display: none;">
+              <label for="playlistPhoto">Фото для плейлиста</label>
+              <input type="file" class="form-control-file" id="playlistPhoto" accept="image/*" onchange="displayPreview(event)">
+            </div>
+            <label for="playlistPhoto">
+              <img id="previewImage" src="../../img/def.PNG" alt="Preview" style="max-width: 200px; cursor:pointer; margin-top: 30px;">
+            </label>
+            
+            <div class="form-group">
+              <label for="playlistName">Название плейлиста</label>
+              <input type="text" class="form-control" id="playlistName">
+            </div>
+          
+            <div class="form-group">
+              <label for="playlistDescription">Описание</label>
+              <textarea class="form-control" id="playlistDescription"></textarea>
+            </div>
+            <button type="submit">Создать</button>
+          </form>
         </div>
       </div>
     </div>
     <include src="../../html_components/spinner.html"></include>
   </body>
+  <script defer>
+    function displayPreview(event) {
+      let input = event.target;
+
+      if (input.files && input.files[0]) {
+        let reader = new FileReader();
+
+        reader.onload = function (e) {
+          document.getElementById('previewImage').src = e.target.result;
+          document.getElementById('previewImage').style.display = 'block';
+        };
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  </script>
   <script type="module" src="../general_handler.js" defer></script>
   <script type="module" src="./music_handler.js" defer></script>
 </html>
