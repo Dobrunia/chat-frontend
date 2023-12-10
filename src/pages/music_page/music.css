@@ -92,53 +92,6 @@
     opacity: 0.8;
 }
 
-.playlist_music {
-    width: 60%;
-    height: 100%;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.audioPlayer {
-    width: max-content;
-    max-width: 100%;
-    height: max-content;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-}
-
-.audioControls {
-    width: 100%;
-    padding: 15px;
-    padding-bottom: 5px;
-    height: max-content;
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--borderRadiusRem);
-    background-color: var(--navLightBg);
-}
-
-.audioPlayer_name {
-    width: 100%;
-    text-align: center;
-    color: var(--attention);
-}
-
-.playerImg {
-    width: 50%;
-    height: auto;
-}
-
-.audio.playing {
-    color: var(--attention) !important;
-}
-
 .upload-popup {
     display: none;
     position: fixed;
@@ -196,4 +149,60 @@ button[type="submit"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.playlist_music {
+    width: 60%;
+    height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.audioPlayer {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.audioControls {
+    width: 100%;
+    height: calc(100% - 54px);
+    padding: 15px;
+    padding-bottom: 5px;
+    height: max-content;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--borderRadiusRem);
+    background-color: var(--navLightBg);
+}
+
+.audioPlayer_name {
+    width: 100%;
+    text-align: center;
+    color: var(--attention);
+}
+
+.playerImg {
+    width: auto;
+    max-width: 100%;
+    height: 400px;
+}
+
+.audio.playing {
+    color: var(--attention) !important;
+}
+
+.playlists_wrapper {
+    width: 100%;
+    height: calc(100% - 510px);
+    border-radius: var(--borderRadiusRem);
+    background-color: var(--navLightBg);
 }

@@ -31,24 +31,6 @@ function renderAudio(array) {
       <div class="audio_duration"></div>
    </div>`;
   });
-  //console.log(array.length)
-  // for (let i = 0; i < array.length; i++) {
-  //   document.getElementById('tracks').innerHTML += `
-  //   <div class="audio" data-src="${
-  //     'data:audio/mp3;base64,' + array[i].trackAudios[0].base64Audio
-  //   }">
-  //     <img class="audio_img" src="${
-  //       array[i].trackImage
-  //         ? 'data:image/png;base64,' + array[i].trackImage
-  //         : 'https://dota2.ru/img/heroes/naga_siren/ability5.jpg?1661965541'
-  //     }" alt="" />
-  //     <div class="audio_info">
-  //       <div class="audio_info_name">${array[i].trackName}</div>
-  //       <div class="audio_info_authors">${array[i].trackAuthor}</div>
-  //     </div>
-  //     <div class="audio_duration"></div>
-  //  </div>`;
-  // }
   const trackElements = document.querySelectorAll('.audio');
   let currentlyPlaying = null; // отслеживаем текущий проигрываемый трек
 
