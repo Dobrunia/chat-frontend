@@ -625,7 +625,7 @@ a {
 
 
 .nav_li_letter {
-    width: 145px;
+    /* width: 145px; */
     height: 100%;
     padding-right: 0;
     display: flex;

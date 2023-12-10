@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <include src="../../html_components/default_css_links.html"></include>
+    <link rel="stylesheet" type="text/css" href="./1.css" />
+  </head>
+  <body>
+    <div class="nav_wrapper">
+      <div class="nav_elements" id="nav_elements">
+        <include src="../../html_components/header.html"></include>
+        <include src="../../html_components/announcement.html"></include>
+        <include src="../../html_components/confirmation.html"></include>
+        <div
+          class="nav_content fallback back-row-toggle splat-toggle"
+          id="nav_content"
+        >
+          <include src="../../html_components/navigation.html"></include>
+          <div class="nav_sections" id="nav_sections">
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <include src="../../html_components/spinner.html"></include>
+  </body>
+  <script type="module" src="../general_handler.js" defer></script>
+  <script type="module" src="./1.js" defer></script>
+</html>

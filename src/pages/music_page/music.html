@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <include src="../../html_components/default_css_links.html"></include>
+    <link rel="stylesheet" type="text/css" href="./music.css" />
+  </head>
+  <body>
+    <div class="nav_wrapper">
+      <div class="nav_elements" id="nav_elements">
+        <include src="../../html_components/header.html"></include>
+        <include src="../../html_components/announcement.html"></include>
+        <include src="../../html_components/confirmation.html"></include>
+        <div
+          class="nav_content fallback back-row-toggle splat-toggle"
+          id="nav_content"
+        >
+          <include src="../../html_components/navigation.html"></include>
+          <div class="nav_sections" id="nav_sections">
+            <div class="nav_music">
+              <div class="search_music">
+                <button
+                  type="button"
+                  class="upload_btn btn btn-secondary"
+                  id="uploadButton"
+                >
+                  <svg
+                    fill="none"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g fill="currentColor">
+                      <path
+                        d="M19 19a1 1 0 1 1 0 2H5a1 1 0 1 1 0-2zm-7-2a1 1 0 0 1-1-1V5.41l-4.3 4.3a1 1 0 0 1-1.31.08l-.1-.08a1 1 0 0 1 0-1.42l6-6a1 1 0 0 1 1.42 0l6 6a1 1 0 0 1-1.42 1.42L13 5.4V16a1 1 0 0 1-1 1z"
+                      ></path>
+                    </g>
+                  </svg>
+                  <span>Загрузить свою аудиозапись</span>
+                </button>
+                <div class="all_tracks">
+                  <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <input
+                      type="search"
+                      class="all_tracks_input text-bg-dark form-control form-control-dark"
+                      placeholder="Поиск по всем трекам..."
+                      aria-label="Search"
+                    />
+                  </form>
+                  <div class="tracks" id="tracks">
+                    <div class="spinner">
+                      <div class="blob top"></div>
+                      <div class="blob bottom"></div>
+                      <div class="blob left"></div>
+                      <div class="blob move-blob"></div>
+                    </div>
+                    <!-- <div class="audio" data-src="../../audio/Memphis.mp3">
+                      <img class="audio_img" src="https://dota2.ru/img/heroes/naga_siren/ability5.jpg?1661965541" alt="" />
+                      <div class="audio_info">
+                        <div class="audio_info_name">Memphis</div>
+                        <div class="audio_info_authors">Loli</div>
+                      </div>
+                      <div class="audio_duration">2:17</div>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+              <div class="playlist_music">
+                <div class="audioPlayer">
+                  <div class="audioControls">
+                    <img class="playerImg" id="playerImg" alt="" />
+                    <span class="audioPlayer_name" id="AudioPlayerName"></span>
+                  </div>
+                  <audio id="audioPlayer" src="" controls></audio>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="upload-popup" id="uploadPopup">
+            <div class="upload-content">
+              <div class="close-btn" id="closeButton">&times;</div>
+              <h2>Загрузка аудиозаписи</h2>
+              <form id="uploadForm" enctype="multipart/form-data">
+                <label for="audioFile">Выберите MP3 файл:</label>
+                <input
+                  type="file"
+                  id="audioFile"
+                  accept="audio/mpeg"
+                  name="audioFile"
+                  required
+                />
+
+                <label for="imageFile"
+                  >Выберите изображение (опционально):</label
+                >
+                <input
+                  type="file"
+                  id="imageFile"
+                  accept="image/jpeg, image/png"
+                  name="imageFile"
+                />
+
+                <label for="trackName">Название трека:</label>
+                <input type="text" id="trackName" name="trackName" required />
+
+                <label for="trackAuthor">Автор трека:</label>
+                <input
+                  type="text"
+                  id="trackAuthor"
+                  name="trackAuthor"
+                  required
+                />
+
+                <button type="submit">Загрузить</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <include src="../../html_components/spinner.html"></include>
+  </body>
+  <script type="module" src="../general_handler.js" defer></script>
+  <script type="module" src="./music_handler.js" defer></script>
+</html>

@@ -1,0 +1,191 @@
+.nav_music {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search_music {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 15px;
+}
+
+.upload_btn {
+    width: max-content;
+    border-radius: var(--borderRadiusRem);
+    background-color: var(--navLightBg);
+}
+
+.all_tracks {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.all_tracks form {
+    width: 80%;
+    margin: 0 !important;
+}
+
+.all_tracks_input {
+    width: 100%;
+    border-color: var(--borderVk);
+    background-color: var(--navLightBg) !important;
+}
+
+.tracks {
+    width: 80%;
+    height: 92%;
+    overflow-y: scroll;
+}
+
+.audio {
+    width: 100%;
+    height: 60px;
+    margin-top: 10px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--navLightBg);
+    border-radius: var(--borderRadiusRem);
+    background-color: var(--navLightBg) !important;
+}
+
+.audio:hover {
+    cursor: pointer;
+    border: 1px solid var(--attention);
+}
+
+.audio_img {
+    width: 50px;
+    height: 50px;
+}
+
+.audio_info_name {
+    font-size: 16px;
+}
+
+.audio_info_authors {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.audio_duration {
+    opacity: 0.8;
+}
+
+.playlist_music {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.audioPlayer {
+    width: max-content;
+    max-width: 100%;
+    height: max-content;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.audioControls {
+    width: 100%;
+    padding: 15px;
+    padding-bottom: 5px;
+    height: max-content;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--borderRadiusRem);
+    background-color: var(--navLightBg);
+}
+
+.audioPlayer_name {
+    width: 100%;
+    text-align: center;
+    color: var(--attention);
+}
+
+.playerImg {
+    width: 100%;
+    height: auto;
+}
+
+.audio.playing {
+    color: var(--attention) !important;
+}
+
+.upload-popup {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .upload-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--navLightBg);
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  label {
+    margin-top: 10px;
+  }
+  
+  input[type="file"],
+  input[type="text"] {
+    margin-top: 5px;
+    padding: 5px;
+  }
+  
+  button[type="submit"] {
+    margin-top: 10px;
+    padding: 5px 20px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }

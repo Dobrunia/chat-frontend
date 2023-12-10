@@ -16,8 +16,9 @@ export default defineConfig({
       input: {
         main: resolve(root, 'index.html'),
         profile_page: resolve(root, 'pages', 'profile_page', 'profile.html'),
-        friends_page: resolve(root, 'pages', 'friends_page', 'friends.html'),
         messenger_page: resolve(root, 'pages', 'messenger_page', 'messenger.html'),
+        friends_page: resolve(root, 'pages', 'friends_page', 'friends.html'),
+        music_page: resolve(root, 'pages', 'music_page', 'music.html'),
         cat_page: resolve(root, 'pages', 'cat_page', 'cat.html'),
         donate_page: resolve(root, 'pages', 'donate_page', 'donate.html'),
         about_project_page: resolve(root, 'pages', 'about_project_page', 'about_project.html'),
