@@ -2,6 +2,7 @@ import { unescapeSql, unescapeHtml } from '../pages/general.js';
 
 export function returnTrack(element) {
   return `
+  <div class="audio_wrapper">
     <div class="audio" data-src="${
       'data:audio/mp3;base64,' + element.trackAudios[0].base64Audio
     }">
@@ -19,7 +20,7 @@ export function returnTrack(element) {
         )}</div>
       </div>
       <div class="audio_duration"></div>
-   </div>`;
+   </div><div class="add_to_playlist" data-id="${element.trackId}">ooo</div></div>`;
 }
 
 export function returnPlaylist(element) {
@@ -31,7 +32,7 @@ export function returnPlaylist(element) {
         <div class="card-body">
             <h5 class="card-title">${element.name}</h5>
             <p class="card-text">${element.description}</p>
-            <a href="${import.meta.env.VITE_SRC + 'pages/playlist_page/playlist.html?id=' + element.id}" class="btn btn-primary" target="_blank">Открыть плейлист</a>
+            <div class="btn btn-primary open_playlist" data-img="data:image/png;base64,${element.img}" data-name="${element.name}" data-songsArray="${element.songsArray}">Открыть плейлист</div>
         </div>
     </div>`;
 }

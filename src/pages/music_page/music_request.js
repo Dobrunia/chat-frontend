@@ -13,11 +13,10 @@ export async function saveMp3ToServer(formData) {
     return response.data;
   } catch (error) {
     //window.location.href = import.meta.env.VITE_SRC;
-    console.log(error.response.data)
+    console.log(error.response.data);
     throw error;
   }
 }
-
 
 /**
  * получить массив треков, которые на серваке
@@ -28,7 +27,7 @@ export async function getAllServerTracks() {
     return response.data;
   } catch (error) {
     //window.location.href = import.meta.env.VITE_SRC;
-    console.log(error.response.data)
+    console.log(error.response.data);
     throw error;
   }
 }
@@ -39,7 +38,18 @@ export async function getTrackByString(string) {
     return response.data;
   } catch (error) {
     //window.location.href = import.meta.env.VITE_SRC;
-    console.log(error.response.data)
+    console.log(error.response.data);
+    throw error;
+  }
+}
+
+export async function getTrackBySongsArray(songsarray) {
+  try {
+    const response = await $api.get(`/getTrackBySongsArray/${songsarray}`);
+    return response.data;
+  } catch (error) {
+    //window.location.href = import.meta.env.VITE_SRC;
+    console.log(error.response.data);
     throw error;
   }
 }
@@ -50,7 +60,7 @@ export async function returnMyPlaylists() {
     return response.data;
   } catch (error) {
     //window.location.href = import.meta.env.VITE_SRC;
-    console.log(error.response.data)
+    console.log(error.response.data);
     throw error;
   }
 }
@@ -61,7 +71,7 @@ export async function returnAddedPlaylists(userId) {
     return response.data;
   } catch (error) {
     //window.location.href = import.meta.env.VITE_SRC;
-    console.log(error.response.data)
+    console.log(error.response.data);
     throw error;
   }
 }
@@ -76,7 +86,18 @@ export async function savePlaylistToDb(formData) {
     return response.data;
   } catch (error) {
     //window.location.href = import.meta.env.VITE_SRC;
-    console.log(error.response.data)
+    console.log(error.response.data);
+    throw error;
+  }
+}
+
+export async function addAudioToPlaylist(audioId, playlistId) {
+  try {
+    const response = await $api.post('/addAudioToPlaylist', { audioId, playlistId });
+    return response.data;
+  } catch (error) {
+    //window.location.href = import.meta.env.VITE_SRC;
+    console.log(error.response.data);
     throw error;
   }
 }

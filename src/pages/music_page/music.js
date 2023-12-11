@@ -6,6 +6,7 @@ import {
   returnMyPlaylists,
   returnAddedPlaylists,
   savePlaylistToDb,
+  addAudioToPlaylist,
 } from './music_request.js';
 import {
   returnTrack,
@@ -17,14 +18,36 @@ async function start() {
   await getAndRenderMyInfo();
   document.getElementById('spinner_wrapper').classList.add('none');
   await renderAllTracks();
-  await renderAllPlaylists();
+  await renderChooseMyPlaylists();
 }
 start();
 
-function renderAudio(array) {
-  document.getElementById('tracks').innerHTML = '';
+async function renderChooseMyPlaylists() {
+  const array = await returnMyPlaylists();
+  let content = '';
   array.forEach((element) => {
-    document.getElementById('tracks').innerHTML += returnTrack(element);
+    content += `<div class="playlist_ch" data-id="${element.id}">${element.name}</div>`;
+  });
+  document.getElementById('choose_playlist').innerHTML = content;
+
+  let addTrackToPlaylist = [...document.getElementsByClassName('playlist_ch')];
+  addTrackToPlaylist.forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      document.getElementById('choose_playlist0').style.display = 'none';
+      await addAudioToPlaylist(
+        document
+          .getElementById('choose_playlist0')
+          .getAttribute('data-song-id'),
+        btn.getAttribute('data-id'),
+      );
+    });
+  });
+}
+
+export function renderAudio(array, id) {
+  document.getElementById(id).innerHTML = '';
+  array.forEach((element) => {
+    document.getElementById(id).innerHTML += returnTrack(element);
   });
   const trackElements = document.querySelectorAll('.audio');
   let currentlyPlaying = null; // отслеживаем текущий проигрываемый трек
@@ -67,6 +90,30 @@ function renderAudio(array) {
       audioPlayer.play();
     });
   });
+
+  let add_to_playlist = [...document.getElementsByClassName('add_to_playlist')];
+  add_to_playlist.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.getElementById('choose_playlist0').style.display = 'block';
+      document
+        .getElementById('choose_playlist0')
+        .setAttribute('data-song-id', btn.getAttribute('data-id'));
+    });
+  });
+}
+
+export async function renderAllTracks() {
+  const allTracksArray = await getAllServerTracks();
+  renderAudio(allTracksArray, 'tracks');
+}
+
+export async function renderTrackByString(string) {
+  try {
+    const allTracksArray = await getTrackByString(string);
+    renderAudio(allTracksArray, 'tracks');
+  } catch (error) {
+    document.getElementById('tracks').innerHTML = 'Ничего не найдено(';
+  }
 }
 
 export async function saveAudio(event) {
@@ -87,8 +134,6 @@ export async function saveAudio(event) {
   const response = await saveMp3ToServer(formData);
 
   if (response) {
-    document.getElementById('tracks').innerHTML = '';
-    await renderAllTracks();
     announcementMessage('Вы сохранили трек');
   } else {
     announcementMessage(
@@ -97,58 +142,28 @@ export async function saveAudio(event) {
   }
 }
 
-export async function renderAllTracks() {
-  const allTracksArray = await getAllServerTracks();
-  renderAudio(allTracksArray);
-}
-
-export async function findTrackByString(string) {
-  try {
-    const allTracksArray = await getTrackByString(string);
-    renderAudio(allTracksArray);
-  } catch (error) {
-    document.getElementById('tracks').innerHTML = 'Ничего не найдено(';
-  }
-}
-
-function renderPlaylists(array, id) {
-  document.getElementById(id).innerHTML = '';
-  array.forEach((element) => {
-    document.getElementById(id).innerHTML += returnPlaylist(element);
-  });
-}
-
-async function renderAllPlaylists() {
-  document.getElementById('my_playlists').innerHTML =
-    '<div class="spinner"><div class="blob top"></div><div class="blob bottom"></div><div class="blob left"></div><div class="blob move-blob"></div></div>';
-  document.getElementById('added_playlists').innerHTML =
-    '<div class="spinner"><div class="blob top"></div><div class="blob bottom"></div><div class="blob left"></div><div class="blob move-blob"></div></div>';
-  const myPlaylists = await returnMyPlaylists();
-  renderPlaylists(myPlaylists, 'my_playlists');
-
-  // const addedPlaylists = await returnAddedPlaylists(null);
-  // renderPlaylists(addedPlaylists, 'added_playlists');
-}
-
 export async function createPlaylist(event) {
   event.preventDefault();
-  
+
   const playlistPhoto = document.getElementById('playlistPhoto').files[0];
   const playlistName = document.getElementById('playlistName').value;
-  const playlistDescription = document.getElementById('playlistDescription').value;
+  const playlistDescription = document.getElementById(
+    'playlistDescription',
+  ).value;
 
   const formData = new FormData(this);
   formData.set('playlistPhoto', playlistPhoto);
   formData.set('playlistName', escapeSql(escapeHtml(playlistName)));
-  formData.set('playlistDescription', escapeSql(escapeHtml(playlistDescription)));
+  formData.set(
+    'playlistDescription',
+    escapeSql(escapeHtml(playlistDescription)),
+  );
 
   document.getElementById('playlistForm').style.display = 'none';
   const response = await savePlaylistToDb(formData);
 
   if (response) {
     announcementMessage('Вы сохранили плейлист');
-    const myPlaylists = await returnMyPlaylists();
-    renderPlaylists(myPlaylists, 'my_playlists');
   } else {
     announcementMessage('Что-то не так');
   }
