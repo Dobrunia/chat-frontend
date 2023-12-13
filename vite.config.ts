@@ -20,6 +20,8 @@ export default defineConfig({
         friends_page: resolve(root, 'pages', 'friends_page', 'friends.html'),
         music_page: resolve(root, 'pages', 'music_page', 'music.html'),
         cat_page: resolve(root, 'pages', 'cat_page', 'cat.html'),
+        things_page: resolve(root, 'pages', 'things_page', 'things.html'),
+        things_page_1: resolve(root, 'pages', 'things_page', 'programs', '1', '1.html'),
         donate_page: resolve(root, 'pages', 'donate_page', 'donate.html'),
         about_project_page: resolve(root, 'pages', 'about_project_page', 'about_project.html'),
       },

@@ -812,6 +812,7 @@ a {
 
 .nav_ul {
     width: 100%;
+    padding-right: 18px;
     margin-top: 165px;
     display: flex;
     flex-flow: column nowrap;

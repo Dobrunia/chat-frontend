@@ -1,0 +1,252 @@
+<div class="program_wrapper">
+  <div class="template">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text dark_ed" id="inputGroup-sizing-default"
+          >Заголовок файла</span
+        >
+      </div>
+      <input
+        type="text"
+        class="form-control dark_ed"
+        id="doc_title"
+        aria-label="Default"
+        aria-describedby="inputGroup-sizing-default"
+      />
+    </div>
+    <div class="add_point">
+      <input
+        id="points_num"
+        class="dark_ed"
+        type="number"
+        min="1"
+        max="25"
+        step="1"
+        value="1"
+      />
+      <button class="btn add_point_btn" onclick="addAllPoints()">+</button>
+    </div>
+    <div class="points_wrapper">
+      <div class="points_list" id="points_list">
+        <!-- <div class="point" id="5">
+          <div>
+            <button class="delete_point" id="delete_5">x</button
+            ><span>Пункт (5):</span><input type="text" class="point_name" />
+          </div>
+          <div class="stars">
+            <span>0</span><input type="radio" name="rating" value="1" />
+<input type="radio" name="rating" value="2" />
+<input type="radio" name="rating" value="3" />
+<input type="radio" name="rating" value="4" />
+<input type="radio" name="rating" value="5" /><span>5</span>
+          </div>
+        </div> -->
+      </div>
+      <textarea
+        class="notes dark_ed"
+        id="notes"
+        name="notes"
+        placeholder="Заметки"
+      ></textarea>
+    </div>
+    <button
+      type="button"
+      class="btn btn-success"
+      id="sub"
+      title="Скачать документ"
+    >
+      Готово
+    </button>
+  </div>
+</div>
+
+<style>
+  .template {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .add_point {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .add_point_btn {
+    margin-left: 10px;
+    border: 1px solid #fff;
+    color: var(--attention);
+  }
+  .add_point_btn:hover {
+    color: #fff;
+    border-color: var(--attention);
+  }
+  .points_wrapper {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+  }
+  .points_list {
+    width: 100%;
+    height: max-content;
+    padding: var(--defPadding);
+  }
+  .point {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--defPadding);
+    margin-bottom: var(--defPadding);
+  }
+  .point_name {
+    width: 500px;
+  }
+  .point_span {
+    font-size: 18px;
+    margin: 0 10px;
+  }
+  .stars span {
+    font-size: 18px;
+    margin: 0 10px;
+  }
+  .stars input {
+    margin: 0 4px;
+  }
+  .notes {
+    width: 100%;
+    height: 100px;
+  }
+</style>
+
+<script defer>
+  document.getElementById('sub').addEventListener('click', downloadPointsData);
+  let pointsNum = 0;
+
+  function downloadPointsData() {
+    const pointsData = [];
+    const pointElements = document.querySelectorAll('.point');
+
+    let totalRating = 0;
+
+    pointElements.forEach((point) => {
+      const nameInput = point.querySelector('.point_name');
+      const ratingInputs = point.querySelectorAll(
+        'input[name="' + point.id + '"]',
+      );
+      let rating = 0;
+
+      for (const input of ratingInputs) {
+        if (input.checked) {
+          rating = input.getAttribute('data-raiting');
+          break;
+        }
+      }
+
+      // Преобразуем значение в число для вычисления общего рейтинга
+      totalRating += parseInt(rating);
+
+      const pointData = {
+        id: point.id,
+        name: nameInput.value ? nameInput.value : `Пункт (${point.id})`,
+        rating: rating,
+      };
+      pointsData.push(pointData);
+    });
+
+    const dataRows = pointsData
+      .map((point) => `${point.name}: ${point.rating}`)
+      .join('\n');
+    const totalRow = `Итог: ${totalRating}`;
+
+    const notes = 'Заметка: ' + document.getElementById('notes').value || '';
+
+    const fileName = document.getElementById('doc_title').value || 'fileName';
+    const headerRow = `${fileName}\n${totalRow}`;
+    const fileContent = `${headerRow}\n${dataRows}\n${notes}`;
+
+    const blob = new Blob([fileContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = `${fileName}.txt`;
+    downloadLink.click();
+  }
+
+  function addAllPoints() {
+    let numbers = document.getElementById('points_num').value;
+    for (let i = 0; i < numbers; i++) {
+      addPoint();
+    }
+  }
+
+  function addPoint() {
+    pointsNum++;
+    const newPoint = createPointElement();
+    document.getElementById('points_list').appendChild(newPoint);
+    addPointHandler(newPoint);
+  }
+
+  function createPointElement() {
+    const pointWrapper = document.createElement('div');
+    pointWrapper.classList.add('point');
+    pointWrapper.id = pointsNum;
+
+    const innerDiv = document.createElement('div');
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('delete_point');
+    deleteBtn.classList.add('dark_ed');
+    deleteBtn.id = `delete_${pointsNum}`;
+    deleteBtn.textContent = 'x';
+    innerDiv.appendChild(deleteBtn);
+
+    const span = document.createElement('span');
+    span.textContent = `Пункт (${pointsNum}):`;
+    span.classList.add('point_span');
+    innerDiv.appendChild(span);
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('point_name');
+    input.classList.add('dark_ed');
+    innerDiv.appendChild(input);
+
+    pointWrapper.appendChild(innerDiv);
+
+    const starsDiv = document.createElement('div');
+    starsDiv.classList.add('stars');
+
+    const span1 = document.createElement('span');
+    span1.textContent = '1';
+    starsDiv.appendChild(span1);
+
+    for (let i = 1; i <= 5; i++) {
+      const radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.setAttribute('data-raiting', i);
+      radio.name = pointsNum;
+      starsDiv.appendChild(radio);
+    }
+
+    const span5 = document.createElement('span');
+    span5.textContent = '5';
+    starsDiv.appendChild(span5);
+
+    pointWrapper.appendChild(starsDiv);
+
+    return pointWrapper;
+  }
+
+  function addPointHandler(point) {
+    const deleteBtn = point.querySelector('.delete_point');
+    deleteBtn.addEventListener('click', deletePoint);
+  }
+
+  function deletePoint(event) {
+    const deleteBtn = event.target;
+    const point = deleteBtn.parentNode.parentNode;
+    point.remove();
+  }
+</script>

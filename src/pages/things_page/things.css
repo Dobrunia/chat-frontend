@@ -1,0 +1,109 @@
+.nav_sections {
+    width: max-content;
+}
+
+.cards_wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: var(--defPadding) 0 0 var(--defPadding);
+}
+
+.card {
+    width: 400px;
+    height: 200px;
+    border-radius: var(--borderRadiusRem);
+    background-color: var(--navLightBg);
+    margin-right: var(--defPadding);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.card:hover .cardDescription {
+    transform: translateY(-70px);
+}
+
+.card:hover .cardTitle::before {
+    opacity: 1;
+}
+
+.cardTitle {
+    width: 100%;
+    height: 200px;
+    font-size: 30px;
+    border-radius: var(--borderRadiusRem);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    background-size: cover !important;
+    background-position: center !important;
+}
+
+.cardTitle::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Пример цвета - полупрозрачный черный */
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cardDescription {
+    position: absolute;
+    bottom: -70px;
+    font-family: 'Overpass', sans-serif;
+    font-size: 14px;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    background-color: var(--message);
+    transition: transform 0.3s ease;
+}
+
+.program_wrapper {
+    width: calc(100vw - 400px);
+    height: 100%;
+    margin-right: var(--defPadding);
+    overflow-y: scroll;
+}
+
+.program_wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.get_back {
+    padding: 2px 8px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    border: none;
+    border-radius: var(--borderRadiusRem) !important;
+    background-color: var(--navLightBg) !important;
+    color: #FFF !important;
+}
+
+.dark_ed {
+    border: 1px solid #fff !important;
+    border-radius: var(--borderRadiusRem) !important;
+    background-color: var(--navLightBg) !important;
+    color: var(--attention) !important;
+}
+
+.dark_ed:focus {
+    background-color: var(--navLightBg) !important;
+    outline: none !important;
+}
