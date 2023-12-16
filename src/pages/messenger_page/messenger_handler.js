@@ -1,5 +1,4 @@
 import { renderChats, renderMessage } from './messenger.js';
-import { saveMessageToDb } from './messenger_request.js';
 import { escapeSql, escapeHtml } from '../general.js';
 
 const $ = (element) => document.querySelector(element);
@@ -26,7 +25,6 @@ export async function handlerMessageEvent(event) {
     datetime: isoDate,
     content: escapeSql(escapeHtml(event.detail.message.content)),
   };
-  //await saveMessageToDb(message);
   renderMessage(message);
   await renderChats();
 }

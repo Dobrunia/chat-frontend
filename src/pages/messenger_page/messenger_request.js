@@ -78,17 +78,3 @@ export async function findUserById(userId) {
     throw error;
   }
 }
-
-/**
- * сохраняет сообщение в БД
- */
-export async function saveMessageToDb(message) {
-    try {
-      const response = await $api.post('/saveMessage', { message });
-      return response.data;
-    } catch (error) {
-      // window.location.href = import.meta.env.VITE_SRC;
-      console.log(error);
-      throw error;
-    }
-}

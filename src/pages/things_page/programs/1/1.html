@@ -15,6 +15,13 @@
       />
     </div>
     <div class="add_point">
+      <button
+        class="dark_ed"
+        onclick="document.getElementById('template_list').style = 'height: max-content;'"
+        style="margin-right: 30px"
+      >
+        v
+      </button>
       <input
         id="points_num"
         class="dark_ed"
@@ -27,21 +34,8 @@
       <button class="btn add_point_btn" onclick="addAllPoints()">+</button>
     </div>
     <div class="points_wrapper">
-      <div class="points_list" id="points_list">
-        <!-- <div class="point" id="5">
-          <div>
-            <button class="delete_point" id="delete_5">x</button
-            ><span>Пункт (5):</span><input type="text" class="point_name" />
-          </div>
-          <div class="stars">
-            <span>0</span><input type="radio" name="rating" value="1" />
-<input type="radio" name="rating" value="2" />
-<input type="radio" name="rating" value="3" />
-<input type="radio" name="rating" value="4" />
-<input type="radio" name="rating" value="5" /><span>5</span>
-          </div>
-        </div> -->
-      </div>
+      <div class="template_list" id="template_list"></div>
+      <div class="points_list" id="points_list"></div>
       <textarea
         class="notes dark_ed"
         id="notes"
@@ -118,52 +112,190 @@
     width: 100%;
     height: 100px;
   }
+  .template_list {
+    width: 100%;
+    height: 0px;
+    overflow: hidden;
+    padding: var(--defPadding);
+  }
+  .select_input {
+    height: max-content;
+  }
+  .hide-option {
+    display: none;
+  }
 </style>
 
 <script defer>
   document.getElementById('sub').addEventListener('click', downloadPointsData);
   let pointsNum = 0;
 
+  let templateArray = [
+    {
+      templateName: 'softSkills',
+      points: [
+        { pointName: 'Время начала', pointType: 'Time' },
+        {
+          pointName: 'Опоздание',
+          pointType: 'Select',
+          pointOptions: ['Неуважительная', 'Уважительная'],
+        },
+        {
+          pointName: 'Пришёл',
+          pointType: 'Select',
+          pointOptions: [
+            'раньше',
+            'вовремя',
+            'от 5 мин. до 15 мин',
+            'от 15 мин. и более',
+          ],
+        },
+        {
+          pointName: 'Сколько времени у вас есть для нашего разговора?',
+          pointType: 'Select',
+          pointOptions: [
+            'да',
+            'скорее да',
+            'Сложно для определения',
+            'скорее нет',
+            'нет',
+          ],
+        },
+        {
+          pointName:
+            'Расскажите о том, о чем вы готов поделиться сейчас, что то не связанное с нашим сегодняшним интервью?',
+          pointType: 'Select',
+          pointOptions: [
+            'да',
+            'скорее да',
+            'Сложно для определения',
+            'скорее нет',
+            'нет',
+          ],
+        },
+        {
+          pointName: 'Почему откликнулся -лась именно на нашу вакансию?',
+          pointType: 'Select',
+          pointOptions: ['мотивация материальная', 'мотивация нематериальная'],
+        },
+        {
+          pointName: 'Есть ли еще отклики и запланированные собеседования?',
+          pointType: 'Select',
+          pointOptions: [
+            'да',
+            'скорее да',
+            'Сложно для определения',
+            'скорее нет',
+            'нет',
+          ],
+        },
+        {
+          pointName: 'Кандидат убедил специалиста о наличие опыта',
+          pointType: 'Select',
+          pointOptions: ['да', 'нет'],
+        },
+        {
+          pointName: 'Физ. активность',
+          pointType: 'Select',
+          pointOptions: ['активный', 'пассивный'],
+        },
+        {
+          pointName: 'Соц. навыки',
+          pointType: 'Select',
+          pointOptions: ['замкнутый', 'открытый'],
+        },
+      ],
+    },
+  ];
+
+  function templatesRender() {
+    templateArray.forEach((template) => {
+      template.points.forEach((point) => {
+        pointsNum++;
+        const newPoint = createPointElement(
+          point.pointName,
+          point.pointType,
+          point.pointOptions,
+        );
+        document.getElementById('template_list').appendChild(newPoint);
+        addPointHandler(newPoint);
+      });
+    });
+  }
+  templatesRender();
+
   function downloadPointsData() {
     const pointsData = [];
     const pointElements = document.querySelectorAll('.point');
-
     let totalRating = 0;
 
     pointElements.forEach((point) => {
+      let rating = null;
+      let select = null;
+      let time = null;
       const nameInput = point.querySelector('.point_name');
-      const ratingInputs = point.querySelectorAll(
-        'input[name="' + point.id + '"]',
-      );
-      let rating = 0;
 
-      for (const input of ratingInputs) {
-        if (input.checked) {
-          rating = input.getAttribute('data-raiting');
-          break;
+      if (point.querySelector('.stars_input')) {
+        const ratingInputs = point.querySelectorAll(
+          'input[name="' + point.id + '"]',
+        );
+
+        for (const input of ratingInputs) {
+          if (input.checked) {
+            rating = input.getAttribute('data-raiting');
+            break;
+          }
+        }
+        // Преобразуем значение в число для вычисления общего рейтинга
+        totalRating += parseInt(rating);
+      }
+
+      if (point.querySelector('.choice_input')) {
+      }
+
+      if (point.querySelector('.time_input')) {
+        const inputValue = point.querySelector('.time_input');
+        if (inputValue) {
+          time = inputValue.value;
+        }
+      }
+      if (point.querySelector('.select_input')) {
+        const inputValue = point.querySelector('.active_option');
+        if (inputValue) {
+          select = inputValue.value;
         }
       }
 
-      // Преобразуем значение в число для вычисления общего рейтинга
-      totalRating += parseInt(rating);
-
       const pointData = {
         id: point.id,
-        name: nameInput.value ? nameInput.value : `Пункт (${point.id})`,
-        rating: rating,
+        name: nameInput.value
+          ? nameInput.value
+          : point.querySelector('.point_span').textContent,
+        rating: rating ? rating : null,
+        time: time ? time : null,
+        select: select ? select : null,
       };
       pointsData.push(pointData);
     });
 
     const dataRows = pointsData
-      .map((point) => `${point.name}: ${point.rating}`)
+      .map(
+        (point) =>
+          `${point.name}: ${point.rating ? 'рейтинг - ' + point.rating : ''} ${
+            point.time ? 'время - ' + point.time : ''
+          } ${point.select ? 'выбрано- ' + point.select : ''}`,
+      )
       .join('\n');
-    const totalRow = `Итог: ${totalRating}`;
+    const totalRow = `Итоговый (хард скиллы): ${totalRating}`;
 
     const notes = 'Заметка: ' + document.getElementById('notes').value || '';
 
-    const fileName = document.getElementById('doc_title').value || 'fileName';
-    const headerRow = `${fileName}\n${totalRow}`;
+    const fileName =
+      document.getElementById('doc_title').value || 'собеседование';
+    const creatorName = localStorage.getItem('username');
+    const headerRow = `${'Собеседуемый: ' + fileName}\n${
+      'Собеседовал: ' + creatorName
+    }\n${totalRow}`;
     const fileContent = `${headerRow}\n${dataRows}\n${notes}`;
 
     const blob = new Blob([fileContent], { type: 'text/plain' });
@@ -184,12 +316,12 @@
 
   function addPoint() {
     pointsNum++;
-    const newPoint = createPointElement();
+    const newPoint = createPointElement(`Пункт (${pointsNum})`, 'Star', '');
     document.getElementById('points_list').appendChild(newPoint);
     addPointHandler(newPoint);
   }
 
-  function createPointElement() {
+  function createPointElement(pointName, pointType, pointOptions) {
     const pointWrapper = document.createElement('div');
     pointWrapper.classList.add('point');
     pointWrapper.id = pointsNum;
@@ -203,7 +335,7 @@
     innerDiv.appendChild(deleteBtn);
 
     const span = document.createElement('span');
-    span.textContent = `Пункт (${pointsNum}):`;
+    span.textContent = pointName;
     span.classList.add('point_span');
     innerDiv.appendChild(span);
 
@@ -215,26 +347,81 @@
 
     pointWrapper.appendChild(innerDiv);
 
-    const starsDiv = document.createElement('div');
-    starsDiv.classList.add('stars');
+    switch (pointType) {
+      case 'Choice':
+        const choiceInput = document.createElement('input');
+        choiceInput.type = 'number';
+        choiceInput.min = '0';
+        choiceInput.max = '1';
+        choiceInput.classList.add('dark_ed');
+        choiceInput.classList.add('choice_input');
+        pointWrapper.appendChild(choiceInput);
+        break;
 
-    const span1 = document.createElement('span');
-    span1.textContent = '1';
-    starsDiv.appendChild(span1);
+      case 'Star':
+        const starsDiv = document.createElement('div');
+        starsDiv.classList.add('stars');
+        starsDiv.classList.add('stars_input');
+        const span1 = document.createElement('span');
+        span1.textContent = '1';
+        starsDiv.appendChild(span1);
+        for (let i = 1; i <= 5; i++) {
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.setAttribute('data-raiting', i);
+          radio.name = pointsNum;
+          starsDiv.appendChild(radio);
+        }
+        const span5 = document.createElement('span');
+        span5.textContent = '5';
+        starsDiv.appendChild(span5);
+        pointWrapper.appendChild(starsDiv);
+        break;
 
-    for (let i = 1; i <= 5; i++) {
-      const radio = document.createElement('input');
-      radio.type = 'radio';
-      radio.setAttribute('data-raiting', i);
-      radio.name = pointsNum;
-      starsDiv.appendChild(radio);
+      case 'Time':
+        const timeInput = document.createElement('input');
+        timeInput.type = 'time';
+        timeInput.classList.add('dark_ed');
+        timeInput.classList.add('time_input');
+        pointWrapper.appendChild(timeInput);
+        break;
+
+      case 'Select':
+        const selectInput = document.createElement('select');
+        selectInput.type = 'select';
+        selectInput.multiple = true;
+        selectInput.classList.add('dark_ed');
+        selectInput.classList.add('select_input');
+
+        pointOptions.forEach((option) => {
+          let optionElem = document.createElement('option');
+          optionElem.value = option;
+          optionElem.text = option;
+          selectInput.appendChild(optionElem);
+        });
+
+        pointWrapper.appendChild(selectInput);
+
+        selectInput.addEventListener('change', function () {
+          const selectedOptions = Array.from(this.options).filter(
+            (option) => option.selected,
+          );
+
+          // Перебираем все варианты и добавляем/удаляем классы
+          Array.from(this.options).forEach((option) => {
+            if (selectedOptions.includes(option)) {
+              option.classList.add('active_option');
+            } else {
+              option.classList.remove('active_option');
+              option.classList.add('hide-option');
+            }
+          });
+        });
+        break;
+
+      default:
+        break;
     }
-
-    const span5 = document.createElement('span');
-    span5.textContent = '5';
-    starsDiv.appendChild(span5);
-
-    pointWrapper.appendChild(starsDiv);
 
     return pointWrapper;
   }
