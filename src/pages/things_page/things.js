@@ -3,6 +3,7 @@ import { returnCard } from '../../components/things_components.js';
 import { gsap } from 'gsap';
 
 import prog_1 from './programs/1/prog_1.jpg';
+import prog_2 from './programs/memory_numbers/1.png';
 
 /**
  * fonts
@@ -16,6 +17,13 @@ const cardsArray = [
     cardColor: '#FFFC46',
     cardBackgroundPhoto: prog_1,
     cardDescription: 'Приложение для составления пунктов и их оценки',
+  },
+  {
+    cardId: 'memory_numbers',
+    cardName: 'Memory_numbers',
+    cardColor: '#000',
+    cardBackgroundPhoto: prog_2,
+    cardDescription: 'Игра или тренажер называется "Игра на запоминание чисел" или "Тренажер числовой памяти"',
   },
 ];
 

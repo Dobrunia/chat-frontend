@@ -69,6 +69,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     color: #FFF;
     background-color: var(--message);
     transition: transform 0.3s ease;
