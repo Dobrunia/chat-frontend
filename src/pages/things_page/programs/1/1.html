@@ -17,7 +17,7 @@
     <div class="add_point">
       <button
         class="dark_ed"
-        onclick="document.getElementById('template_list').style = 'height: max-content;'"
+        onclick="document.getElementById('template_list').classList.toggle('template_list_show')"
         style="margin-right: 30px"
       >
         v
@@ -43,6 +43,19 @@
         placeholder="Заметки"
       ></textarea>
     </div>
+    <!-- <div class="dropdown">
+      <button
+        id="dropdown-btn"
+        class="dark_ed select_input"
+        onclick="toggleDropdown()"
+      >
+        Выберите вариант
+      </button>
+      <div class="dark_ed dropdown-content">
+        <a href="#" onclick="selectOption('Неуважительная')">Неуважительная</a>
+        <a href="#" onclick="selectOption('Уважительная')">Уважительная</a>
+      </div>
+    </div> -->
     <button
       type="button"
       class="btn btn-success"
@@ -118,15 +131,47 @@
     overflow: hidden;
     padding: var(--defPadding);
   }
-  .select_input {
+  .template_list_show {
     height: max-content;
   }
-  .hide-option {
+  .dropdown-content {
     display: none;
+    min-width: 200px;
+    position: absolute;
+    right: 50%;
+    transform: translate(50%, 0);
+    z-index: 1;
+  }
+  .dropdown-content a {
+    padding: 4px 8px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    text-align: center;
+    color: var(--attention);
+    border-radius: var(--borderRadiusRem);
+  }
+  .dropdown-content a:hover {
+    background-color: green;
+  }
+  .select_input {
+    min-width: 200px;
+  }
+  .show {
+    display: block;
   }
 </style>
 
 <script defer>
+  function toggleDropdown(dropdownContent) {
+    dropdownContent.classList.toggle('show');
+  }
+  function selectOption(button, option, dropdownContent) {
+    button.textContent = option.pointOptionsName;
+    button.setAttribute('data-raiting', option.coefficient);
+    toggleDropdown(dropdownContent);
+  }
+
   document.getElementById('sub').addEventListener('click', downloadPointsData);
   let pointsNum = 0;
 
@@ -138,27 +183,30 @@
         {
           pointName: 'Опоздание',
           pointType: 'Select',
-          pointOptions: ['Неуважительная', 'Уважительная'],
+          pointOptions: [
+            { pointOptionsName: 'Неуважительная', coefficient: -1 },
+            { pointOptionsName: 'Уважительная', coefficient: 0 },
+          ],
         },
         {
           pointName: 'Пришёл',
           pointType: 'Select',
           pointOptions: [
-            'раньше',
-            'вовремя',
-            'от 5 мин. до 15 мин',
-            'от 15 мин. и более',
+            { pointOptionsName: 'раньше', coefficient: 1 },
+            { pointOptionsName: 'вовремя', coefficient: 0.5 },
+            { pointOptionsName: 'от 5 мин. до 15 мин', coefficient: -1 },
+            { pointOptionsName: 'от 15 мин. и более', coefficient: -2 },
           ],
         },
         {
           pointName: 'Сколько времени у вас есть для нашего разговора?',
           pointType: 'Select',
           pointOptions: [
-            'да',
-            'скорее да',
-            'Сложно для определения',
-            'скорее нет',
-            'нет',
+            { pointOptionsName: 'да', coefficient: 1 },
+            { pointOptionsName: 'скорее да', coefficient: 0.5 },
+            { pointOptionsName: 'Сложно для определения', coefficient: 0 },
+            { pointOptionsName: 'скорее нет', coefficient: -0.5 },
+            { pointOptionsName: 'нет', coefficient: -1 },
           ],
         },
         {
@@ -166,11 +214,11 @@
             'Расскажите о том, о чем вы готов поделиться сейчас, что то не связанное с нашим сегодняшним интервью?',
           pointType: 'Select',
           pointOptions: [
-            'да',
-            'скорее да',
-            'Сложно для определения',
-            'скорее нет',
-            'нет',
+            { pointOptionsName: 'да', coefficient: 1 },
+            { pointOptionsName: 'скорее да', coefficient: 0.5 },
+            { pointOptionsName: 'Сложно для определения', coefficient: 0 },
+            { pointOptionsName: 'скорее нет', coefficient: -0.5 },
+            { pointOptionsName: 'нет', coefficient: -1 },
           ],
         },
         {
@@ -182,27 +230,36 @@
           pointName: 'Есть ли еще отклики и запланированные собеседования?',
           pointType: 'Select',
           pointOptions: [
-            'да',
-            'скорее да',
-            'Сложно для определения',
-            'скорее нет',
-            'нет',
+            { pointOptionsName: 'да', coefficient: 1 },
+            { pointOptionsName: 'скорее да', coefficient: 0.5 },
+            { pointOptionsName: 'Сложно для определения', coefficient: 0 },
+            { pointOptionsName: 'скорее нет', coefficient: -0.5 },
+            { pointOptionsName: 'нет', coefficient: -1 },
           ],
         },
         {
           pointName: 'Кандидат убедил специалиста о наличие опыта',
           pointType: 'Select',
-          pointOptions: ['да', 'нет'],
+          pointOptions: [
+            { pointOptionsName: 'да', coefficient: 0.5 },
+            { pointOptionsName: 'нет', coefficient: -0.5 },
+          ],
         },
         {
           pointName: 'Физ. активность',
           pointType: 'Select',
-          pointOptions: ['активный', 'пассивный'],
+          pointOptions: [
+            { pointOptionsName: 'активный', coefficient: 0 },
+            { pointOptionsName: 'пассивный', coefficient: 0 },
+          ],
         },
         {
           pointName: 'Соц. навыки',
           pointType: 'Select',
-          pointOptions: ['замкнутый', 'открытый'],
+          pointOptions: [
+            { pointOptionsName: 'замкнутый', coefficient: 0 },
+            { pointOptionsName: 'открытый', coefficient: 0 },
+          ],
         },
       ],
     },
@@ -227,10 +284,13 @@
   function downloadPointsData() {
     const pointsData = [];
     const pointElements = document.querySelectorAll('.point');
+    let hardSkillsTotalRating = 0;
+    let softSkillsTotalRating = 0;
     let totalRating = 0;
 
     pointElements.forEach((point) => {
-      let rating = null;
+      let hardRating = null;
+      let softRating = null;
       let select = null;
       let time = null;
       const nameInput = point.querySelector('.point_name');
@@ -242,12 +302,15 @@
 
         for (const input of ratingInputs) {
           if (input.checked) {
-            rating = input.getAttribute('data-raiting');
+            hardRating = input.getAttribute('data-raiting');
             break;
           }
         }
+        if (!hardRating) {
+          hardRating = 0;
+        }
         // Преобразуем значение в число для вычисления общего рейтинга
-        totalRating += parseInt(rating);
+        hardSkillsTotalRating += parseInt(hardRating);
       }
 
       if (point.querySelector('.choice_input')) {
@@ -260,10 +323,13 @@
         }
       }
       if (point.querySelector('.select_input')) {
-        const inputValue = point.querySelector('.active_option');
-        if (inputValue) {
-          select = inputValue.value;
+        const buttonValue = point.querySelector('.select_input');
+
+        if (buttonValue) {
+          select = buttonValue.textContent;
+          softRating = buttonValue.getAttribute('data-raiting');
         }
+        softSkillsTotalRating += parseInt(softRating);
       }
 
       const pointData = {
@@ -271,7 +337,8 @@
         name: nameInput.value
           ? nameInput.value
           : point.querySelector('.point_span').textContent,
-        rating: rating ? rating : null,
+        hardRating: hardRating ? hardRating : null,
+        softRating: softRating ? softRating : null,
         time: time ? time : null,
         select: select ? select : null,
       };
@@ -281,12 +348,17 @@
     const dataRows = pointsData
       .map(
         (point) =>
-          `${point.name}: ${point.rating ? 'рейтинг - ' + point.rating : ''} ${
-            point.time ? 'время - ' + point.time : ''
-          } ${point.select ? 'выбрано- ' + point.select : ''}`,
+          `${point.name}: ${
+            point.hardRating ? 'хард рейтинг: ' + point.hardRating : ''
+          }${point.softRating ? 'софт рейтинг: ' + point.softRating : ''} ${
+            point.time ? 'время: ' + point.time : ''
+          } ${point.select ? 'выбрано: ' + point.select : ''}`,
       )
       .join('\n');
-    const totalRow = `Итоговый (хард скиллы): ${totalRating}`;
+    const hardSkillsTotalRatingRow = `Итоговый (хард скиллы): ${hardSkillsTotalRating}`;
+    const softSkillsTotalRatingRow = `Итоговый (софт скиллы): ${softSkillsTotalRating}`;
+    totalRating = hardSkillsTotalRating + softSkillsTotalRating;
+    const totalRatingRow = `Итоговый (общий): ${totalRating}`;
 
     const notes = 'Заметка: ' + document.getElementById('notes').value || '';
 
@@ -295,7 +367,7 @@
     const creatorName = localStorage.getItem('username');
     const headerRow = `${'Собеседуемый: ' + fileName}\n${
       'Собеседовал: ' + creatorName
-    }\n${totalRow}`;
+    }\n${hardSkillsTotalRatingRow}\n${softSkillsTotalRatingRow}\n${totalRatingRow}`;
     const fileContent = `${headerRow}\n${dataRows}\n${notes}`;
 
     const blob = new Blob([fileContent], { type: 'text/plain' });
@@ -330,7 +402,7 @@
     const deleteBtn = document.createElement('button');
     deleteBtn.classList.add('delete_point');
     deleteBtn.classList.add('dark_ed');
-    deleteBtn.id = `delete_${pointsNum}`;
+    // deleteBtn.id = `delete_${pointsNum}`;
     deleteBtn.textContent = 'x';
     innerDiv.appendChild(deleteBtn);
 
@@ -387,36 +459,52 @@
         break;
 
       case 'Select':
-        const selectInput = document.createElement('select');
-        selectInput.type = 'select';
-        selectInput.multiple = true;
-        selectInput.classList.add('dark_ed');
-        selectInput.classList.add('select_input');
+        const dropdown = document.createElement('div');
+        dropdown.classList.add('dropdown');
+
+        const dropdownContent = document.createElement('div');
+        dropdownContent.classList.add('dark_ed');
+        dropdownContent.classList.add('dropdown-content');
+
+        const button = document.createElement('button');
+        button.id = `dropdown-btn_${pointsNum}`;
+        button.classList.add('dark_ed');
+        button.classList.add('select_input');
+        button.setAttribute('data-raiting', 0);
+        button.textContent = 'Выберите вариант';
+        button.addEventListener('click', () => toggleDropdown(dropdownContent));
+        dropdown.appendChild(button);
 
         pointOptions.forEach((option) => {
-          let optionElem = document.createElement('option');
-          optionElem.value = option;
-          optionElem.text = option;
-          selectInput.appendChild(optionElem);
-        });
-
-        pointWrapper.appendChild(selectInput);
-
-        selectInput.addEventListener('change', function () {
-          const selectedOptions = Array.from(this.options).filter(
-            (option) => option.selected,
+          let optionElem = document.createElement('a');
+          //optionElem.classList.add('select_input_option');
+          //optionElem.setAttribute('data-id', `dropdown-btn_${pointsNum}`);
+          optionElem.value = option.pointOptionsName;
+          optionElem.text = option.pointOptionsName;
+          optionElem.setAttribute('data-raiting', option.coefficient);
+          optionElem.addEventListener('click', () =>
+            selectOption(button, option, dropdownContent),
           );
-
-          // Перебираем все варианты и добавляем/удаляем классы
-          Array.from(this.options).forEach((option) => {
-            if (selectedOptions.includes(option)) {
-              option.classList.add('active_option');
-            } else {
-              option.classList.remove('active_option');
-              option.classList.add('hide-option');
-            }
-          });
+          dropdownContent.appendChild(optionElem);
         });
+        dropdown.appendChild(dropdownContent);
+        pointWrapper.appendChild(dropdown);
+
+        // selectInput.addEventListener('change', function () {
+        //   const selectedOptions = Array.from(this.options).filter(
+        //     (option) => option.selected,
+        //   );
+
+        //   // Перебираем все варианты и добавляем/удаляем классы
+        //   Array.from(this.options).forEach((option) => {
+        //     if (selectedOptions.includes(option)) {
+        //       option.classList.add('active_option');
+        //     } else {
+        //       option.classList.remove('active_option');
+        //       option.classList.add('hide-option');
+        //     }
+        //   });
+        // });
         break;
 
       default:
