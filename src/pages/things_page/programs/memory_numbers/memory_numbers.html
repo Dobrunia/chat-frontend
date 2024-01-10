@@ -72,8 +72,9 @@
   }
 
   function endGame(str) {
-    alert(str);
     clearInterval(timerInterval);
+    removeListeners();
+    alert(str);
   }
 
   // задаем размер таблицы из формы
@@ -107,6 +108,13 @@
     let tdCards = [...document.getElementsByClassName('cell')];
     tdCards.forEach((element) => {
       element.addEventListener('click', clickHandler);
+    });
+  }
+
+  function removeListeners() {
+    let tdCards = [...document.getElementsByClassName('cell')];
+    tdCards.forEach((element) => {
+      element.removeEventListener('click', clickHandler);
     });
   }
 
