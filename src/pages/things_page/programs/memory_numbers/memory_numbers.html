@@ -1,20 +1,36 @@
 <form>
   <input type="number" min="1" value="5" max="9" id="rowsh" />
   <input type="button" id="btn" value="создать таблицу" />
+  <div id="timer">00:00</div>
 </form>
 <div>
-  <table id="root" cellspacing="0" cellpadding="0"></table>
+  <table class="table" id="root" cellspacing="0" cellpadding="0"></table>
 </div>
 
 <style>
+  :root {
+    --success: #00ff37;
+    --fail: #ff0062;
+  }
+  #timer {
+    display: inline-block;
+    margin-left: 30px;
+  }
   .cards_wrapper {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-start;
     background-size: cover !important;
     background-position: center !important;
     background-image: url('./1.png');
+    padding: var(--defPadding);
   }
-  #root {
+  .table {
     border-collapse: collapse;
-    margin: 0 auto;
+    margin: 0;
+    margin-top: 50px;
+    background-color: var(--navDarkBg);
   }
   .cell {
     border: 2px solid rgb(202, 88, 88);
@@ -22,13 +38,44 @@
     font-size: 30px;
     text-align: center;
   }
+  td {
+    cursor: pointer;
+  }
+  td:hover {
+    background-color: #fff7149b;
+  }
 </style>
 
 <script defer>
+  let currentTdNumber = 1;
+  let maxTdNumber = 0;
+  let timerInterval;
+  let seconds = 0;
+  let minutes = 0;
   const button = document.querySelector('#btn');
   let root = document.getElementById('root');
 
-  button.addEventListener('click', shulte);
+  button.addEventListener('click', startPlay);
+
+  function startPlay() {
+    currentTdNumber = 1;
+    maxTdNumber = 0;
+    shulte();
+    startTimer();
+    document.querySelectorAll('.cell').forEach((cell) => {
+      let cellNumber = parseInt(cell.innerHTML);
+      if (!isNaN(cellNumber) && cellNumber > maxTdNumber) {
+        maxTdNumber = cellNumber;
+      }
+    });
+    setListeners();
+  }
+
+  function endGame(str) {
+    alert(str);
+    clearInterval(timerInterval);
+  }
+
   // задаем размер таблицы из формы
   function shulte() {
     root.innerHTML = '';
@@ -44,6 +91,7 @@
           let cell = document.createElement('td');
           cell.className = 'cell';
           cell.innerHTML = e;
+          cell.id = 'tdNumber_' + e;
           vert.appendChild(cell);
         });
         root.appendChild(vert);
@@ -53,5 +101,51 @@
         .splice(1)
         .sort(() => 0.5 - Math.random()),
     );
+  }
+
+  function setListeners() {
+    let tdCards = [...document.getElementsByClassName('cell')];
+    tdCards.forEach((element) => {
+      element.addEventListener('click', clickHandler);
+    });
+  }
+
+  function clickHandler(e) {
+    const clickedTdNumber = parseInt(e.currentTarget.id.split('_')[1]);
+    if (clickedTdNumber === currentTdNumber) {
+      e.currentTarget.style.backgroundColor = 'var(--success)';
+      if (maxTdNumber === currentTdNumber) {
+        endGame('Победа. Ваше время: ' + minutes + ':' + seconds);
+      } else {
+        currentTdNumber++;
+      }
+    } else {
+      e.currentTarget.style.backgroundColor = 'var(--fail)';
+      endGame('ПРОИГРАЛИ');
+    }
+  }
+
+  function startTimer() {
+    seconds = 0;
+    minutes = 0;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+
+  function updateTimer() {
+    seconds++;
+
+    if (seconds === 60) {
+      seconds = 0;
+      minutes++;
+    }
+
+    const formattedTime = padZero(minutes) + ':' + padZero(seconds);
+    document.getElementById('timer').textContent = formattedTime;
+  }
+
+  function padZero(num) {
+    return num.toString().padStart(2, '0');
   }
 </script>
