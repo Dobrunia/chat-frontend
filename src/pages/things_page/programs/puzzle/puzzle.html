@@ -2,7 +2,10 @@
   <div class="settings_container">
     <label for="fileInput"> Загрузить фотографию </label>
     <input type="file" id="fileInput" accept="image/*" />
-    <div class="photo_preview"></div>
+    <div class="puzzle_container">
+      <div class="place_for_blocks"></div>
+      <div class="photo_preview"></div>
+    </div>
     <input
       type="range"
       id="opacityInput"
@@ -40,10 +43,28 @@
   }
   #fileInput {
   }
-  .photo_preview {
+  .puzzle_container {
+    position: relative;
     width: 100%;
     height: 400px;
     margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .place_for_blocks {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background: inherit;
+    z-index: 10;
+  }
+  .photo_preview {
+    width: 100%;
+    height: 100%;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -63,6 +84,7 @@
     height: 25%;
     background-size: cover;
     background-position: center;
+    cursor: pointer;
     transition: transform 0.3s;
   }
   .grid_container {
@@ -74,10 +96,18 @@
 
 <script defer>
   const fileInput = document.getElementById('fileInput');
-  const photoPreview = document.querySelector('.photo_preview');
   const opacityInput = document.getElementById('opacityInput');
   const generatePuzzleButton = document.getElementById('generatePuzzleButton');
-  const blocksContainer = document.querySelector('.blocks_container');
+  const photoPreview = document.querySelector('.photo_preview');
+  const placeForBlocks = document.querySelector('.place_for_blocks'); //zone 1
+  const blocksContainer = document.querySelector('.blocks_container'); //zone 2
+
+  placeForBlocks.ondragover = allowDrop;
+  blocksContainer.ondragover = allowDrop;
+
+  function allowDrop(event) {
+    event.preventDefault();
+  }
 
   fileInput.addEventListener('change', function () {
     const file = this.files[0];
@@ -115,6 +145,7 @@
       const image = new Image();
       image.onload = function () {
         imageWidth = image.width * (imageHeight / image.height); // Вычисляем ширину изображения с учетом высоты 400px
+        placeForBlocks.style.width = imageWidth + 'px';
         const blockCount = 16;
         blockSize = Math.min(imageWidth, imageHeight) / Math.sqrt(blockCount); // Размер каждого квадратика
 
@@ -125,6 +156,8 @@
             // Создание и стилизация квадратиков
             const block = document.createElement('div');
             block.className = 'block';
+            block.id = row + '' + col;
+            block.draggable = 'true';
             block.style.width = blockSize + 'px';
             block.style.height = blockSize + 'px';
 
@@ -143,6 +176,11 @@
             );
           }
         }
+
+        const blocks = document.querySelectorAll('.block');
+        blocks.forEach((block) => {
+          block.ondragstart = drag;
+        });
       };
 
       image.src = event.target.result;
@@ -157,5 +195,17 @@
         blocksContainer.removeChild(block);
       }
     });
+  }
+
+  function drag(event) {
+    event.dataTransfer.setData('id', event.target.id);
+  }
+
+  placeForBlocks.ondrop = drop;
+  blocksContainer.ondrop = drop;
+
+  function drop(event) {
+    let itemId = event.dataTransfer.getData('id');
+    event.target.append(document.getElementById(itemId));
   }
 </script>
