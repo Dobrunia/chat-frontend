@@ -1,4 +1,4 @@
-<div class="container">
+<div class="puzzle_wrapper">
   <div class="settings_container">
     <label for="fileInput"> Загрузить фотографию </label>
     <input type="file" id="fileInput" accept="image/*" />
@@ -14,9 +14,12 @@
       step="0.1"
       value="1"
     />
-    <button class="generate_puzzle" id="generatePuzzleButton">
-      Сгенерировать пазл
-    </button>
+    <div>
+      <button class="generate_puzzle" id="generatePuzzleButton">
+        Сгенерировать пазл
+      </button>
+      <button class="puzzle_check" onclick="alert(checkSequence())">Проверить</button>
+    </div>
   </div>
   <div class="blocks_container">
     <div class="block"></div>
@@ -24,7 +27,7 @@
 </div>
 
 <style>
-  .container {
+  .puzzle_wrapper {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
@@ -76,9 +79,13 @@
   }
   .blocks_container {
     width: 100%;
+    min-height: 100px;
     display: flex;
     flex-wrap: wrap;
+    margin-top: 15px;
     perspective: 1000px;
+    border: 2px solid #37A5FF;
+    border-radius: var(--borderRadius);
   }
   .block {
     width: 25%;
@@ -92,6 +99,9 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 5px;
+  }
+  .puzzle_check {
+    background-color: #37A5FF;
   }
 </style>
 
@@ -138,7 +148,7 @@
 
   function generatePuzzle() {
     if (!fileInput.files || !fileInput.files[0]) {
-      console.log('Файл с фотографией не выбран!');
+      alert('Файл с фотографией не выбран!');
       return;
     }
 
@@ -172,7 +182,7 @@
               row * blockHeight
             }px`;
 
-            // Перемещение квадратиков в случайный порядок TODO:: 
+            // Перемещение квадратиков в случайный порядок TODO::
             const randomPosition = Math.floor(Math.random() * blockCount);
             blocksContainer.insertBefore(
               block,
@@ -211,5 +221,21 @@
   function drop(event) {
     let itemId = event.dataTransfer.getData('id');
     event.target.append(document.getElementById(itemId));
+  }
+
+  function checkSequence() {
+    const placeForBlocksElement = document.querySelector('.place_for_blocks');
+    const blockElements = placeForBlocksElement.querySelectorAll('.block');
+
+    let expectedId = 0;
+    for (let i = 0; i < blockElements.length; i++) {
+      const currentId = Number(blockElements[i].id);
+      if (currentId !== expectedId) {
+        return 'Есть ошибка';
+      }
+      expectedId++;
+    }
+
+    return 'Пока все верно';
   }
 </script>
