@@ -18,11 +18,18 @@
       <button class="generate_puzzle" id="generatePuzzleButton">
         Сгенерировать пазл
       </button>
-      <button class="puzzle_check" onclick="alert(checkSequence())">Проверить</button>
+      <button
+        class="puzzle_check"
+        id="puzzleCheck"
+        onclick="alert(checkSequence())"
+        disabled
+      >
+        Проверить
+      </button>
     </div>
   </div>
   <div class="blocks_container">
-    <div class="block"></div>
+    <!-- <div class="block"></div> -->
   </div>
 </div>
 
@@ -84,7 +91,7 @@
     flex-wrap: wrap;
     margin-top: 15px;
     perspective: 1000px;
-    border: 2px solid #37A5FF;
+    border: 2px solid #37a5ff;
     border-radius: var(--borderRadius);
   }
   .block {
@@ -101,7 +108,7 @@
     gap: 5px;
   }
   .puzzle_check {
-    background-color: #37A5FF;
+    background-color: #37a5ff;
   }
 </style>
 
@@ -221,6 +228,14 @@
   function drop(event) {
     let itemId = event.dataTransfer.getData('id');
     event.target.append(document.getElementById(itemId));
+    const blocksContainer = document.querySelector('.blocks_container');
+    const isContainerEmpty = hasNoChildren(blocksContainer);
+    const buttonCheck = document.getElementById('puzzleCheck');
+    if (isContainerEmpty) {
+      buttonCheck.disabled = false;
+    } else {
+      buttonCheck.disabled = true;
+    }
   }
 
   function checkSequence() {
@@ -230,12 +245,16 @@
     let expectedId = 0;
     for (let i = 0; i < blockElements.length; i++) {
       const currentId = Number(blockElements[i].id);
-      if (currentId !== expectedId) {
+      if (currentId < expectedId) {
         return 'Есть ошибка';
       }
-      expectedId++;
+      expectedId = currentId;
     }
 
-    return 'Пока все верно';
+    return 'Все верно';
+  }
+
+  function hasNoChildren(element) {
+    return element.childElementCount === 0;
   }
 </script>
