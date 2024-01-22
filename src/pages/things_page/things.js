@@ -25,6 +25,13 @@ const cardsArray = [
     cardBackgroundPhoto: prog_2,
     cardDescription: 'Игра или тренажер называется "Игра на запоминание чисел" или "Тренажер числовой памяти"',
   },
+  {
+    cardId: 'puzzle',
+    cardName: 'Puzzle',
+    cardColor: '#FFF322',
+    cardBackgroundColor: '#9832FF',
+    cardDescription: 'Возможность создать и собрать пазл из своих фотографий',
+  },
 ];
 
 let queryString = window.location.search;

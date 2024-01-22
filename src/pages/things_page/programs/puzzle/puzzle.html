@@ -1,0 +1,161 @@
+<div class="container">
+  <div class="settings_container">
+    <label for="fileInput"> Загрузить фотографию </label>
+    <input type="file" id="fileInput" accept="image/*" />
+    <div class="photo_preview"></div>
+    <input
+      type="range"
+      id="opacityInput"
+      min="0"
+      max="1"
+      step="0.1"
+      value="1"
+    />
+    <button class="generate_puzzle" id="generatePuzzleButton">
+      Сгенерировать пазл
+    </button>
+  </div>
+  <div class="blocks_container">
+    <div class="block"></div>
+  </div>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 950px;
+    height: 100%;
+    padding: 0;
+    margin-right: var(--defPadding);
+  }
+  .settings_container {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+  }
+  #fileInput {
+  }
+  .photo_preview {
+    width: 100%;
+    height: 400px;
+    margin-top: 15px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: opacity 0.3s;
+  }
+  .generate_puzzle {
+    margin-top: 15px;
+  }
+  .blocks_container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    perspective: 1000px;
+  }
+  .block {
+    width: 25%;
+    height: 25%;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s;
+  }
+  .grid_container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+</style>
+
+<script defer>
+  const fileInput = document.getElementById('fileInput');
+  const photoPreview = document.querySelector('.photo_preview');
+  const opacityInput = document.getElementById('opacityInput');
+  const generatePuzzleButton = document.getElementById('generatePuzzleButton');
+  const blocksContainer = document.querySelector('.blocks_container');
+
+  fileInput.addEventListener('change', function () {
+    const file = this.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', function () {
+      photoPreview.style.backgroundImage = `url('${reader.result}')`;
+    });
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  });
+
+  opacityInput.addEventListener('input', function () {
+    photoPreview.style.opacity = this.value;
+  });
+
+  let blockSize = 0; // Размер каждого квадратика
+  let imageWidth = 0;
+  const imageHeight = 400; // Фиксированная высота 400px
+
+  generatePuzzleButton.addEventListener('click', generatePuzzle);
+
+  function generatePuzzle() {
+    if (!fileInput.files || !fileInput.files[0]) {
+      console.log('Файл с фотографией не выбран!');
+      return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      const image = new Image();
+      image.onload = function () {
+        imageWidth = image.width * (imageHeight / image.height); // Вычисляем ширину изображения с учетом высоты 400px
+        const blockCount = 16;
+        blockSize = Math.min(imageWidth, imageHeight) / Math.sqrt(blockCount); // Размер каждого квадратика
+
+        clearBlocks(); // Очистить предыдущие квадратики
+
+        for (let row = 0; row < 4; row++) {
+          for (let col = 0; col < 4; col++) {
+            // Создание и стилизация квадратиков
+            const block = document.createElement('div');
+            block.className = 'block';
+            block.style.width = blockSize + 'px';
+            block.style.height = blockSize + 'px';
+
+            // Обрезка и размещение фрагментов фото в квадратиках
+            block.style.backgroundImage = `url(${event.target.result})`;
+            block.style.backgroundSize = `${imageWidth}px ${imageHeight}px`;
+            block.style.backgroundPosition = `-${col * blockSize}px -${
+              row * blockSize
+            }px`;
+
+            // Перемещение квадратиков в случайный порядок
+            const randomPosition = Math.floor(Math.random() * 16);
+            blocksContainer.insertBefore(
+              block,
+              blocksContainer.children[randomPosition],
+            );
+          }
+        }
+      };
+
+      image.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearBlocks() {
+    const blocks = document.querySelectorAll('.block');
+    blocks.forEach(function (block) {
+      if (block.parentNode === blocksContainer) {
+        blocksContainer.removeChild(block);
+      }
+    });
+  }
+</script>
