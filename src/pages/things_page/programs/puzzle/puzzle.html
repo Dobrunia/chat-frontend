@@ -59,6 +59,7 @@
     flex-flow: row wrap;
     align-items: flex-start;
     justify-content: flex-start;
+    align-content: flex-start;
     background: inherit;
     z-index: 10;
   }
@@ -126,9 +127,12 @@
     photoPreview.style.opacity = this.value;
   });
 
-  let blockSize = 0; // Размер каждого квадратика
-  let imageWidth = 0;
+  let imageWidth;
   const imageHeight = 400; // Фиксированная высота 400px
+  let blockWidth;
+  const blockHeight = 100;
+  const rowCount = imageHeight / blockHeight;
+  const colCount = 4;
 
   generatePuzzleButton.addEventListener('click', generatePuzzle);
 
@@ -146,30 +150,30 @@
       image.onload = function () {
         imageWidth = image.width * (imageHeight / image.height); // Вычисляем ширину изображения с учетом высоты 400px
         placeForBlocks.style.width = imageWidth + 'px';
-        const blockCount = 16;
-        blockSize = Math.min(imageWidth, imageHeight) / Math.sqrt(blockCount); // Размер каждого квадратика
+        const blockCount = colCount * rowCount;
+        blockWidth = imageWidth / colCount;
 
         clearBlocks(); // Очистить предыдущие квадратики
 
-        for (let row = 0; row < 4; row++) {
-          for (let col = 0; col < 4; col++) {
+        for (let row = 0; row < rowCount; row++) {
+          for (let col = 0; col < colCount; col++) {
             // Создание и стилизация квадратиков
             const block = document.createElement('div');
             block.className = 'block';
             block.id = row + '' + col;
             block.draggable = 'true';
-            block.style.width = blockSize + 'px';
-            block.style.height = blockSize + 'px';
+            block.style.width = blockWidth + 'px';
+            block.style.height = blockHeight + 'px';
 
             // Обрезка и размещение фрагментов фото в квадратиках
             block.style.backgroundImage = `url(${event.target.result})`;
             block.style.backgroundSize = `${imageWidth}px ${imageHeight}px`;
-            block.style.backgroundPosition = `-${col * blockSize}px -${
-              row * blockSize
+            block.style.backgroundPosition = `-${col * blockWidth}px -${
+              row * blockHeight
             }px`;
 
-            // Перемещение квадратиков в случайный порядок
-            const randomPosition = Math.floor(Math.random() * 16);
+            // Перемещение квадратиков в случайный порядок TODO:: 
+            const randomPosition = Math.floor(Math.random() * blockCount);
             blocksContainer.insertBefore(
               block,
               blocksContainer.children[randomPosition],
