@@ -23,6 +23,7 @@ export default defineConfig({
         things_page: resolve(root, 'pages', 'things_page', 'things.html'),
         program_1: resolve(root, 'pages', 'things_page', 'programs', '1', '1.html'),
         program_memory: resolve(root, 'pages', 'things_page', 'programs', 'memory_numbers', 'memory_numbers.html'),
+        program_puzzle: resolve(root, 'pages', 'things_page', 'programs', 'puzzle', 'puzzle.html'),
         donate_page: resolve(root, 'pages', 'donate_page', 'donate.html'),
         about_project_page: resolve(root, 'pages', 'about_project_page', 'about_project.html'),
       },
