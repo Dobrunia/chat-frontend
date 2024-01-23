@@ -128,6 +128,7 @@
   const buttonCheck = document.getElementById('puzzleCheck');
   let imageWidth;
   const imageHeight = 400; // Фиксированная высота 400px
+  let blockCount;
   let blockWidth;
   const blockHeight = 100;
   const rowCount = imageHeight / blockHeight;
@@ -157,6 +158,7 @@
   // Обработчик загрузки файла
   function handleFileLoad(event) {
     photoPreview.style.backgroundImage = `url('${event.target.result}')`;
+    clearBlocks();
   }
 
   // Обработчик изменения прозрачности
@@ -198,6 +200,8 @@
 
     reader.onload = handleImageLoad;
     reader.readAsDataURL(file);
+
+    clearBlocks();
   }
 
   // Обработчик загрузки изображения
@@ -208,8 +212,6 @@
       placeForBlocks.style.width = imageWidth + 'px';
       blockCount = colCount * rowCount;
       blockWidth = imageWidth / colCount;
-
-      clearBlocks();
 
       for (let row = 0; row < rowCount; row++) {
         for (let col = 0; col < colCount; col++) {
@@ -276,6 +278,13 @@
     blocks.forEach(function (block) {
       if (block.parentNode === blocksContainer) {
         blocksContainer.removeChild(block);
+      }
+    });
+
+    const blockZones = document.querySelectorAll('.block_zone');
+    blockZones.forEach(function (blockZone) {
+      if (blockZone.parentNode === placeForBlocks) {
+        placeForBlocks.removeChild(blockZone);
       }
     });
   }
