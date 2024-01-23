@@ -3,7 +3,9 @@
     <label for="fileInput"> Загрузить фотографию </label>
     <input type="file" id="fileInput" accept="image/*" />
     <div class="puzzle_container">
-      <div class="place_for_blocks"></div>
+      <div class="place_for_blocks">
+        <!-- <div class="blocks_zone"></div> -->
+      </div>
       <div class="photo_preview"></div>
     </div>
     <input
@@ -110,6 +112,9 @@
   .puzzle_check {
     background-color: #37a5ff;
   }
+  .block_zone {
+    background: inherit;
+  }
 </style>
 
 <script defer>
@@ -120,8 +125,15 @@
   const placeForBlocks = document.querySelector('.place_for_blocks'); //zone 1
   const blocksContainer = document.querySelector('.blocks_container'); //zone 2
 
+  //const All_blocks_zones = document.querySelectorAll('.block_zone');
+  // All_blocks_zones.forEach((block_zone) => {
+  //   block_zone.ondragstart = allowDrop;
+  //   block_zone.ondrop = drop;
+  // });
   placeForBlocks.ondragover = allowDrop;
   blocksContainer.ondragover = allowDrop;
+  placeForBlocks.ondrop = drop;
+  blocksContainer.ondrop = drop;
 
   function allowDrop(event) {
     event.preventDefault();
@@ -198,6 +210,15 @@
           }
         }
 
+        //создание сетки для заполнения блоками
+        for (let i = 0; i < blockCount; i++) {
+          const block_zone = document.createElement('div');
+          block_zone.className = 'block_zone';
+          block_zone.style.width = blockWidth + 'px';
+          block_zone.style.height = blockHeight + 'px';
+          placeForBlocks.appendChild(block_zone);
+        }
+
         const blocks = document.querySelectorAll('.block');
         blocks.forEach((block) => {
           block.ondragstart = drag;
@@ -222,29 +243,50 @@
     event.dataTransfer.setData('id', event.target.id);
   }
 
-  placeForBlocks.ondrop = drop;
-  blocksContainer.ondrop = drop;
-
   function drop(event) {
-    let itemId = event.dataTransfer.getData('id');
-    event.target.append(document.getElementById(itemId));
-    const blocksContainer = document.querySelector('.blocks_container');
-    const isContainerEmpty = hasNoChildren(blocksContainer);
-    const buttonCheck = document.getElementById('puzzleCheck');
-    if (isContainerEmpty) {
-      buttonCheck.disabled = false;
-    } else {
-      buttonCheck.disabled = true;
+    if (event.target.classList.contains('block_zone')) {
+      // Проверяем, является ли целевой элемент блоком-зоной
+      if (event.target.childElementCount === 0) {
+        // Проверяем, есть ли уже дочерние элементы в блоке-зоне
+        let itemId = event.dataTransfer.getData('id');
+        event.target.appendChild(document.getElementById(itemId));
+        const blocksContainer = document.querySelector('.blocks_container');
+        const isContainerEmpty = hasNoChildren(blocksContainer);
+        const buttonCheck = document.getElementById('puzzleCheck');
+        if (isContainerEmpty) {
+          buttonCheck.disabled = false;
+        } else {
+          buttonCheck.disabled = true;
+        }
+      }
+    }
+
+    if (event.target.classList.contains('blocks_container')) {
+      let itemId = event.dataTransfer.getData('id');
+      event.target.append(document.getElementById(itemId));
+      const blocksContainer = document.querySelector('.blocks_container');
+      const isContainerEmpty = hasNoChildren(blocksContainer);
+      const buttonCheck = document.getElementById('puzzleCheck');
+      if (isContainerEmpty) {
+        buttonCheck.disabled = false;
+      } else {
+        buttonCheck.disabled = true;
+      }
     }
   }
 
   function checkSequence() {
-    const placeForBlocksElement = document.querySelector('.place_for_blocks');
-    const blockElements = placeForBlocksElement.querySelectorAll('.block');
-
+    const blockZones = document.querySelectorAll('.block_zone'); // Выбираем все блоки-зоны
     let expectedId = 0;
-    for (let i = 0; i < blockElements.length; i++) {
-      const currentId = Number(blockElements[i].id);
+
+    for (let i = 0; i < blockZones.length; i++) {
+      const block = blockZones[i].querySelector('.block'); // Выбираем блок внутри блока-зоны
+      if (!block) {
+        // Если блок отсутствует, значит блок-зона пуста
+        return 'Есть ошибка';
+      }
+
+      const currentId = Number(block.id);
       if (currentId < expectedId) {
         return 'Есть ошибка';
       }
