@@ -17,6 +17,7 @@ export default defineConfig({
         main: resolve(root, 'index.html'),
         profile_page: resolve(root, 'pages', 'profile_page', 'profile.html'),
         messenger_page: resolve(root, 'pages', 'messenger_page', 'messenger.html'),
+        world_news_page: resolve(root, 'pages', 'world_news_page', 'world_news_page.html'),
         friends_page: resolve(root, 'pages', 'friends_page', 'friends.html'),
         music_page: resolve(root, 'pages', 'music_page', 'music.html'),
         cat_page: resolve(root, 'pages', 'cat_page', 'cat.html'),

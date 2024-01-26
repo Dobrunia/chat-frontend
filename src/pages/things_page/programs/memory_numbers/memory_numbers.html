@@ -3,7 +3,7 @@
     <form>
       <input type="number" min="1" value="5" max="9" id="rowsh" />
       <input type="button" id="btn" value="создать таблицу" />
-      <div id="timer">00:00</div>
+      <div id="timer">00:00.00</div>
     </form>
     <div>
       <table class="table" id="root" cellspacing="0" cellpadding="0"></table>
@@ -14,11 +14,7 @@
     <ul class="record-list">
       <!-- Пример элемента списка -->
       <li class="record-item">
-        <div
-          class="avatar"
-          style="background-image: url('path-to-avatar.jpg')"
-          title="имя"
-        ></div>
+        <div class="avatar" style="background-image: url('')" title="имя"></div>
         <div class="record-details">
           <div class="record-time">01:23:45</div>
           <div class="record-number" title="сетка">5x5</div>
@@ -36,6 +32,7 @@
     --fail: #ff0062;
   }
   #timer {
+    width: 84px;
     display: inline-block;
     margin-left: 30px;
     color: #000;
@@ -124,6 +121,19 @@
 </style>
 
 <script defer>
+  // import { $api } from '../../../../http/api.ts';
+  // async function returnAllRecords() {
+  //   try {
+  //     const response = await $api.get('/returnAllRecords');
+  //     return response.data;
+  //   } catch (error) {
+  //     //window.location.href = import.meta.env.VITE_SRC;
+  //     console.log(error.response.data);
+  //     throw error;
+  //   }
+  // }
+  // console.log(returnAllRecords());
+
   let currentTdNumber = 1;
   let maxTdNumber = 0;
   let timerInterval;
@@ -201,7 +211,9 @@
     if (clickedTdNumber === currentTdNumber) {
       e.currentTarget.style.backgroundColor = 'var(--success)';
       if (maxTdNumber === currentTdNumber) {
-        endGame('Победа. Ваше время: ' + minutes + ':' + seconds + '.' + milliseconds);
+        endGame(
+          'Победа. Ваше время: ' + minutes + ':' + seconds + '.' + milliseconds,
+        );
       } else {
         currentTdNumber++;
       }
@@ -233,7 +245,8 @@
       minutes++;
     }
 
-    const formattedTime = padZero(minutes) + ':' + padZero(seconds) + '.' + padZero(milliseconds);
+    const formattedTime =
+      padZero(minutes) + ':' + padZero(seconds) + '.' + padZero(milliseconds);
     document.getElementById('timer').textContent = formattedTime;
   }
 

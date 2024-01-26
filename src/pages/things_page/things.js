@@ -1,6 +1,7 @@
 import { getAndRenderMyInfo } from '../general.js';
 import { returnCard } from '../../components/things_components.js';
 import { gsap } from 'gsap';
+import { $api } from '../../http/api.ts';
 
 import prog_1 from './programs/1/prog_1.jpg';
 import prog_2 from './programs/memory_numbers/1.png';
