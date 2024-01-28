@@ -36,6 +36,9 @@
 </div>
 
 <style>
+  #opacityInput {
+    margin-top: var(--defPadding);
+  }
   .puzzle_wrapper {
     display: flex;
     flex-flow: column nowrap;
@@ -95,6 +98,7 @@
     perspective: 1000px;
     border: 2px solid #37a5ff;
     border-radius: var(--borderRadius);
+    padding: var(--defPadding);
   }
   .block {
     width: 25%;
@@ -130,9 +134,9 @@
   const imageHeight = 400; // Фиксированная высота 400px
   let blockCount;
   let blockWidth;
-  const blockHeight = 100;
+  const blockHeight = 50;
   const rowCount = imageHeight / blockHeight;
-  const colCount = 4;
+  const colCount = 8;
 
   // Обработчики событий
   fileInput.addEventListener('change', handleFileInputChange);
@@ -210,6 +214,7 @@
     image.onload = function () {
       imageWidth = image.width * (imageHeight / image.height);
       placeForBlocks.style.width = imageWidth + 'px';
+      placeForBlocks.style.outline = '2px solid #37a5ff';
       blockCount = colCount * rowCount;
       blockWidth = imageWidth / colCount;
 

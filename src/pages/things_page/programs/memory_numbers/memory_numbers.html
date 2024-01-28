@@ -11,15 +11,15 @@
   </div>
   <div class="records-container">
     <div class="record-title">Рекорды</div>
-    <ul class="record-list">
+    <ul class="record-list" id="record-list">
       <!-- Пример элемента списка -->
-      <li class="record-item">
+      <!-- <li class="record-item">
         <div class="avatar" style="background-image: url('')" title="имя"></div>
         <div class="record-details">
           <div class="record-time">01:23:45</div>
           <div class="record-number" title="сетка">5x5</div>
         </div>
-      </li>
+      </li> -->
       <!-- Конец элемента списка -->
       <!-- Тут можно добавить больше элементов списка с рекордами -->
     </ul>
@@ -52,7 +52,7 @@
     border-collapse: collapse;
     margin: 0;
     margin-top: 50px;
-    background-color: var(--navDarkBg);
+    background-color: var(--navLightBg);
   }
   .cell {
     border: 2px solid rgb(202, 88, 88);
@@ -103,7 +103,7 @@
 
   .record-details {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     flex-grow: 1;
   }
@@ -121,18 +121,40 @@
 </style>
 
 <script defer>
-  // import { $api } from '../../../../http/api.ts';
-  // async function returnAllRecords() {
-  //   try {
-  //     const response = await $api.get('/returnAllRecords');
-  //     return response.data;
-  //   } catch (error) {
-  //     //window.location.href = import.meta.env.VITE_SRC;
-  //     console.log(error.response.data);
-  //     throw error;
-  //   }
-  // }
-  // console.log(returnAllRecords());
+  import('./programs/memory_numbers/req.js')
+    .then(async (module) => {
+      let records = await module.returnAllRecords();
+      renderRecords(records);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+  function renderRecords(records) {
+    document.getElementById('record-list').innerHTML = '';
+    records.forEach((user) => {
+      document.getElementById(
+        'record-list',
+      ).innerHTML += `<li class="record-item">
+      <div class="user_avatar user_avatar_small" title="">
+      <a href="${
+        'https://memessenger.ru/pages/profile_page/profile.html?id=' +
+        user.userId
+      }" target="_blanc">
+        <img class="user_avatar_img openProfile" src="${
+          user.avatar
+        }" data-id="${user.userId}" alt=""/>
+        </a>
+      </div>
+        <div class="record-details">
+          <div class="record-time">${user.time}</div>
+          <div class="record-number" title="сетка">${
+            user.grid + 'x' + user.grid
+          }</div>
+        </div>
+      </li>`;
+    });
+  }
 
   let currentTdNumber = 1;
   let maxTdNumber = 0;
@@ -210,7 +232,31 @@
     const clickedTdNumber = parseInt(e.currentTarget.id.split('_')[1]);
     if (clickedTdNumber === currentTdNumber) {
       e.currentTarget.style.backgroundColor = 'var(--success)';
+
       if (maxTdNumber === currentTdNumber) {
+        import('./programs/memory_numbers/req.js')
+          .then(async (module) => {
+            // const totalMilliseconds =
+            //   (minutes * 3600 + seconds * 60 + Math.floor(milliseconds / 10)) *
+            //   1000;
+
+            // const databaseTime = new Date(totalMilliseconds)
+            //   .toISOString()
+            //   .substr(11, 12);
+            const databaseTime = `${minutes}:${seconds}:${Math.floor(milliseconds / 10)}`
+            let result = await module.checkNewRecord(
+              databaseTime,
+              +document.getElementById('rowsh').value,
+            );
+            if (result) {
+              alert('Рекорд поставлен!');
+              let records = await module.returnAllRecords();
+              renderRecords(records);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
         endGame(
           'Победа. Ваше время: ' + minutes + ':' + seconds + '.' + milliseconds,
         );
@@ -246,7 +292,11 @@
     }
 
     const formattedTime =
-      padZero(minutes) + ':' + padZero(seconds) + '.' + padZero(milliseconds);
+      padZero(minutes) +
+      ':' +
+      padZero(seconds) +
+      ':' +
+      padZero(Math.floor(milliseconds / 10));
     document.getElementById('timer').textContent = formattedTime;
   }
 

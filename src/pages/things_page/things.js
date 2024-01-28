@@ -5,6 +5,7 @@ import { $api } from '../../http/api.ts';
 
 import prog_1 from './programs/1/prog_1.jpg';
 import prog_2 from './programs/memory_numbers/1.png';
+import prog_3 from './programs/puzzle/man.gif';
 
 /**
  * fonts
@@ -29,8 +30,8 @@ const cardsArray = [
   {
     cardId: 'puzzle',
     cardName: 'Puzzle',
-    cardColor: '#FFF322',
-    cardBackgroundColor: '#9832FF',
+    cardColor: '#FFF',
+    cardBackgroundPhoto: prog_3,
     cardDescription: 'Возможность создать и собрать пазл из своих фотографий',
   },
 ];
