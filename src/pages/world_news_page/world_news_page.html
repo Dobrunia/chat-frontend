@@ -19,8 +19,109 @@
         >
           <include src="../../html_components/navigation.html"></include>
           <div class="nav_sections" id="nav_sections">
-            <div class="nav_world_news_page">
-              <h1 class="text-3xl font-bold underline">Hello world!</h1>
+            <div class="nav_world_news_page h-full relative">
+              <h1
+                class="flex items-center justify-center lg:text-4xl font-bold lg:p-8 font-serif news_title"
+              >
+                CNN News
+                <span class="text-sm ml-4 font-mono" id="news_date"></span>
+              </h1>
+              <!-- <div class="lang_btn absolute top-5 right-5 p-2">
+                <button class="lang_type lang_type_active" disabled="true">en</button>
+                <button class="lang_type">ru</button>
+              </div> -->
+              <div class="news_posts_preview overflow-y-scroll">
+                <div
+                  class="news_posts_wrapper lg:p-8 h-max"
+                  id="news_posts_wall"
+                >
+                  <div class="spinner_wrapper">
+                    <div class="spinner page_spinner">
+                      <div class="blob top"></div>
+                      <div class="blob bottom"></div>
+                      <div class="blob left"></div>
+                      <div class="blob move-blob"></div>
+                    </div>
+                  </div>
+                  <!-- <div class="news_post mb-8 lg:p-4">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Reiciendis nulla tempore commodi obcaecati laboriosam maxime
+                    amet cumque a sed, hic delectus iure sit unde minus magnam
+                    optio, nihil facere itaque! Lorem ipsum dolor sit amet
+                    consectetur adipisicing elit. Nihil soluta expedita ipsam
+                    possimus illum aliquam nemo assumenda accusantium rerum a
+                    incidunt asperiores, quam animi veniam cupiditate ratione
+                    totam provident illo. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Reiciendis nulla tempore commodi obcaecati
+                    laboriosam maxime amet cumque a sed, hic delectus iure sit
+                    unde minus magnam optio, nihil facere itaque! Lorem ipsum
+                    dolor sit amet consectetur adipisicing elit. Nihil soluta
+                    expedita ipsam possimus illum aliquam nemo assumenda
+                    accusantium rerum a incidunt asperiores, quam animi veniam
+                    cupiditate ratione totam provident illo. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Reiciendis nulla
+                    tempore commodi obcaecati laboriosam maxime amet cumque a
+                    sed, hic delectus iure sit unde minus magnam optio, nihil
+                    facere itaque! Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Nihil soluta expedita ipsam possimus illum
+                    aliquam nemo assumenda accusantium rerum a incidunt
+                    asperiores, quam animi veniam cupiditate ratione totam
+                    provident illo. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Reiciendis nulla tempore commodi obcaecati
+                    laboriosam maxime amet cumque a sed, hic delectus iure sit
+                    unde minus magnam optio, nihil facere itaque! Lorem ipsum
+                    dolor sit amet consectetur adipisicing elit. Nihil soluta
+                    expedita ipsam possimus illum aliquam nemo assumenda
+                    accusantium rerum a incidunt asperiores, quam animi veniam
+                    cupiditate ratione totam provident illo. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Reiciendis nulla
+                    tempore commodi obcaecati laboriosam maxime amet cumque a
+                    sed, hic delectus iure sit unde minus magnam optio, nihil
+                    facere itaque! Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Nihil soluta expedita ipsam possimus illum
+                    aliquam nemo assumenda accusantium rerum a incidunt
+                    asperiores, quam animi veniam cupiditate ratione totam
+                    provident illo. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Reiciendis nulla tempore commodi obcaecati
+                    laboriosam maxime amet cumque a sed, hic delectus iure sit
+                    unde minus magnam optio, nihil facere itaque! Lorem ipsum
+                    dolor sit amet consectetur adipisicing elit. Nihil soluta
+                    expedita ipsam possimus illum aliquam nemo assumenda
+                    accusantium rerum a incidunt asperiores, quam animi veniam
+                    cupiditate ratione totam provident illo. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Reiciendis nulla
+                    tempore commodi obcaecati laboriosam maxime amet cumque a
+                    sed, hic delectus iure sit unde minus magnam optio, nihil
+                    facere itaque! Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Nihil soluta expedita ipsam possimus illum
+                    aliquam nemo assumenda accusantium rerum a incidunt
+                    asperiores, quam animi veniam cupiditate ratione totam
+                    provident illo. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Reiciendis nulla tempore commodi obcaecati
+                    laboriosam maxime amet cumque a sed, hic delectus iure sit
+                    unde minus magnam optio, nihil facere itaque! Lorem ipsum
+                    dolor sit amet consectetur adipisicing elit. Nihil soluta
+                    expedita ipsam possimus illum aliquam nemo assumenda
+                    accusantium rerum a incidunt asperiores, quam animi veniam
+                    cupiditate ratione totam provident illo. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Reiciendis nulla
+                    tempore commodi obcaecati laboriosam maxime amet cumque a
+                    sed, hic delectus iure sit unde minus magnam optio, nihil
+                    facere itaque! Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Nihil soluta expedita ipsam possimus illum
+                    aliquam nemo assumenda accusantium rerum a incidunt
+                    asperiores, quam animi veniam cupiditate ratione totam
+                    provident illo. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Reiciendis nulla tempore commodi obcaecati
+                    laboriosam maxime amet cumque a sed, hic delectus iure sit
+                    unde minus magnam optio, nihil facere itaque! Lorem ipsum
+                    dolor sit amet consectetur adipisicing elit. Nihil soluta
+                    expedita ipsam possimus illum aliquam nemo assumenda
+                    accusantium rerum a incidunt asperiores, quam animi veniam
+                    cupiditate ratione totam provident illo.
+                  </div> -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -30,4 +131,5 @@
   </body>
   <script type="module" src="../general_handler.js" defer></script>
   <script type="module" src="./world_news_page.js" defer></script>
+  <script type="module" src="./world_news_page_handler.js" defer></script>
 </html>

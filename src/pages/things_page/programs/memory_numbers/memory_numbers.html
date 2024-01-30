@@ -121,7 +121,8 @@
 </style>
 
 <script defer>
-  import('./programs/memory_numbers/req.js')
+  let src = '.programs/memory_numbers/request.js';
+  import(src)
     .then(async (module) => {
       let records = await module.returnAllRecords();
       renderRecords(records);
@@ -234,7 +235,7 @@
       e.currentTarget.style.backgroundColor = 'var(--success)';
 
       if (maxTdNumber === currentTdNumber) {
-        import('./programs/memory_numbers/req.js')
+        import(src)
           .then(async (module) => {
             // const totalMilliseconds =
             //   (minutes * 3600 + seconds * 60 + Math.floor(milliseconds / 10)) *
@@ -243,7 +244,9 @@
             // const databaseTime = new Date(totalMilliseconds)
             //   .toISOString()
             //   .substr(11, 12);
-            const databaseTime = `${minutes}:${seconds}:${Math.floor(milliseconds / 10)}`
+            const databaseTime = `${minutes}:${seconds}:${Math.floor(
+              milliseconds / 10,
+            )}`;
             let result = await module.checkNewRecord(
               databaseTime,
               +document.getElementById('rowsh').value,
