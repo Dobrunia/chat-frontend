@@ -101,3 +101,31 @@ export async function addAudioToPlaylist(audioId, playlistId) {
     throw error;
   }
 }
+
+/**
+ * сохранить frame на сервер
+ */
+export async function saveFrame(frame) {
+  try {
+    const response = await $api.post('/saveFrame', { frame });
+    return response.data;
+  } catch (error) {
+    //window.location.href = import.meta.env.VITE_SRC;
+    console.log(error.response.data);
+    throw error;
+  }
+}
+
+/**
+ * получить frame c сервака
+ */
+export async function getFrame() {
+  try {
+    const response = await $api.get('/getFrame');
+    return response.data;
+  } catch (error) {
+    //window.location.href = import.meta.env.VITE_SRC;
+    console.log(error.response.data);
+    throw error;
+  }
+}

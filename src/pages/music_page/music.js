@@ -17,10 +17,37 @@ import { escapeSql, escapeHtml } from '../general.js';
 async function start() {
   await getAndRenderMyInfo();
   document.getElementById('spinner_wrapper').classList.add('none');
+  //await updateFrame();
   await renderAllTracks();
   await renderChooseMyPlaylists();
 }
 start();
+
+async function updateFrame() {
+  let frame = `<iframe
+  frameborder="0"
+  style="border: none; width: 100%; height: 450px"
+  width="100%"
+  height="450"
+  src="https://music.yandex.ru/iframe/playlist/dobriy.kost/1012"
+  >Слушайте
+  <a
+    href="https://music.yandex.ru/users/dobriy.kost/playlists/1012"
+    >Салуки</a
+  >
+  —
+  <a href="https://music.yandex.ru/users/dobriy.kost"
+    >Добрый Кост</a
+  >
+  на Яндекс Музыке</iframe
+>`;
+  document.getElementById('frame_place').innerHTML = frame;
+}
+
+export async function setFrame() {
+  
+  await updateFrame();
+}
 
 async function renderChooseMyPlaylists() {
   const array = await returnMyPlaylists();

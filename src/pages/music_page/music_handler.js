@@ -4,6 +4,7 @@ import {
   renderAllTracks,
   createPlaylist,
   renderAudio,
+  setFrame,
 } from './music.js';
 import { escapeSql, escapeHtml } from '../general.js';
 import { returnMyPlaylists, getTrackBySongsArray } from './music_request.js';
@@ -83,7 +84,9 @@ function renderPlaylists(array, id) {
       //console.log(btn.getAttribute('data-songsarray'));
       document.getElementById('palaylist_name').textContent =
         btn.getAttribute('data-name');
-        document.getElementById('playlist_tracks').style.backgroundImage = `url('${btn.getAttribute('data-img')}')`;
+      document.getElementById(
+        'playlist_tracks',
+      ).style.backgroundImage = `url('${btn.getAttribute('data-img')}')`;
       const songsarray = await getTrackBySongsArray(
         btn.getAttribute('data-songsarray'),
       );
@@ -118,4 +121,13 @@ radioBtns.forEach((radioBtn) => {
       }
     }
   });
+});
+
+const frameInput = document.getElementById('frame_input');
+const frameBtn = document.getElementById('frame_btn');
+const framePlace = document.getElementById('frame_place');
+
+frameBtn.addEventListener('click', async () => {
+  await setFrame(frameInput.value);
+  // console.log(frameInput.value);
 });

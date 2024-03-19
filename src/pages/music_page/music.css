@@ -24,6 +24,10 @@
     background-color: var(--navLightBg);
 }
 
+.frame_btn {
+    margin: 16px 0;
+}
+
 .all_tracks {
     width: 100%;
     height: 100%;
