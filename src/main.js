@@ -50,16 +50,16 @@ document.addEventListener("DOMContentLoaded", function() {
  */
 $('#get_in').addEventListener('click', () => toggleModuleWindow('get_in'));
 $('#get_in_2').addEventListener('click', () => toggleModuleWindow('get_in'));
-$('#get_in_exit').addEventListener('click', () => toggleModuleWindow('exit'));
+// $('#get_in_exit').addEventListener('click', () => toggleModuleWindow('exit'));
 $('#registration').addEventListener('click', () =>
   toggleModuleWindow('registration'),
 );
 $('#registration_2').addEventListener('click', () =>
   toggleModuleWindow('registration'),
 );
-$('#registration_exit').addEventListener('click', () =>
-  toggleModuleWindow('exit'),
-);
+// $('#registration_exit').addEventListener('click', () =>
+//   toggleModuleWindow('exit'),
+// );
 
 /**
  * функция афторизации пользователей

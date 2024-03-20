@@ -86,10 +86,9 @@ body {
     justify-content: space-around;
     width: 300px;
     height: 100%;
-    text-transform: uppercase;
 }
 
-.module_container h1 {
+.module_container h2 {
     margin: 0;
     padding: 0;
     text-transform: none;
@@ -97,9 +96,10 @@ body {
 
 .module_container .text-imput {
     width: 300px;
-    height: 20px;
+    height: 24px;
     margin-bottom: 30px;
     border: 0;
+    border-radius: 4px;
 }
 
 .module_container .checkbox-imput {
@@ -116,6 +116,7 @@ body {
 .module_container .button {
     width: 300px;
     height: 30px;
+    border-radius: 4px;
     cursor: pointer;
 }
 

@@ -38,7 +38,7 @@
         <section class="module_wrapper" id="get_in_window">
           <div class="module_window">
             <div class="module_container">
-              <h1>Вход</h1>
+              <h2>Вход</h2>
               <form action="./api/get-in" method="post" id="authorizationForm">
                 <label>Почта</label>
                 <input
@@ -46,6 +46,7 @@
                   name="email"
                   type="email"
                   autocomplete="email"
+                  placeholder="name@example.com" 
                   required
                 />
                 <label>Пароль</label>
@@ -73,13 +74,13 @@
                 Зарегистрироваться
               </button>
             </div>
-            <button class="exit" id="get_in_exit">x</button>
+            <!-- <button class="exit" id="get_in_exit">x</button> -->
           </div>
         </section>
         <section class="module_wrapper none" id="registration_window">
           <div class="module_window">
             <div class="module_container">
-              <h1>Регистрация</h1>
+              <h2>Регистрация</h2>
               <form role="form" id="registrationForm">
                 <label>Имя пользователя</label>
                 <input
@@ -133,7 +134,7 @@
                 Уже есть аккаунт? Войти
               </button>
             </div>
-            <button class="exit" id="registration_exit">x</button>
+            <!-- <button class="exit" id="registration_exit">x</button> -->
           </div>
         </section>
       </div>
