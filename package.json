@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@rollup/plugin-dynamic-import-vars": "^2.1.2",
     "@types/lodash": "^4.14.197",
     "@types/node": "^20.9.0",
     "@vituum/vite-plugin-posthtml": "^1.0.0",

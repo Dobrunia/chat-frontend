@@ -2,6 +2,7 @@
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import posthtml from '@vituum/vite-plugin-posthtml';
+import dynamicImportVars from '@rollup/plugin-dynamic-import-vars';
 
 const root = resolve(__dirname, 'src');
 const outDir = resolve(__dirname, 'dist');
@@ -13,6 +14,7 @@ export default defineConfig({
     outDir,
     emptyOutDir: true,
     rollupOptions: {
+      plugins: [dynamicImportVars()],
       input: {
         main: resolve(root, 'index.html'),
         profile_page: resolve(root, 'pages', 'profile_page', 'profile.html'),

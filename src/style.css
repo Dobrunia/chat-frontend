@@ -30,6 +30,7 @@ body {
 
 .module_window {
     background-color: #1a2136;
+    animation: pulsate 1.5s infinite alternate;
 }
 
 .module_container .text-imput {
@@ -160,4 +161,14 @@ body {
     background-color: #1a2136;
     color: #fff;
     z-index: 101;
+}
+
+@keyframes pulsate {
+    0% {
+        box-shadow: 0 0 10px #bc13fe, 0 0 13px #bc13fe, 0 0 16px #bc13fe, 0 0 20px #bc13fe;
+    }
+
+    100% {
+        box-shadow: 0 0 7px #bc13fe, 0 0 8px #bc13fe, 0 0 9px #bc13fe, 0 0 10px #bc13fe;
+    }
 }

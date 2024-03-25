@@ -24,7 +24,8 @@ const cardsArray = [
     cardName: 'Memory_numbers',
     cardColor: '#000',
     cardBackgroundPhoto: prog_2,
-    cardDescription: 'Игра или тренажер называется "Игра на запоминание чисел" или "Тренажер числовой памяти"',
+    cardDescription:
+      'Игра или тренажер называется "Игра на запоминание чисел" или "Тренажер числовой памяти"',
   },
   {
     cardId: 'puzzle',
@@ -79,16 +80,13 @@ function renderProgram(programId) {
       cardsWrapper.innerHTML = `<button class="get_back" id="get_back" title="Вернуться к приложениям">&lt;</button>`;
       cardsWrapper.innerHTML += data;
 
-      // Запуск JavaScript-кода, вставленного внутри <script defer>
-      const scriptTags = cardsWrapper.getElementsByTagName('script');
-      for (let i = 0; i < scriptTags.length; i++) {
-        if (scriptTags[i].hasAttribute('defer')) {
-          // Создание нового скрипта и выполнение кода
-          const newScript = document.createElement('script');
-          newScript.innerHTML = scriptTags[i].innerHTML;
-          document.body.appendChild(newScript);
-        }
-      }
+      import(`./programs/${programId}/${programId}.js`)
+        .then(async (module) => {
+          await module.startProgram();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
 
       document.getElementById('get_back').addEventListener('click', () => {
         window.location.href = `../../pages/things_page/things.html`;
